@@ -9,6 +9,25 @@
 Zolto is a **strict superset of Markdown**. Every standard `.md` file
 is a valid `.zl` file that compiles unchanged.
 
+### Master Language Specification Architecture (Phases 1 – 16)
+
+- **Phase 1 (Markdown Core)**: CommonMark/GFM blocks, inlines, tables, frontmatter, variables.
+- **Phase 2 (Extended Markdown)**: Admonitions, callouts (`> [!NOTE]`), footnotes, definition lists, figures.
+- **Phase 3 (Block Directives)**: Universal `@directive` syntax (`@card`, `@tabs`, `@alert`, `@steps`, `@timeline`).
+- **Phase 4 (Mathematics)**: `$expr$` and `@math ... @/math`, MathML, equation numbering, `@ref()`.
+- **Phase 5 (Diagrams)**: `@diagram <type>` (23 diagram types, 9 graph layout strategies, themes, SVG).
+- **Phase 6 (Charts)**: `@chart <type>` (24 chart types, inline/CSV/JSON data, statistics, SVG).
+- **Phase 7 (Vector Graphics)**: `@vector` declarative drawing, scene graph, path language, transforms.
+- **Phase 8 (Spatial Layout)**: `@layout`, `@grid`, `@flex`, `@canvas`, `@page`, multi-page & slide layouts.
+- **Phase 9 (Components & Macros)**: `@component`, `@slot`, `@template`, `@macro`, typed props, logic directives (`{#if}`, `{#each}`).
+- **Phase 10 (Interactive & Quiz)**: `@interactive`, `@form`, `@quiz`, `@flashcard`, `@poll`, inputs, auto-grading.
+- **Phase 11 (Animation & Presentation)**: `@animate`, `@keyframes`, motion tokens, `@presentation`, `@slide`, speaker notes.
+- **Phase 12 (Plugin API & Extensions)**: `@plugin` manifest, extension hooks, custom directives/renderers, permissions.
+- **Phase 13 (Language Server & Tooling)**: Full LSP, autocomplete, hover, linter, formatter, incremental parsing/rendering.
+- **Phase 14 (Collaboration & Versioning)**: Real-time editing, version history, document branching/merging, inline review.
+- **Phase 15 (Universal Themes)**: Light, Dark, Eye Protection themes, design tokens, runtime switching.
+- **Phase 16 (v1.0 Release)**: Specification, API freeze, official CLI (`zolto`), starter templates, v1.0 LTS launch.
+
 ## Phase 6 Native Chart Syntax
 
 ```

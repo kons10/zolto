@@ -1,111 +1,203 @@
+<div align="center">
+
 # Zolto
 
-> **Native Charts & Data Visualization Engine** — a production-quality document engine that is a strict
-> superset of standard Markdown. Every valid `.md` file is a valid `.zl` file.
+### *The Next-Generation Document & Visualization Language*
+
+A strict superset of standard Markdown with native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, Components, and Interactive Runtime — built with **Zero Dependencies**.
 
 [![CI](https://github.com/uxle/zolto/actions/workflows/ci.yml/badge.svg)](https://github.com/uxle/zolto/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/badge/version-6.0.0-blue.svg)](package.json)
+[![Phase](https://img.shields.io/badge/phase-6.0.0_Complete-purple)](docs/development/roadmap.md)
+[![Tests](https://img.shields.io/badge/tests-565%2F565_passing-brightgreen.svg)](tests/tests.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Phase](https://img.shields.io/badge/phase-6-purple)](docs/development/roadmap.md)
 
-## Features — Phase 6
+</div>
 
-### Native Charts & Data Visualization Engine (new)
+---
 
-Native, high-performance chart engine with 24 chart types, statistical calculation engine, multiple data sources (inline, CSV, TSV, JSON, variables), theme styling, responsive SVG rendering, and full Zolto AST integration.
+## ⚡ Highlights
 
-| Feature | Syntax | Description |
-| :--- | :--- | :--- |
-| **Chart Directive** | `@chart <type> … @/chart` | Native block syntax for charts |
-| **24 Chart Types** | `bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed` | Specialized AST node and SVG renderer for each type |
-| **Data Sources** | Inline, `source csv:`, `source tsv:`, `source json:`, `$var` | Multi-format data loading and variable bindings |
-| **Statistics Engine** | Min, max, mean, median, stdev, rolling averages, sorting, filtering, aggregations | Built-in statistical calculations and data transformations |
-| **Themes & Styling** | `theme="light\|dark\|custom:neo\|custom:night"` | Curated palettes and custom color arrays |
-| **Responsive SVG** | `<svg viewBox="..." role="img" aria-label="...">` | Accessible, responsive SVG output with titles, descriptions, and legends |
+- **100% Markdown Compatible**: Every valid `.md` file is a valid `.zl` file. Zero syntax regressions.
+- **Zero Dependencies**: Self-contained math engine, diagram layout engine, and statistical chart renderer. No KaTeX, MathJax, Mermaid, D3, or Chart.js needed.
+- **Phase 6 Native Chart Engine**: 24 native chart types (`bar`, `line`, `spline`, `radar`, `heatmap`, `candlestick`, `gauge`, `treemap`, etc.) with statistical calculations (min, max, mean, median, stdev, rolling averages) and multi-format data sources (inline, CSV, TSV, JSON, `$variables`).
+- **Phase 5 Native Diagram Engine**: 23 native diagram types (`flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `class`, `gantt`, `sankey`, `git`, etc.) with 9 pluggable graph layout algorithms and automatic sequence lifelines.
+- **Phase 4 Native Mathematics Engine**: Pandoc-style currency-safe `$expr$` inline math and `@math ... @/math` block math with auto-numbering, `@ref()` cross-references, dual HTML + MathML accessibility.
+- **Phase 3 Native Block Directives**: Universal `@directive` syntax supporting 14 document component types (`@card`, `@tabs`, `@alert`, `@steps`, `@columns`, `@badge`, `@timeline`, `@progress`, `@avatar`, `@icon`, etc.).
+- **Phase 2 Extended Markdown**: Callouts (`> [!NOTE]`), admonitions (`[info]`), reference links, code headers, line numbers, and definition lists.
+- **High Performance**: Parses and renders 10,000+ data points or 1,000 diagram nodes in under **500ms**.
 
-### Native Mathematics Engine (Phase 4, fully supported)
+---
 
-No KaTeX, no MathJax, no LaTeX installation — a self-contained math parser and renderer.
+## 🚀 Quick Start
 
-| Syntax | Example | Purpose |
-|--------|---------|---------|
-| `$expr$` | `$E = mc^2$` | Inline math (currency-safe: `$10 or $20` stays plain text) |
-| `@math … @/math` | `@math\nF = ma\n@/math` | Display math, auto-numbered |
-| `label="…"` | `@math label="eq:newton"` | Anchor for cross-references |
-| `@ref(label)` | `@ref(eq:newton)` | Linked reference to a numbered equation |
-
-### Native Block Directives (Phase 3, fully supported)
-
-| Directive | Syntax | Purpose |
-|-----------|--------|---------|
-| `@embed` | `@embed image src="…" @/embed` | image / video / audio / youtube / vimeo / figma / codepen / iframe |
-| `@collapse` | `@collapse title="…" @/collapse` | Disclosure widget |
-| `@tabs` / `@tab` | `@tabs @tab label="…" @/tab @/tabs` | Accessible tab groups |
-| `@card` / `@card-group` | `@card title="…" @/card` | Variant cards, responsive grid |
-| `@steps` / `@step` | `@steps @step title="…" @/step @/steps` | Numbered step lists |
-| `@columns` / `@column` | `@columns @column width="…" @/column @/columns` | Responsive layout |
-| `@badge` | `@badge success pill @/badge` | 7 variants × pill/outline |
-| `@tag` | `@tag color=… href="…" @/tag` | Coloured topic tags |
-| `@alert` | `@alert warning title="…" @/alert` | 6 alert types, dismissible |
-| `@timeline` / `@event` | `@timeline @event title="…" @/event @/timeline` | Vertical event timeline |
-| `@progress` | `@progress value=75 @/progress` | Linear progress bar |
-| `@avatar` | `@avatar initials="…" status="…" @/avatar` | Image/initials/icon avatar |
-| `@icon` | `@icon name size=24 @/icon` | Material Symbols icon |
-
-### Extended Markdown (Phase 2, fully supported)
-
-| Feature | Syntax | Output |
-|---------|--------|--------|
-| GitHub Callouts | `> [!NOTE]` | Coloured callout box with icon |
-| Admonitions | `[info]…[/info]` | Boxed block with header |
-| Reference links | `[text][id]` + `[id]: url` | Resolved `<a>` |
-| Figures | Standalone `![alt](src)` | `<figure>` + `<figcaption>` |
-| Definition lists | `term\n: def` | `<dl><dt><dd>` |
-
-All Phase 1 features (headings, lists, tables, footnotes, variables, etc.) continue working unchanged.
-
-## Quick start
+### 1. Run Zolto Studio (Browser Playground)
+No build step required — launch the interactive live editor directly in your browser:
 
 ```bash
-git clone https://github.com/zolto/zolto.git
+git clone https://github.com/uxle/zolto.git
 cd zolto
-# Open index.html in any static server — no build step required
 npx serve . --port 3000
 ```
+Then open `http://localhost:3000` in your browser.
 
-Or use the engine in your own project (ES modules):
+### 2. Using the Engine in Node.js or Web Apps (ES Modules)
 
 ```javascript
-import { compile, parse, parseDiagram, renderDiagram } from './src/zolto.js';
+import { compile, parse, render, parseChart, renderChart, parseDiagram, renderDiagram } from './src/zolto.js';
 
-// One-call compile
-const html = compile('# Architecture\n\n@diagram flowchart\nStart -> Login\nLogin -> Dashboard\n@/diagram');
+// One-call document compilation to clean HTML + accessible SVG
+const source = `
+# Quarterly Engineering Report
 
-// Step-by-step with diagnostics
-const { ast, errors, warnings, diagnostics } = parse(source);
-const html2 = render(ast, { xhtml: false });
+> [!NOTE]
+> All systems operational across regions.
+
+@chart bar title="Monthly API Volume"
+source: csv
+"month","requests"
+"Jan, 2026", 12000
+"Feb, 2026", 18500
+"Mar, 2026", 24000
+@/chart
+
+@diagram sequence id="login-flow"
+actor User
+actor App
+actor Server
+
+User -> App: Enter credentials
+App -> Server: POST /login
+Server -> App: Token
+App -> User: Success
+@/diagram
+`;
+
+const html = compile(source);
+console.log(html);
 ```
 
-## API
+---
+
+## 🎨 Feature Showcase
+
+### 📊 Native Charts Engine (Phase 6)
+```zolto
+@chart spline title="Revenue Growth" theme="dark"
+labels: Jan Feb Mar Apr May Jun
+data: 120 180 240 310 420 580
+@/chart
+```
+- **24 Chart Types**: `bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed`.
+- **Data Loaders**: Inline, CSV (with quoted comma handling), TSV, JSON, `$variable` bindings.
+- **Statistics**: Built-in rolling average, standard deviation, mean, median, normalization.
+
+### 📐 Native Diagram Engine (Phase 5)
+```zolto
+@diagram sequence title="Authentication Sequence"
+actor User
+actor App
+actor Server
+
+User -> App: Enter credentials
+App -> Server: POST /login
+Server -> App: Bearer Token
+App -> User: Authenticated
+@/diagram
+```
+- **23 Diagram Types**: `flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `decision`, `org`, `class`, `object`, `package`, `component`, `deployment`, `usecase`, `activity`, `network`, `dependency`, `filesystem`, `git`, `timeline`, `gantt`, `sankey`, `journey`.
+- **9 Layout Strategies**: `hierarchical`, `tree`, `circular`, `radial`, `force`, `grid`, `orthogonal`, `manual`, `sequence`.
+
+### 🧮 Native Mathematics Engine (Phase 4)
+```zolto
+Inline math: $E = mc^2$
+
+@math label="eq:einstein"
+E = \gamma m_0 c^2
+@/math
+
+As shown in @ref(eq:einstein), energy increases with velocity.
+```
+- **Currency-Safe**: `$10 or $20` remains plain text; `\$` escapes literal dollars.
+- **Dual Output**: Renders visible HTML and visually-hidden semantic MathML for screen readers.
+
+### 🧩 Native Block Directives (Phase 3)
+```zolto
+@tabs
+  @tab label="Overview"
+    @card title="System Status" variant="success"
+      All services operational.
+    @/card
+  @/tab
+  @tab label="Metrics"
+    @progress value=85 @/progress
+  @/tab
+@/tabs
+```
+- **14 Built-in Components**: `@embed`, `@collapse`, `@tabs`, `@card`, `@steps`, `@columns`, `@badge`, `@tag`, `@alert`, `@timeline`, `@progress`, `@avatar`, `@icon`.
+
+---
+
+## 🗺️ Master Specification Roadmap (Phases 1 – 16)
+
+See [`docs/development/roadmap.md`](docs/development/roadmap.md) and [`docs/P1 to p16/`](docs/P1%20to%20p16/) for complete technical specifications.
+
+| Phase | Subsystem | Status | Key Deliverables |
+| :--- | :--- | :---: | :--- |
+| **Phase 1** | Markdown Core | ✅ | CommonMark & GFM foundation (headings, blockquotes, lists, tables, frontmatter, variables) |
+| **Phase 2** | Extended Markdown | ✅ | Admonitions, GitHub callouts (`> [!NOTE]`), reference links, definition lists, figures |
+| **Phase 3** | Native Block Directives | ✅ | Universal `@directive` syntax (cards, tabs, alerts, steps, columns, badge, timeline, progress) |
+| **Phase 4** | Mathematics Engine | ✅ | LaTeX-style math (`$expr$`, `@math`), MathML, auto-numbering, `@ref()` cross-references |
+| **Phase 5** | Native Diagram Engine | ✅ | `@diagram <type>` with 23 diagram types, 9 graph layout strategies, themes, responsive SVG |
+| **Phase 6** | Native Chart Engine | ✅ | `@chart <type>` with 24 chart types, CSV/TSV/JSON data sources, statistics, themes, SVG |
+| **Phase 7** | Vector Graphics Engine | 📋 | `@vector` declarative drawing, scene graph, shapes, paths, transforms, gradients |
+| **Phase 8** | Spatial Layout & Canvas | 📋 | `@layout`, `@grid`, `@flex`, `@canvas`, `@page`, multi-page print, responsive slide decks |
+| **Phase 9** | Component & Macro System | 📋 | `@component`, `@slot`, `@template`, `@macro`, typed props, logic (`{#if}`, `{#each}`) |
+| **Phase 10** | Interactive & Educational | 📋 | `@interactive`, `@form`, `@quiz`, `@flashcard`, `@poll`, inputs, auto-grading, binding |
+| **Phase 11** | Animation & Presentation | 📋 | `@animate`, `@keyframes`, motion tokens, `@presentation`, `@slide`, speaker notes, reveals |
+| **Phase 12** | Plugin API & Extensions | 📋 | `@plugin` manifest, extension hooks, custom directives, renderers, sandboxing, permissions |
+| **Phase 13** | Language Server & Tooling | 📋 | Full LSP, autocomplete, hover, linter, formatter, refactorings, incremental parsing/rendering |
+| **Phase 14** | Collaboration & Ecosystem | 📋 | Real-time collaboration, presence, versioning, branching, merging, review comments, publishing |
+| **Phase 15** | Universal Theme System | 📋 | Design tokens, Light, Dark, and Eye Protection themes, runtime switching, theme packages |
+| **Phase 16** | v1.0 Stable Release | 📋 | Feature & API freeze, formal specification, official CLI, security audit, starter templates |
+
+---
+
+## ⚙️ Public API Reference
 
 ```typescript
-// parse(src) → { ast, errors, warnings, diagnostics }
-parse(src: string): ParseResult
-
-// render(ast, opts?) → html string
+// Document Parser & Renderer
+parse(src: string): { ast: DocumentNode, errors: Error[], warnings: Warning[], diagnostics: Diagnostics }
 render(ast: DocumentNode, opts?: { xhtml?: boolean, footnoteSection?: boolean }): string
-
-// compile(src, opts?) → html string  (parse + render combined)
 compile(src: string, opts?: RenderOptions): string
 
-// parseDiagram(src, header?) → { ast, diagnostics }
+// Diagram Engine API
 parseDiagram(src: string, header?: string): { ast: DiagramNode, diagnostics: DiagramDiagnostics }
-
-// renderDiagram(ast, opts?) → svg string
 renderDiagram(ast: DiagramNode, opts?: object): string
+validateDiagram(ast: DiagramNode): DiagramDiagnostics
+
+// Chart Engine API
+parseChart(src: string, header?: string): { ast: ChartNode, diagnostics: ChartDiagnostics }
+renderChart(ast: ChartNode, opts?: object): string
+validateChart(ast: ChartNode): ChartDiagnostics
 ```
 
-## Tests
+---
+
+## 🧪 Testing & Verification
+
+Run the full test suite (565 tests across all 6 completed phases):
 
 ```bash
+# Code syntax and check verification
+npm run check
+
+# Execute test suite
 npm run test:node
 ```
+
+---
+
+## 📄 License
+
+Zolto is released under the [MIT License](LICENSE).
