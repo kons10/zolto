@@ -4,6 +4,27 @@ All notable changes to Zolto are documented in this file.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) |
 Versioning: [Semantic Versioning](https://semver.org/)
 
+## [6.0.0] — Phase 6 — Native Charts & Data Visualization Engine
+
+### Added
+
+#### Native Chart Directive & Subsystem
+- `@chart <type> [attrs] … @/chart` block syntax for creating data visualizations in `.zl` documents.
+- Modular architecture under `src/chart/` with tokenization, parsing, AST generation, statistical processing, multi-format datasets, SVG DOM generation, theme system, rendering facade, and static validator.
+
+#### 24 Supported Chart Types
+- Native support for 24 chart types: `bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed`.
+
+#### Multi-Format Data Sources & Variable Bindings
+- Supports inline values, `source csv:`, `source tsv:`, `source json:`, `$variable` references, `#docref` data, and computed expression datasets.
+
+#### Statistical & Transformation Utility Engine
+- Built-in functions: min, max, mean, median, standard deviation, rolling averages, data normalization, sorting, filtering, and aggregations.
+
+#### Accessibility & Theme System
+- Accessible SVG output (`role="img"`, `aria-label`, `<title>`, `<desc>`).
+- Built-in theme presets (`light`, `dark`, `custom:neo`, `custom:night`) and custom color palette overrides.
+
 ## [5.0.0] — Phase 5 — Native Diagram & Graph Engine
 
 ### Added

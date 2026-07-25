@@ -24,9 +24,11 @@ import { renderMathHTML, mathToPlainText } from './math-renderer.js';
 import { renderMathML }            from './math-mathml.js';
 import { parseDiagram }            from './diagram/parser.js';
 import { renderDiagram }          from './diagram/renderer.js';
+import { parseChart }            from './chart/parser.js';
+import { renderChart }            from './chart/renderer.js';
 
-export const VERSION = '5.0.0';
-export const PHASE   = 5;
+export const VERSION = '6.0.0';
+export const PHASE   = 6;
 
 // ─── parse() ──────────────────────────────────────────────────────────────────
 
@@ -111,15 +113,22 @@ export {
   renderDiagram,
 };
 
+export {
+  parseChart,
+  renderChart,
+};
+
 /**
  * Library metadata banner.
  * @returns {string}
  */
 export function about() {
-  return `Zolto v${VERSION} · Phase ${PHASE} · Native Diagram & Graph Engine\n` +
+  return `Zolto v${VERSION} · Phase ${PHASE} · Native Charts & Data Visualization Engine\n` +
          `  parse(src) → { ast, errors, warnings, diagnostics }\n` +
          `  render(ast, opts?) → html\n` +
          `  compile(src, opts?) → html\n` +
          `  parseDiagram(src, header) → { ast, diagnostics }\n` +
-         `  renderDiagram(ast, opts?) → svg`;
+         `  renderDiagram(ast, opts?) → svg\n` +
+         `  parseChart(src, header) → { ast, diagnostics }\n` +
+         `  renderChart(ast, opts?) → svg`;
 }

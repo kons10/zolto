@@ -28,13 +28,9 @@ Human-readable, deterministic native diagram engine with 23 diagram types,
 theme system (`light`, `dark`, `custom:neo`, `custom:night`), groups, clusters, cross-references,
 and responsive accessible SVG rendering. 548 tests total (cumulative).
 
-## Phase 6 — Components + Layouts (planned)
+## Phase 6 — Native Charts & Data Visualization Engine ✅
 
-- `@component` / `@slot` system
-- JSX-style component invocation `<Card title="…">`
-- `@grid` / `@flex` layout blocks
-- Full editor UI (`js/editor/`) with contenteditable surface
-- Command palette, autocomplete, folding
+Native chart and data visualization engine supporting 24 chart types (`bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed`), statistical calculation engine, multi-format datasets (inline, CSV, TSV, JSON, variables), theme styling, responsive SVG rendering, and static validator. 562 tests total (cumulative).
 
 ## Phase 7 — Enterprise Structure (planned)
 

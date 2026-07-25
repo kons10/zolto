@@ -1,15 +1,34 @@
 ---
 title: Complex Zolto Fixture
-version: 2.0.0
+version: 6.0.0
 ---
 
 @var engine = Zolto
-@var phase  = 2
+@var phase  = 6
 
 # {{engine}} Phase {{phase}} — Full Feature Fixture {#top}
 
 > [!NOTE]
-> This fixture exercises all Phase 2 constructs in one document.
+> This fixture exercises all Phase 1–6 constructs in one document.
+
+@chart bar title="Performance Metrics"
+labels:
+  Parse
+  Validate
+  Render
+data:
+  12
+  5
+  18
+@/chart
+
+@diagram flowchart title="Engine Execution Flow"
+Input -> Lexer -> Parser -> Validator -> Renderer -> Output
+@/diagram
+
+@math label="eq:relativity"
+E = m c^2
+@/math
 
 [info title="Combined Test"]
 Testing **bold**, *italic*, ==highlight==, ^sup^, ~sub~, [[Ctrl+K]] inside an admonition.
@@ -19,11 +38,11 @@ Testing **bold**, *italic*, ==highlight==, ^sup^, ~sub~, [[Ctrl+K]] inside an ad
 For every valid CommonMark document $D$, $D$ is also a valid Zolto document.
 [/theorem]
 
-Reference: see [the spec][spec].
+Reference: see [the spec][spec] and Equation @ref(eq:relativity).
 
 [spec]: https://zolto.dev/spec "Zolto Specification"
 
-Caf&eacute; &copy; 2025 --- Em dash -- En dash ... Ellipsis
+Caf&eacute; &copy; 2026 --- Em dash -- En dash ... Ellipsis
 
 ```javascript title="full.js" {2,4} numbers diff
 const a = 1;
@@ -38,17 +57,17 @@ Inertia
 : Resistance to change in state of motion.
 : Depends on mass.
 
-Table: Phase 2 Test Counts
+Table: Phase 6 Test Counts
 
 | Suite | Tests | Status |
 | :---- | ----: | :----: |
-| Callouts | 10 | ✓ |
-| Admonitions | 12 | ✓ |
-| Reference Links | 5 | ✓ |
-| Code Metadata | 6 | ✓ |
+| Math Engine | 120 | ✓ |
+| Diagram Engine | 40 | ✓ |
+| Chart Engine | 20 | ✓ |
+| **Total** | **562** | **✓** |
 
 ---
 
 Footnote here[^1].
 
-[^1]: Phase 2 ships 233 tests across 31 suites.
+[^1]: Phase 6 ships 562 tests across all engine suites.

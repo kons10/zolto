@@ -1,6 +1,6 @@
 # Zolto Syntax Reference
 
-**Version:** 2.0.0 · Phase 2 · Extended Markdown
+**Version:** 6.0.0 · Phase 6 · Native Charts & Data Visualizations
 
 ---
 
@@ -8,6 +8,41 @@
 
 Zolto is a **strict superset of Markdown**. Every standard `.md` file
 is a valid `.zl` file that compiles unchanged.
+
+## Phase 6 Native Chart Syntax
+
+```
+@chart <type> [title="..."] [subtitle="..."] [theme="..."] [width=N] [height=N] [responsive=true|false] [animation=true|false] [legend=true|false] [colors=[...]]
+
+labels:
+  Jan
+  Feb
+  Mar
+
+data:
+  120
+  180
+  145
+
+@/chart
+```
+
+Supported chart types: `bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed`.
+
+## Phase 5 Native Diagram Syntax
+
+```
+@diagram <type> [id="..."] [theme="..."] [layout="..."]
+  A -> B
+@/diagram
+```
+
+Supported diagram types: 23 diagram types (`flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `decision`, `org`, `class`, `object`, `package`, `component`, `deployment`, `usecase`, `activity`, `network`, `dependency`, `filesystem`, `git`, `timeline`, `gantt`, `sankey`, `journey`).
+
+## Phase 4 Native Math Syntax
+
+Inline math: `$E = mc^2$`
+Block math: `@math ... @/math` with `@ref()` cross-references.
 
 ## Phase 2 Block Syntax
 

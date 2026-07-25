@@ -1,26 +1,26 @@
 # Zolto
 
-> **Native Diagram & Graph Engine** — a production-quality document engine that is a strict
+> **Native Charts & Data Visualization Engine** — a production-quality document engine that is a strict
 > superset of standard Markdown. Every valid `.md` file is a valid `.zl` file.
 
 [![CI](https://github.com/uxle/zolto/actions/workflows/ci.yml/badge.svg)](https://github.com/uxle/zolto/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Phase](https://img.shields.io/badge/phase-5-purple)](docs/development/roadmap.md)
+[![Phase](https://img.shields.io/badge/phase-6-purple)](docs/development/roadmap.md)
 
-## Features — Phase 5
+## Features — Phase 6
 
-### Native Diagram & Graph Engine (new)
+### Native Charts & Data Visualization Engine (new)
 
-Native, human-readable, deterministic diagram engine with 23 diagram types, 8 pluggable layout algorithms, responsive accessible SVG rendering, theme styling, and AST integration.
+Native, high-performance chart engine with 24 chart types, statistical calculation engine, multiple data sources (inline, CSV, TSV, JSON, variables), theme styling, responsive SVG rendering, and full Zolto AST integration.
 
 | Feature | Syntax | Description |
 | :--- | :--- | :--- |
-| **Diagram Directive** | `@diagram <type> … @/diagram` | Native block syntax for diagrams |
-| **23 Diagram Types** | `flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `decision`, `org`, `class`, `object`, `package`, `component`, `deployment`, `usecase`, `activity`, `network`, `dependency`, `filesystem`, `git`, `timeline`, `gantt`, `sankey`, `journey` | Specialized AST node and SVG renderer for each type |
-| **Graph Language** | `node`, `edge`, `group`, `cluster`, `ref`, `A -> B` | Explicit/shorthand nodes, edges, subgraphs, clusters, and aliases |
-| **Layout Engine** | `layout="hierarchical\|tree\|circular\|radial\|force\|grid\|orthogonal\|manual"` | Pluggable layout strategy algorithms |
-| **Themes & Styling** | `theme="light\|dark\|custom:neo\|custom:night"` | Curated and custom theme tokens, shapes, colors, shadows, borders |
-| **Responsive SVG** | `<svg viewBox="..." role="img" aria-label="...">` | Accessible, responsive, high-DPI SVG output with stable element IDs |
+| **Chart Directive** | `@chart <type> … @/chart` | Native block syntax for charts |
+| **24 Chart Types** | `bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed` | Specialized AST node and SVG renderer for each type |
+| **Data Sources** | Inline, `source csv:`, `source tsv:`, `source json:`, `$var` | Multi-format data loading and variable bindings |
+| **Statistics Engine** | Min, max, mean, median, stdev, rolling averages, sorting, filtering, aggregations | Built-in statistical calculations and data transformations |
+| **Themes & Styling** | `theme="light\|dark\|custom:neo\|custom:night"` | Curated palettes and custom color arrays |
+| **Responsive SVG** | `<svg viewBox="..." role="img" aria-label="...">` | Accessible, responsive SVG output with titles, descriptions, and legends |
 
 ### Native Mathematics Engine (Phase 4, fully supported)
 

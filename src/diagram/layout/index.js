@@ -12,6 +12,7 @@ import { layoutForce } from './force.js';
 import { layoutGrid } from './grid.js';
 import { layoutOrthogonal } from './orthogonal.js';
 import { layoutManual } from './manual.js';
+import { layoutSequence } from './sequence.js';
 
 export const LAYOUT_ALGORITHMS = new Map([
   ['hierarchical', layoutHierarchical],
@@ -22,6 +23,7 @@ export const LAYOUT_ALGORITHMS = new Map([
   ['grid', layoutGrid],
   ['orthogonal', layoutOrthogonal],
   ['manual', layoutManual],
+  ['sequence', layoutSequence],
 ]);
 
 /**
@@ -31,7 +33,9 @@ export function computeGraphLayout(graph, layoutName = 'hierarchical', diagramTy
   let mode = (layoutName || 'hierarchical').toLowerCase();
 
   // Infer default layout from diagram type if layout is default/unspecified
-  if (!layoutName || layoutName === 'hierarchical') {
+  if (diagramType === 'sequence' || mode === 'sequence') {
+    mode = 'sequence';
+  } else if (!layoutName || layoutName === 'hierarchical') {
     if (['tree', 'org', 'decision'].includes(diagramType)) mode = 'tree';
     else if (['mindmap'].includes(diagramType)) mode = 'radial';
     else if (['network'].includes(diagramType)) mode = 'force';

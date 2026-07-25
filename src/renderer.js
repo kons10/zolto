@@ -30,6 +30,7 @@ import { parseInline } from './inline-parser.js';
 import { renderMathHTML, mathToPlainText, hasMathNodes, MATH_CSS } from './math-renderer.js';
 import { renderMathML } from './math-mathml.js';
 import { renderDiagram } from './diagram/renderer.js';
+import { renderChart }   from './chart/renderer.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
 
@@ -144,6 +145,7 @@ function renderBlock(node, ctx) {
     case 'definition_list': return renderDefinitionList(node, ctx); // Phase 2
     case 'math_block':      return renderMathBlock(node, ctx);   // Phase 4
     case 'diagram':         return renderDiagram(node, ctx.opts); // Phase 5
+    case 'chart':           return renderChart(node, ctx.opts);   // Phase 6
     default:                return '';
   }
 }

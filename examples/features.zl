@@ -1,87 +1,76 @@
 ---
-title: Zolto Phase 2 Features Demo
+title: Zolto Full Feature Showcase — Phase 6
 ---
 
 @var engine = Zolto
-@var phase  = 2
+@var phase  = 6
 
-# {{engine}} Phase {{phase}} Feature Demo
+# {{engine}} Phase {{phase}} Full Showcase
 
 ---
 
-## Callouts
+## 1. Native Charts Engine (Phase 6)
+
+@chart bar title="Quarterly Sales Performance" theme="custom:neo"
+labels:
+  Q1
+  Q2
+  Q3
+  Q4
+
+data:
+  120
+  180
+  240
+  310
+@/chart
+
+---
+
+## 2. Native Diagram Engine (Phase 5)
+
+@diagram flowchart title="System Workflow" theme="neo"
+Start[Start Session] -> Auth{Authenticated?}
+Auth -- Yes --> Dashboard[Load Dashboard]
+Auth -- No --> Login[Prompt Login]
+Login -> Auth
+@/diagram
+
+---
+
+## 3. Native Math Engine (Phase 4)
+
+Inline math: $E = mc^2$ and Euler's identity $e^{i\pi} + 1 = 0$.
+
+@math label="eq:einstein"
+E = \frac{m_0 c^2}{\sqrt{1 - \frac{v^2}{c^2}}}
+@/math
+
+Reference to Equation @ref(eq:einstein).
+
+---
+
+## 4. Callouts & Admonitions (Phases 2-3)
 
 > [!TIP]
-> Six callout types from GitHub Flavored Markdown syntax.
+> Zolto is a high-performance document engine supporting native math, diagrams, charts, and directives.
 
-> [!WARNING]
-> Each renders with an icon, colour, and ARIA role.
-
----
-
-## Admonitions
-
-[definition]
-**Zolto**: An extended Markdown engine that is a strict superset of CommonMark.
-[/definition]
-
-[info title="Did you know?"]
-Every standard `.md` file is a valid `.zl` file — zero migration required.
+[info title="Zolto Engine Info"]
+100% backward compatible with CommonMark and GitHub Flavored Markdown.
 [/info]
 
 ---
 
-## Extended Inline
+## 5. Definition List & Code Metadata
 
-Superscript: x^2^ + y^2^ = z^2^ · Subscript: H~2~O · ==highlighted== · [[Ctrl+S]]
-
-HTML entities: &copy; &trade; Caf&eacute; &#x2764; &mdash; &ndash; &hellip;
-
-Smart punctuation: em dash---here · en dash--range · wait...
-
----
-
-## Reference Links
-
-See the [specification][spec] and [GitHub repository][gh].
-
-[spec]: https://zolto.dev/spec "Zolto Specification"
-[gh]:   https://github.com/zolto/zolto "Zolto on GitHub"
-
----
-
-## Enhanced Code Block
-
-```javascript title="example.js" {2} numbers
-import { compile } from './src/zolto.js';
-const html = compile('# Hello, **world**!');   // ← highlighted
+```javascript title="app.js" {2} numbers
+import { compile } from 'zolto';
+const html = compile(zoltoSourceStr);
 console.log(html);
 ```
 
-```diff
-+ Added Phase 2 features
-- Removed nothing (100% backward compatible)
-```
-
----
-
-## Definition List
-
 Callout
-: A styled blockquote using `> [!TYPE]` GitHub syntax.
+: A styled blockquote using `> [!TYPE]` syntax.
 
-Admonition
-: A Zolto-native `[type]…[/type]` block with optional custom title.
-
----
-
-## Table with Caption
-
-Table: Phase 2 Feature Counts
-
-| Category | Features | Tests |
-| :------- | -------: | ----: |
-| Blocks | 8 | 52 |
-| Inline | 8 | 32 |
-| Diagnostics | 7 | 17 |
-| **Total** | **23** | **101** |
+Chart
+: A native `@chart <type> ... @/chart` data visualization block.

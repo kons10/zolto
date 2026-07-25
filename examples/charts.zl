@@ -1,0 +1,120 @@
+---
+title: Zolto Native Chart Engine Showcase — Phase 6
+author: Zolto Team
+version: 6.0.0
+---
+
+# Zolto Phase 6 — Native Charts & Data Visualization Engine
+
+## 1. Vertical Bar Chart
+
+@chart bar title="Monthly Sales Performance" subtitle="FY 2026" theme="light"
+labels:
+  Jan
+  Feb
+  Mar
+  Apr
+  May
+
+data:
+  120
+  180
+  145
+  210
+  260
+@/chart
+
+## 2. Horizontal Bar Chart
+
+@chart hbar title="Regional Revenue" theme="dark"
+labels:
+  North America
+  Europe
+  Asia Pacific
+  Latin America
+
+data:
+  520
+  410
+  640
+  310
+@/chart
+
+## 3. Smooth Spline Chart
+
+@chart spline title="User Engagement Growth" theme="custom:neo" colors=["#38bdf8", "#818cf8"]
+labels:
+  Week 1
+  Week 2
+  Week 3
+  Week 4
+
+data:
+  15
+  32
+  28
+  45
+@/chart
+
+## 4. Multi-Series Comparison
+
+@chart bar title="Platform Distribution" legend=true
+labels:
+  Q1
+  Q2
+  Q3
+  Q4
+
+series:
+  - name: "Desktop"
+    data: 120 140 160 180
+
+  - name: "Mobile"
+    data: 80 90 110 130
+@/chart
+
+## 5. CSV Data Source Chart
+
+@chart bar title="Sales Data from CSV"
+source: csv
+"month,sales"
+"Jan,120"
+"Feb,180"
+"Mar,145"
+@/chart
+
+## 6. JSON Data Source Chart
+
+@chart pie title="Market Share from JSON"
+source: json
+[
+  {"label":"Alpha","value":40},
+  {"label":"Beta","value":35},
+  {"label":"Gamma","value":25}
+]
+@/chart
+
+## 7. Radar Chart
+
+@chart radar title="Engineering Skills Matrix"
+labels:
+  Performance
+  Security
+  Architecture
+  Testing
+  UX
+
+data:
+  95
+  90
+  85
+  88
+  92
+@/chart
+
+## 8. Gauge Chart
+
+@chart gauge title="System Health Index"
+data:
+  88
+@/chart

@@ -62,6 +62,13 @@ export function renderDiagram(diagramAst, opts = {}) {
   const svgWidth = layoutResult.width;
   const svgHeight = layoutResult.height;
 
+  // Render sequence lifelines if layout is sequence
+  const lifelinesHtml = layoutResult.isSequence
+    ? Array.from(layoutResult.nodePositions.values()).map(pos =>
+        `<line x1="${pos.cx}" y1="${pos.lifelineY1}" x2="${pos.cx}" y2="${pos.lifelineY2}" stroke="${theme.edgeColor}" stroke-dasharray="4 4" stroke-width="1.5" opacity="0.6" />`
+      ).join('\n')
+    : '';
+
   const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg"
      id="${diagramId}"
@@ -71,12 +78,13 @@ export function renderDiagram(diagramAst, opts = {}) {
      height="auto"
      role="img"
      aria-label="${ariaLabel}"
-     style="max-width: 100%; height: auto; background-color: ${theme.background}; font-family: ${theme.fontFamily}; border-radius: 8px;">
+     style="max-width: 100%; max-height: 480px; width: auto; height: auto; display: block; margin: 12px auto; background-color: ${theme.background}; font-family: ${theme.fontFamily}; border-radius: 8px;">
   <title>${ariaLabel}</title>
   ${diagramAst.aria ? `<desc>${escapeXml(diagramAst.aria)}</desc>` : ''}
   ${markersSvg}
   <g class="zl-diagram-viewport">
     <g class="zl-diagram-clusters">${clustersHtml}</g>
+    ${lifelinesHtml ? `<g class="zl-diagram-lifelines">${lifelinesHtml}</g>` : ''}
     <g class="zl-diagram-edges">${edgesHtml}</g>
     <g class="zl-diagram-nodes">${nodesHtml}</g>
   </g>

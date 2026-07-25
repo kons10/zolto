@@ -77,6 +77,9 @@
         <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><i class="fa-solid fa-quote-left"></i></button>
         <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><i class="fa-solid fa-circle-info"></i></button>
         <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><i class="fa-solid fa-keyboard"></i></button>
+        <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="@diagram flowchart\n  Start -> End\n" data-block-close="\n@/diagram" title="Insert Diagram" tabindex="0"><i class="fa-solid fa-diagram-project"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="@chart bar title=&quot;Sales&quot;\nlabels:\n  Q1\n  Q2\ndata:\n  100\n  200\n" data-block-close="\n@/chart" title="Insert Chart" tabindex="0"><i class="fa-solid fa-chart-column"></i></button>
       </div>
       <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…" tabindex="0"></textarea>
       <div class="status">
@@ -116,7 +119,42 @@
   <div class="material-symbols-rounded" style="font-size:48px;color:var(--primary);animation:spin 1s linear infinite;">progress_activity</div>
   <div style="color:var(--text-primary);font-weight:600;font-size:1rem;">Generating PDF...</div>
 </div>
-<style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+<style>
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+body.exporting #pdf-root {
+  background: #ffffff !important;
+  color: #1e293b !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+body.exporting .prose {
+  color: #1e293b !important;
+}
+body.exporting .prose h1,
+body.exporting .prose h2,
+body.exporting .prose h3,
+body.exporting .prose h4 {
+  color: #0f172a !important;
+  border-bottom-color: #e2e8f0 !important;
+  page-break-after: avoid !important;
+  break-after: avoid !important;
+}
+body.exporting .zl-diagram,
+body.exporting .zl-chart,
+body.exporting svg {
+  max-height: 420px !important;
+  max-width: 100% !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  margin: 16px auto !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+</style>
 <input type="file" id="file-input" accept=".zl,.md,.txt" style="display:none">
 
 <!-- TEST MODAL -->
@@ -323,11 +361,12 @@ document.getElementById('btn-pdf').addEventListener('click', async () => {
     const root = document.getElementById('pdf-root');
     document.body.classList.add('exporting');
     await html2pdf().set({
-      margin: [12, 15, 12, 15],
+      margin: [10, 10, 10, 10],
       filename: 'zolto-document.pdf',
-      image: { type: 'jpeg', quality: 0.97 },
-      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#15171B' },
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     }).from(root).save();
     showToast('PDF exported successfully', 'check_circle');
   } catch (err) {

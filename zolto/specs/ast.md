@@ -1,9 +1,9 @@
 # Zolto AST Specification
 
-**Version:** 5.0.0
+**Version:** 6.0.0
 
 The AST is produced by `src/parser.js` and consumed by `src/renderer.js`
-and `src/validator.js`. All nodes are created via `src/ast.js` and `src/diagram/ast.js` factory functions.
+and `src/validator.js`. All nodes are created via `src/ast.js`, `src/diagram/ast.js`, and `src/chart/ast.js` factory functions.
 
 ## Document Root
 
@@ -17,6 +17,52 @@ and `src/validator.js`. All nodes are created via `src/ast.js` and `src/diagram/
     variables?: Map<string, string>,
     references?: Map<string, { href, title }>
   }
+}
+```
+
+## Phase 6 Chart Nodes
+
+### chart
+```js
+{
+  type: 'chart',
+  chartType: string,    // 24 types: bar, hbar, line, area, spline, step, pie, donut, scatter, bubble, radar, polararea, etc.
+  id: string|null,
+  title: string|null,
+  subtitle: string|null,
+  theme: string,        // light, dark, custom:neo, custom:night
+  width: number,        // default 800
+  height: number,       // default 450
+  responsive: boolean,
+  animation: boolean,
+  legend: boolean,
+  colors: string[]|null,
+  exportFormat: string, // default 'svg'
+  accessibility: boolean,
+  aria: string,
+  datasets: [ ChartDatasetNode ],
+  axes: [ ChartAxisNode ]
+}
+```
+
+### chart_dataset
+```js
+{
+  type: 'chart_dataset',
+  id: string,
+  labels: string[],
+  series: [ ChartSeriesNode ],
+  metadata: Record<string, any>
+}
+```
+
+### chart_series
+```js
+{
+  type: 'chart_series',
+  name: string,
+  data: number[],
+  color: string|null
 }
 ```
 

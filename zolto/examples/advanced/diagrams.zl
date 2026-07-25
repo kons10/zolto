@@ -1,10 +1,10 @@
 ---
-title: Zolto Native Diagram & Graph Engine Showcase
+title: Zolto Native Diagram & Chart Engine Showcase
 ---
 
-# Zolto Phase 5 — Native Diagram Showcase
+# Zolto Phase 6 — Native Diagrams & Data Visualizations
 
-Zolto Phase 5 introduces a deterministic, native diagram and graph engine that compiles human-readable `@diagram` directives into clean, accessible SVG directly within `.zl` documents.
+Zolto Phase 6 introduces native charts alongside the deterministic, native diagram and graph engine, compiling human-readable `@diagram` and `@chart` directives into clean, accessible SVG directly within `.zl` documents.
 
 ---
 

@@ -203,6 +203,22 @@ export function runP5Tests() {
     assertEqual(graphNode.edges[0].to, 'Order');
   });
 
+  test('Bug Fixes', 'Renders sequence diagrams with dedicated horizontal actor layout and vertical lifelines', () => {
+    const seqSrc = `@diagram sequence id="login-seq"
+actor User
+actor App
+actor Server
+
+User -> App: Enter credentials
+App -> Server: POST /login
+Server -> App: Token
+App -> User: Success
+@/diagram`;
+    const html = compile(seqSrc);
+    assertIncludes(html, 'zl-diagram-lifelines');
+    assertIncludes(html, 'stroke-dasharray="4 4"');
+  });
+
   // 6. Full Document Compiler Integration
   test('Integration', 'Compiles document mixing Markdown, Math, Phase 3 directives, and Phase 5 diagrams', () => {
     const docSrc = `# Project Plan

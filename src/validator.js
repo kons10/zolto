@@ -19,6 +19,7 @@ import { Diagnostics, Code } from './diagnostics.js';
 import { ADMONITION_TYPES }  from './ast.js';
 import { validateMath }      from './math-validator.js';
 import { validateDiagram }   from './diagram/validator.js';
+import { validateChart }     from './chart/validator.js';
 
 /**
  * @param {DocumentNode} doc
@@ -54,6 +55,11 @@ export function validate(doc) {
       const diagDiag = validateDiagram(node);
       for (const err of diagDiag.formatErrors()) d.error('E500', err);
       for (const warn of diagDiag.formatWarnings()) d.warn('W500', warn);
+    }
+    if (node?.type === 'chart') {
+      const chartDiag = validateChart(node);
+      for (const err of chartDiag.formatErrors()) d.error('E600', err);
+      for (const warn of chartDiag.formatWarnings()) d.warn('W600', warn);
     }
   }
 

@@ -12,3 +12,20 @@
   @/cluster
   ref <original_id> as <alias>
 @/diagram
+
+@chart <type> [title="..."] [subtitle="..."] [theme="..."] [width=N] [height=N] [responsive=true|false] [animation=true|false] [legend=true|false] [colors=[...]]
+labels:
+  <label_1>
+  <label_2>
+
+data:
+  <value_1>
+  <value_2>
+
+series:
+  - name: "<series_name>"
+    data: <val_1> <val_2>
+
+source: <csv|tsv|json>
+  <raw_data_content>
+@/chart
