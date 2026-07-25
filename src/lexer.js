@@ -42,6 +42,7 @@ export const T = Object.freeze({
   DEFINITION_LIST:'definition_list',// Phase 2
   DIRECTIVE:      'directive',       // Phase 3
   MATH_BLOCK:     'math_block',      // Phase 4
+  DIAGRAM_BLOCK:  'diagram_block',   // Phase 5
   BLANK:          'blank',
   PARAGRAPH:      'paragraph',
 });
@@ -188,6 +189,29 @@ export function tokenize(src) {
           type:   T.MATH_BLOCK,
           raw:    lines.slice(startLine, i).join('\n'),
           config: configStr,
+          content: bodyLines.join('\n'),
+        });
+        continue;
+      }
+    }
+
+    // · @diagram block (Phase 5) — raw capture, body is Zolto graph syntax ───
+    { const dm = /^@diagram(?:\s+(.*))?\s*$/.exec(line);
+      if (dm) {
+        const configStr = (dm[1] ?? '').trim();
+        const startLine = i;
+        const bodyLines = [];
+        let closed = false;
+        i++;
+        while (i < lines.length) {
+          if (/^@\/diagram\s*$/.test(lines[i])) { closed = true; i++; break; }
+          bodyLines.push(lines[i]); i++;
+        }
+        if (!closed) err('Unclosed @diagram block (missing @/diagram)');
+        tokens.push({
+          type:   T.DIAGRAM_BLOCK,
+          raw:    lines.slice(startLine, i).join('\n'),
+          header: configStr,
           content: bodyLines.join('\n'),
         });
         continue;

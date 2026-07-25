@@ -110,7 +110,7 @@
 </div><!-- /app -->
 
 <!-- Toasts -->
-<div id="toast"><i class="fa-solid fa-circle-info"></i> <span id="toast-msg"></span></div>
+<div id="toast"><i id="toast-icon" class="fa-solid fa-circle-info"></i> <span id="toast-msg"></span></div>
 <!-- Loading Overlay -->
 <div id="loading-overlay" style="position:fixed;inset:0;background:rgba(11,13,15,0.7);backdrop-filter:blur(4px);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
   <div class="material-symbols-rounded" style="font-size:48px;color:var(--primary);animation:spin 1s linear infinite;">progress_activity</div>
@@ -308,41 +308,46 @@ document.querySelectorAll('.view-switch .btn').forEach(b => b.addEventListener('
 
 // ── PDF export ─────────────────────────────────────────────────────────────────
 document.getElementById('btn-pdf').addEventListener('click', async () => {
-  // Load html2pdf dynamically on first use
-  if (typeof html2pdf === 'undefined') {
-    await new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-      script.onload = resolve;
-      script.onerror = reject;
-      document.head.appendChild(script);
-    });
-  }
-  
   const overlay = document.getElementById('loading-overlay');
-  overlay.style.display = 'flex';
-  
-  const root = document.getElementById('pdf-root');
-  document.body.classList.add('exporting');
-  await html2pdf().set({
-    margin: [12, 15, 12, 15],
-    filename: 'zolto-document.pdf',
-    image: { type: 'jpeg', quality: 0.97 },
-    html2canvas: { scale: 2, useCORS: true, backgroundColor: '#15171B' },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  }).from(root).save();
-  
-  overlay.style.display = 'none';
-  document.body.classList.remove('exporting');
-  showToast('PDF exported successfully', 'check_circle');
+  try {
+    if (typeof html2pdf === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load html2pdf library'));
+        document.head.appendChild(script);
+      });
+    }
+    overlay.style.display = 'flex';
+    const root = document.getElementById('pdf-root');
+    document.body.classList.add('exporting');
+    await html2pdf().set({
+      margin: [12, 15, 12, 15],
+      filename: 'zolto-document.pdf',
+      image: { type: 'jpeg', quality: 0.97 },
+      html2canvas: { scale: 2, useCORS: true, backgroundColor: '#15171B' },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    }).from(root).save();
+    showToast('PDF exported successfully', 'check_circle');
+  } catch (err) {
+    showToast('PDF export failed', 'fa-circle-xmark');
+  } finally {
+    overlay.style.display = 'none';
+    document.body.classList.remove('exporting');
+  }
 });
 
 // ── Toast ──────────────────────────────────────────────────────────────────────
 let toastT;
-function showToast(msg, icon = 'info') {
+function showToast(msg, icon = 'fa-circle-info') {
   const t = document.getElementById('toast');
   document.getElementById('toast-msg').textContent = msg;
-  t.querySelector('.material-symbols-rounded').textContent = icon;
+  const iconEl = document.getElementById('toast-icon');
+  if (iconEl) {
+    const iconClass = icon.startsWith('fa-') ? icon : (icon === 'check_circle' ? 'fa-circle-check' : 'fa-circle-info');
+    iconEl.className = `fa-solid ${iconClass}`;
+  }
   t.classList.add('show');
   clearTimeout(toastT);
   toastT = setTimeout(() => t.classList.remove('show'), 3200);

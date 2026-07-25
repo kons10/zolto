@@ -23,6 +23,7 @@ export const PHASE3_NODE_TYPES = new Set([
   'alert','timeline','timeline_event','progress','avatar','icon',
 ]);
 export const PHASE4_NODE_TYPES = new Set(['math_block', 'math_inline', 'math_ref']);
+export const PHASE5_NODE_TYPES = new Set(['diagram', 'graph', 'node', 'edge', 'cluster', 'group']);
 
 // ═══ BLOCK NODES — Phase 1 ═══════════════════════════════════════════════════
 export function document(children=[],metadata={}){return{type:'document',children,metadata};}

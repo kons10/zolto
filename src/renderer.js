@@ -29,6 +29,7 @@ import { PHASE3_NODE_TYPES } from './ast.js';
 import { parseInline } from './inline-parser.js';
 import { renderMathHTML, mathToPlainText, hasMathNodes, MATH_CSS } from './math-renderer.js';
 import { renderMathML } from './math-mathml.js';
+import { renderDiagram } from './diagram/renderer.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
 
@@ -104,6 +105,7 @@ function buildContext(doc, opts) {
   const mathLabels = meta.mathLabels instanceof Map ? meta.mathLabels : new Map();
 
   return {
+    opts,
     variables,
     fnDefs,
     fnRefNums,
@@ -141,6 +143,7 @@ function renderBlock(node, ctx) {
     case 'figure':          return renderFigure(node, ctx);      // Phase 2
     case 'definition_list': return renderDefinitionList(node, ctx); // Phase 2
     case 'math_block':      return renderMathBlock(node, ctx);   // Phase 4
+    case 'diagram':         return renderDiagram(node, ctx.opts); // Phase 5
     default:                return '';
   }
 }

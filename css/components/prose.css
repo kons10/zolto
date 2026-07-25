@@ -1,19 +1,36 @@
 /* PROSE STYLING */
-.prose { font-family: var(--font-sans); color: var(--text-secondary); line-height: 1.8; font-size: 1rem; }
-.prose h1, .prose h2, .prose h3, .prose h4 { color: var(--text-primary); font-weight: 700; line-height: 1.3; margin: 1.5em 0 0.5em; letter-spacing: -0.01em; }
+.prose {
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+  min-width: 0;
+}
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.5em 0 0.5em;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .prose h1 { font-size: 2.25rem; font-weight: 800; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
 .prose h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
 .prose h3 { font-size: 1.25rem; }
-.prose p { margin: 1em 0; }
+.prose p { margin: 1em 0; overflow-wrap: anywhere; word-break: break-word; }
 .prose strong { font-weight: 600; color: var(--text-primary); }
-.prose a { color: var(--primary); text-decoration: none; transition: color 0.15s; }
+.prose a { color: var(--primary); text-decoration: none; transition: color 0.15s; overflow-wrap: anywhere; word-break: break-word; }
 .prose a:hover { color: var(--primary-dim); text-decoration: underline; }
-.prose code { background: var(--bg-surface-raised); color: var(--primary); padding: 0.2em 0.4em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85em; border: 1px solid var(--border-subtle); }
-.prose pre { background: var(--bg-base); padding: var(--space-2); border-radius: var(--radius-lg); border: 1px solid var(--border-base); overflow-x: auto; margin: 1.5em 0; }
-.prose pre code { background: transparent; border: none; padding: 0; color: var(--text-secondary); }
-.prose blockquote { border-left: 3px solid var(--primary); background: var(--bg-glass-soft); padding: var(--space-2) var(--space-3); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5em 0; color: var(--text-primary); font-style: italic; }
+.prose code { background: var(--bg-surface-raised); color: var(--primary); padding: 0.2em 0.4em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85em; border: 1px solid var(--border-subtle); overflow-wrap: anywhere; word-break: break-word; }
+.prose pre { background: var(--bg-base); padding: var(--space-2); border-radius: var(--radius-lg); border: 1px solid var(--border-base); overflow-x: auto; margin: 1.5em 0; max-width: 100%; }
+.prose pre code { background: transparent; border: none; padding: 0; color: var(--text-secondary); word-break: normal; overflow-wrap: normal; }
+.prose blockquote { border-left: 3px solid var(--primary); background: var(--bg-glass-soft); padding: var(--space-2) var(--space-3); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5em 0; color: var(--text-primary); font-style: italic; overflow-wrap: anywhere; word-break: break-word; }
 .prose ul, .prose ol { padding-left: var(--space-3); margin: 1em 0; }
-.prose li { margin: 0.25em 0; }
+.prose li { margin: 0.25em 0; overflow-wrap: anywhere; word-break: break-word; }
 .prose hr { border: none; border-top: 1px solid var(--border-base); margin: 2em 0; }
 
 /* Callouts / Admonitions */

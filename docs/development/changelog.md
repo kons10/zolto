@@ -1,3 +1,3 @@
 # Development Changelog
 
-See the root [`CHANGELOG.MD.md`](../../CHANGELOG.MD.md).
+See the root [`CHANGELOG.md`](../../CHANGELOG.md).

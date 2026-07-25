@@ -1,2 +1,14 @@
 # Directive grammar
 # All @keyword … @/keyword block forms.
+
+@diagram <type> [id="..."] [theme="..."] [layout="..."] [aria="..."]
+  node <id> [label="..." shape="..."]
+  edge <from> -> <to> [label="..."]
+  group <group_id> [label="..."]
+    <node_id>
+  @/group
+  cluster <cluster_id> [label="..."]
+    <node_declarations>
+  @/cluster
+  ref <original_id> as <alias>
+@/diagram

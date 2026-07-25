@@ -29,6 +29,7 @@ import { parseInline }     from './inline-parser.js';
 import { parseSimpleYaml, parseCodeMeta } from './tokenizer.js';
 import { parseAttrStr }    from './directive-lexer.js';
 import { parseMath, parseMathRows } from './math-parser.js';
+import { parseDiagram }      from './diagram/parser.js';
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
@@ -89,6 +90,7 @@ function parseBlockToken(tok, ctx = {}) {
     case T.ADMONITION:      return parseAdmonition(tok, ctx);    // Phase 2
     case T.DEFINITION_LIST: return parseDefinitionList(tok);     // Phase 2
     case T.MATH_BLOCK:      return parseMathBlock(tok, ctx);     // Phase 4
+    case T.DIAGRAM_BLOCK:   return parseDiagram(tok.content, tok.header).ast; // Phase 5
     case T.PARAGRAPH:       return parseParagraph(tok, ctx);
     case 'directive': {
       const repCtx = {

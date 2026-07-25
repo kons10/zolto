@@ -1,8 +1,125 @@
 ---
-title: Diagram Examples — Phase 3 Feature
+title: Zolto Native Diagram & Graph Engine Showcase
 ---
 
-# Diagram Examples — Phase 3 Feature
+# Zolto Phase 5 — Native Diagram Showcase
 
-> **Phase:** This example requires a future phase.
-> Open this file once that phase is complete.
+Zolto Phase 5 introduces a deterministic, native diagram and graph engine that compiles human-readable `@diagram` directives into clean, accessible SVG directly within `.zl` documents.
+
+---
+
+## 1. Flowchart with Custom Theme & Groups
+
+@diagram flowchart id="app-startup" theme="custom:night" layout="hierarchical" aria="Application startup flow"
+  node boot.start   [label="Boot", shape="circle"]
+  node load.config  [label="Load Config", shape="round-rect"]
+  node init.ui      [label="Init UI", shape="round-rect"]
+  node ready        [label="Ready", shape="circle"]
+
+  boot.start -> load.config [label="read"]
+  load.config -> init.ui [label="apply theme"]
+  init.ui -> ready [label="show window"]
+
+  group startup.group [label="Startup Stage"]
+    boot.start
+    load.config
+    init.ui
+  @/group
+@/diagram
+
+---
+
+## 2. Sequence Diagram
+
+@diagram sequence id="login-seq" aria="Login authentication sequence"
+  actor User
+  actor App
+  actor Server
+
+  User -> App: Enter credentials
+  App -> Server: Authenticate POST /login
+  Server -> App: Token
+  App -> User: Success
+@/diagram
+
+---
+
+## 3. State Machine
+
+@diagram state id="state-machine" layout="hierarchical"
+  [*] -> Idle
+  Idle -> Loading [label="Fetch"]
+  Loading -> Ready [label="Success"]
+  Loading -> Error [label="Failure"]
+  Error -> Idle [label="Retry"]
+@/diagram
+
+---
+
+## 4. Entity Relationship Diagram
+
+@diagram er id="db-schema"
+  entity User
+  entity Order
+  entity Product
+
+  User ||--o{ Order
+  Order }o--|| Product
+@/diagram
+
+---
+
+## 5. Mindmap with Radial Layout
+
+@diagram mindmap id="feature-ideas" layout="radial"
+  Root -> UI
+  Root -> Performance
+  Root -> Security
+  Root -> Documentation
+@/diagram
+
+---
+
+## 6. Network Diagram with Force-Directed Layout
+
+@diagram network id="infra-topology" layout="force"
+  Router -> Switch
+  Switch -> Server1
+  Switch -> Server2
+  Switch -> DB
+@/diagram
+
+---
+
+## 7. Class Diagram
+
+@diagram class id="uml-classes"
+  class User {
+    +id: string
+    +name: string
+    +login()
+  }
+
+  class Order {
+    +id: string
+    +total: number
+  }
+
+  User --> Order
+@/diagram
+
+---
+
+## 8. Cross References & Auto Node Resolution
+
+@diagram dependency id="deps-showcase"
+  UI -> Auth
+  Auth -> DB
+  UI -> Logger
+
+  ref DB as database.main
+  ref Logger as system.logger
+
+  Auth -> database.main
+  UI -> system.logger
+@/diagram

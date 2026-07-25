@@ -1,15 +1,28 @@
 # Zolto
 
-> **Native Mathematics Engine** — a production-quality document engine that is a strict
+> **Native Diagram & Graph Engine** — a production-quality document engine that is a strict
 > superset of standard Markdown. Every valid `.md` file is a valid `.zl` file.
 
 [![CI](https://github.com/uxle/zolto/actions/workflows/ci.yml/badge.svg)](https://github.com/uxle/zolto/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Phase](https://img.shields.io/badge/phase-4-indigo)](docs/development/roadmap.md)
+[![Phase](https://img.shields.io/badge/phase-5-purple)](docs/development/roadmap.md)
 
-## Features — Phase 4
+## Features — Phase 5
 
-### Native Mathematics Engine (new)
+### Native Diagram & Graph Engine (new)
+
+Native, human-readable, deterministic diagram engine with 23 diagram types, 8 pluggable layout algorithms, responsive accessible SVG rendering, theme styling, and AST integration.
+
+| Feature | Syntax | Description |
+| :--- | :--- | :--- |
+| **Diagram Directive** | `@diagram <type> … @/diagram` | Native block syntax for diagrams |
+| **23 Diagram Types** | `flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `decision`, `org`, `class`, `object`, `package`, `component`, `deployment`, `usecase`, `activity`, `network`, `dependency`, `filesystem`, `git`, `timeline`, `gantt`, `sankey`, `journey` | Specialized AST node and SVG renderer for each type |
+| **Graph Language** | `node`, `edge`, `group`, `cluster`, `ref`, `A -> B` | Explicit/shorthand nodes, edges, subgraphs, clusters, and aliases |
+| **Layout Engine** | `layout="hierarchical\|tree\|circular\|radial\|force\|grid\|orthogonal\|manual"` | Pluggable layout strategy algorithms |
+| **Themes & Styling** | `theme="light\|dark\|custom:neo\|custom:night"` | Curated and custom theme tokens, shapes, colors, shadows, borders |
+| **Responsive SVG** | `<svg viewBox="..." role="img" aria-label="...">` | Accessible, responsive, high-DPI SVG output with stable element IDs |
+
+### Native Mathematics Engine (Phase 4, fully supported)
 
 No KaTeX, no MathJax, no LaTeX installation — a self-contained math parser and renderer.
 
@@ -19,14 +32,8 @@ No KaTeX, no MathJax, no LaTeX installation — a self-contained math parser and
 | `@math … @/math` | `@math\nF = ma\n@/math` | Display math, auto-numbered |
 | `label="…"` | `@math label="eq:newton"` | Anchor for cross-references |
 | `@ref(label)` | `@ref(eq:newton)` | Linked reference to a numbered equation |
-| `env=align` | `@math env=align` | Multi-line aligned derivations |
-| `\frac` `\sqrt` `\sum` `\int` `\lim` | — | Fractions, roots, big operators |
-| `\begin{matrix\|pmatrix\|cases}` | — | Matrices and piecewise functions |
-| `\vec` `\hat` `\mathbb` `\mathbf` | — | Vectors, accents, blackboard-bold, bold |
 
-Every equation renders both visual HTML/CSS **and** hidden semantic MathML, so screen readers get full native accessibility.
-
-### Native Block Directives (Phase 3, still fully supported)
+### Native Block Directives (Phase 3, fully supported)
 
 | Directive | Syntax | Purpose |
 |-----------|--------|---------|
@@ -44,7 +51,7 @@ Every equation renders both visual HTML/CSS **and** hidden semantic MathML, so s
 | `@avatar` | `@avatar initials="…" status="…" @/avatar` | Image/initials/icon avatar |
 | `@icon` | `@icon name size=24 @/icon` | Material Symbols icon |
 
-### Extended Markdown (Phase 2, still fully supported)
+### Extended Markdown (Phase 2, fully supported)
 
 | Feature | Syntax | Output |
 |---------|--------|--------|
@@ -53,9 +60,6 @@ Every equation renders both visual HTML/CSS **and** hidden semantic MathML, so s
 | Reference links | `[text][id]` + `[id]: url` | Resolved `<a>` |
 | Figures | Standalone `![alt](src)` | `<figure>` + `<figcaption>` |
 | Definition lists | `term\n: def` | `<dl><dt><dd>` |
-| Code titles/numbers/diff | `` ```js title="a.js" {1,3} numbers `` | Header bar, gutter, highlights |
-| Superscript/Subscript | `^text^` / `~text~` | `<sup>` / `<sub>` |
-| Highlight/Kbd | `==text==` / `[[Ctrl+S]]` | `<mark>` / `<kbd>` |
 
 All Phase 1 features (headings, lists, tables, footnotes, variables, etc.) continue working unchanged.
 
@@ -71,14 +75,14 @@ npx serve . --port 3000
 Or use the engine in your own project (ES modules):
 
 ```javascript
-import { compile, parse } from './src/zolto.js';
+import { compile, parse, parseDiagram, renderDiagram } from './src/zolto.js';
 
 // One-call compile
-const html = compile('# Hello **world**\n\n> [!TIP]\n> Try it out!');
+const html = compile('# Architecture\n\n@diagram flowchart\nStart -> Login\nLogin -> Dashboard\n@/diagram');
 
 // Step-by-step with diagnostics
 const { ast, errors, warnings, diagnostics } = parse(source);
-const html2 = render(ast, { xhtml: false, footnoteSection: true });
+const html2 = render(ast, { xhtml: false });
 ```
 
 ## API
@@ -92,57 +96,16 @@ render(ast: DocumentNode, opts?: { xhtml?: boolean, footnoteSection?: boolean })
 
 // compile(src, opts?) → html string  (parse + render combined)
 compile(src: string, opts?: RenderOptions): string
+
+// parseDiagram(src, header?) → { ast, diagnostics }
+parseDiagram(src: string, header?: string): { ast: DiagramNode, diagnostics: DiagramDiagnostics }
+
+// renderDiagram(ast, opts?) → svg string
+renderDiagram(ast: DiagramNode, opts?: object): string
 ```
 
 ## Tests
 
 ```bash
-node tests/run-all.js
-# → 511/511 tests passed · all green
+npm run test:node
 ```
-
-## Project structure
-
-```
-src/          Core engine (the only code that ships in v4)
-  ast.js               AST node factories (Phase 1 + 2 + 3 + 4 nodes)
-  tokenizer.js         Utilities + HTML entity map
-  lexer.js             Block tokenizer
-  inline-parser.js     Inline parser ($math$, @ref(), etc.)
-  parser.js            Block → AST
-  directive-lexer.js   @directive attribute parser + child extractor
-  directives.js        Directive tokens → typed AST nodes (14 types)
-  directive-renderer.js HTML + CSS for all 14 directive types
-  math-tokenizer.js    LaTeX-like math lexical scanner
-  math-symbols.js      Greek/operators/relations/arrows/logic symbol tables
-  math-ast.js          Math expression AST node factories (21 types)
-  math-parser.js       Pratt precedence-climbing math parser
-  math-matrix.js       Matrix/cases/align environment parsing (mixin)
-  math-renderer.js     Visual HTML/CSS math renderer
-  math-mathml.js       Semantic MathML renderer (accessibility)
-  math-validator.js    Duplicate label / undefined @ref() detection
-  diagnostics.js       Structured error/warning system
-  validator.js         AST walker + diagnostics
-  renderer.js          HTML generator
-  zolto.js             Public API
-tests/        Full test suite (511 tests, 63 suites)
-index.html    Zolto Studio — GitHub Pages UI
-examples/     Sample .zl documents
-docs/         Developer documentation
-```
-
-## Phase roadmap
-
-| Phase | Status | Scope |
-|-------|--------|-------|
-| Phase 1 | ✅ Done | Markdown core |
-| Phase 2 | ✅ Done | Extended Markdown |
-| Phase 3 | ✅ Done | Native Block Directives |
-| **Phase 4** | ✅ Done | Native Mathematics Engine |
-| Phase 5 | Planned | Diagrams + Charts |
-| Phase 6 | Planned | Components + Layouts + Full enterprise structure |
-
-
-## License
-
-[MIT](LICENSE) © Zolto Team

@@ -4,6 +4,29 @@ All notable changes to Zolto are documented in this file.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) |
 Versioning: [Semantic Versioning](https://semver.org/)
 
+## [5.0.0] — Phase 5 — Native Diagram & Graph Engine
+
+### Added
+
+#### Native Diagram Directive & Subsystem
+- `@diagram <type> [attrs] … @/diagram` block syntax for embedding native diagrams.
+- Dedicated diagram tokenizer (`src/diagram/tokenizer.js`), grammar parser (`src/diagram/parser.js`), AST builder (`src/diagram/ast.js`), topology engine (`src/diagram/graph.js`), SVG DOM generator (`src/diagram/svg.js`), renderer (`src/diagram/renderer.js`), theme engine (`src/diagram/themes.js`), and validator (`src/diagram/validator.js`).
+
+#### 23 Diagram Types
+- Native support for 23 diagram types: `flowchart`, `sequence`, `state`, `er`, `mindmap`, `tree`, `decision`, `org`, `class`, `object`, `package`, `component`, `deployment`, `usecase`, `activity`, `network`, `dependency`, `filesystem`, `git`, `timeline`, `gantt`, `sankey`, `journey`.
+
+#### 8 Pluggable Layout Strategy Algorithms
+- Layered Sugiyama (`hierarchical`), Reingold-Tilford hierarchy (`tree`), Perimeter (`circular`), Concentric ring (`radial`), Fruchterman-Reingold force-directed (`force`), Matrix grid (`grid`), Right-angle Manhattan edge connector routing (`orthogonal`), and explicit coordinate placement (`manual`).
+
+#### Styling & Themes
+- Built-in theme definitions (`light`, `dark`, `custom:neo`, `custom:night`) and custom theme registration support.
+- Node shapes: `rect`, `circle`, `diamond`, `round-rect`, `hexagon`, `pill`, `actor`, `cylinder`.
+- Arrowhead markers & styles: `filled`, `hollow`, `normal`, `dashed`, ER cardinality markers (`||--o{`).
+
+#### Accessible SVG Generation & Performance
+- Responsive `<svg viewBox="..." role="img" aria-label="...">` with title and description accessibility tags.
+- 548/548 test suite passed with 0 regressions. 1,000-node performance benchmark under 500ms.
+
 ---
 
 ## [4.0.0] — Phase 4 — Native Mathematics Engine

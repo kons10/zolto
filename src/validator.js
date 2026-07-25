@@ -18,6 +18,7 @@
 import { Diagnostics, Code } from './diagnostics.js';
 import { ADMONITION_TYPES }  from './ast.js';
 import { validateMath }      from './math-validator.js';
+import { validateDiagram }   from './diagram/validator.js';
 
 /**
  * @param {DocumentNode} doc
@@ -46,6 +47,15 @@ export function validate(doc) {
 
   // ── Phase 4: equation labels / @ref() / parser diagnostics ───────────────
   validateMath(doc, d);
+
+  // ── Phase 5: diagram semantic validation ────────────────────────────────
+  for (const node of doc.children ?? []) {
+    if (node?.type === 'diagram') {
+      const diagDiag = validateDiagram(node);
+      for (const err of diagDiag.formatErrors()) d.error('E500', err);
+      for (const warn of diagDiag.formatWarnings()) d.warn('W500', warn);
+    }
+  }
 
   // ── Validate inline + block usage ────────────────────────────────────────
   for (const node of doc.children ?? []) {

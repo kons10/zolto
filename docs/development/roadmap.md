@@ -19,15 +19,14 @@ avatar, icon. 380 tests (cumulative).
 
 LaTeX-like math syntax with zero external dependencies (no KaTeX/MathJax
 required). Inline `$...$` and block `@math...@/math`, equation numbering,
-`@ref()` cross-references, full expression support (fractions, roots,
-matrices, big operators, piecewise functions, vectors, accents), dual
-HTML+MathML rendering for accessibility. 511 tests total (cumulative).
+`@ref()` cross-references, dual HTML+MathML rendering. 511 tests total (cumulative).
 
-## Phase 5 — Diagrams & Data Visualization (planned)
+## Phase 5 — Native Diagram & Graph Engine ✅
 
-- Native flowchart / sequence / state-machine diagram syntax
-- Chart directive for bar/line/pie/scatter visualizations
-- SVG rendering backend shared across both
+Human-readable, deterministic native diagram engine with 23 diagram types,
+8 pluggable layout algorithms (hierarchical, tree, circular, radial, force, grid, orthogonal, manual),
+theme system (`light`, `dark`, `custom:neo`, `custom:night`), groups, clusters, cross-references,
+and responsive accessible SVG rendering. 548 tests total (cumulative).
 
 ## Phase 6 — Components + Layouts (planned)
 

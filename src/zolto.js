@@ -1,8 +1,8 @@
 /**
  * Zolto — Public API
  * ════════════════════════════════════════════════════════════════════════════
- * Phase 4 · "Native Mathematics Engine" — LaTeX-like math, deeply integrated
- * with the Markdown/directive foundation from Phases 1–3.
+ * Phase 5 · "Native Diagram & Graph Engine" — High-performance native diagrams,
+ * deeply integrated with the Zolto AST foundation.
  *
  *   import { parse, render, compile } from './zolto.js';
  *
@@ -10,11 +10,8 @@
  *   const html = render(ast, { xhtml: false });
  *   const html2 = compile(src);   // parse + render in one call
  *
- * Backward compatible with the Phase 1–3 API surface — every prior call site
- * continues to work unchanged. Phase 4 only adds new optional behaviour:
- *   $expr$                       → inline math
- *   @math name="…" label="…" … @/math → display math, numbered, referenceable
- *   @ref(label)                  → equation cross-reference
+ * Backward compatible with Phase 1–4 API surface — every prior call site
+ * continues to work unchanged.
  */
 
 import { tokenize }      from './lexer.js';
@@ -25,9 +22,11 @@ import { Diagnostics }   from './diagnostics.js';
 import { parseMath }               from './math-parser.js';
 import { renderMathHTML, mathToPlainText } from './math-renderer.js';
 import { renderMathML }            from './math-mathml.js';
+import { parseDiagram }            from './diagram/parser.js';
+import { renderDiagram }          from './diagram/renderer.js';
 
-export const VERSION = '4.0.0';
-export const PHASE   = 4;
+export const VERSION = '5.0.0';
+export const PHASE   = 5;
 
 // ─── parse() ──────────────────────────────────────────────────────────────────
 
@@ -52,7 +51,6 @@ export function parse(src) {
 
   const { errors: valErrors, warnings, diagnostics } = validate(ast);
 
-  // Merge lexer errors (unclosed fences/comments/admonitions/@math) into diagnostics
   const d = new Diagnostics();
   for (const e of lexErrors) d.error('E001', e.message, { line: e.line });
   d.merge(diagnostics);
@@ -86,8 +84,7 @@ export function render(ast, opts = {}) {
 // ─── compile() ────────────────────────────────────────────────────────────────
 
 /**
- * Parse + render in a single call. Throws if the source contains fatal
- * structural errors (unclosed fences are tolerated — see parse()).
+ * Parse + render in a single call.
  *
  * @param {string} src
  * @param {object} [opts]  Same options as render()
@@ -102,14 +99,6 @@ export function compile(src, opts = {}) {
 
 export { renderInline, inlineToText };
 
-/**
- * Advanced/direct math engine access — for embedding equations outside the
- * normal document pipeline (e.g. a custom UI that only needs one formula).
- *
- *   const { ast, errors } = parseMathExpr('\\frac{a}{b}');
- *   const html = renderMathExpr(ast);        // visual HTML/CSS
- *   const mathml = renderMathExprML(ast);    // semantic MathML
- */
 export {
   parseMath as parseMathExpr,
   renderMathHTML as renderMathExpr,
@@ -117,16 +106,20 @@ export {
   mathToPlainText,
 };
 
+export {
+  parseDiagram,
+  renderDiagram,
+};
+
 /**
- * Library metadata banner — useful for console.log(about()).
+ * Library metadata banner.
  * @returns {string}
  */
 export function about() {
-  return `Zolto v${VERSION} · Phase ${PHASE} · Native Mathematics Engine\n` +
+  return `Zolto v${VERSION} · Phase ${PHASE} · Native Diagram & Graph Engine\n` +
          `  parse(src) → { ast, errors, warnings, diagnostics }\n` +
          `  render(ast, opts?) → html\n` +
          `  compile(src, opts?) → html\n` +
-         `  parseMathExpr(src) → { ast, errors }         (advanced)\n` +
-         `  renderMathExpr(ast) → html                    (advanced)\n` +
-         `  renderMathExprML(ast) → mathml                (advanced)`;
+         `  parseDiagram(src, header) → { ast, diagnostics }\n` +
+         `  renderDiagram(ast, opts?) → svg`;
 }

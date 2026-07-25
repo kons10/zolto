@@ -1,0 +1,72 @@
+# Zolto Phase 5 — Native Diagram Examples
+
+## 1. Flowchart with Custom Theme & Groups
+
+@diagram flowchart id="app-startup" theme="custom:night" layout="hierarchical" aria="Application startup flow"
+  node boot.start   [label="Boot", shape="circle"]
+  node load.config  [label="Load Config", shape="round-rect"]
+  node init.ui      [label="Init UI", shape="round-rect"]
+  node ready        [label="Ready", shape="circle"]
+
+  boot.start -> load.config [label="read"]
+  load.config -> init.ui [label="apply theme"]
+  init.ui -> ready [label="show window"]
+
+  group startup.group [label="Startup"]
+    boot.start
+    load.config
+    init.ui
+  @/group
+@/diagram
+
+## 2. Sequence Diagram
+
+@diagram sequence id="login-seq" aria="Login sequence"
+  actor User
+  actor App
+  actor Server
+
+  User -> App: Enter credentials
+  App -> Server: Authenticate
+  Server -> App: Token
+  App -> User: Success
+@/diagram
+
+## 3. Entity Relationship Diagram
+
+@diagram er id="schema"
+  entity User
+  entity Order
+  entity Product
+
+  User ||--o{ Order
+  Order }o--|| Product
+@/diagram
+
+## 4. Mindmap with Radial Layout
+
+@diagram mindmap id="ideas" layout="radial"
+  Root -> UI
+  Root -> Performance
+  Root -> Security
+  Root -> Docs
+@/diagram
+
+## 5. Tree Diagram with Hierarchy
+
+@diagram tree id="sitemap" layout="tree"
+  Home -> Docs
+  Home -> Blog
+  Home -> About
+  Docs -> Guide
+  Docs -> API
+@/diagram
+
+## 6. Network Diagram with Force Layout
+
+@diagram network id="infra" layout="force"
+  Client -> Gateway
+  Gateway -> API
+  API -> DB
+  API -> Cache
+@/diagram
