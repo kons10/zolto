@@ -102,11 +102,54 @@ Custom palettes can be passed via `colors=["#38bdf8", "#818cf8"]`.
 
 ---
 
-## 5. JavaScript API
+## 5. Negative Values & Mixed Data
+
+**Supported chart types** (`bar`, `hbar`, `line`, `area`, `spline`, `step`, `scatter`, `bubble`) all fully support negative values as of v7.0.1.
+
+The chart engine automatically computes a signed domain `[min(0, minValue), max(0, maxValue)]` and renders a zero-baseline axis rule. Positive and negative values are plotted relative to this baseline:
+
+```zolto
+@chart bar title="Profit & Loss"
+labels: Q1 Q2 Q3 Q4
+data: 420 -80 310 -25
+@/chart
+```
+
+```zolto
+@chart line title="Temperature Deviation"
+labels: Jan Feb Mar Apr May Jun
+data: -3.2 -1.8 0.5 2.1 4.4 3.9
+@/chart
+```
+
+**Area charts** with negative values close the fill area to the zero-baseline (not the bottom of the viewport), which is the correct visual convention.
+
+**`null` and `NaN` data points** are silently skipped in line, area, spline, and step charts. The line continues between the valid surrounding points.
+
+---
+
+## 6. JavaScript API
 
 ```js
-import { parseChart, renderChart } from 'zolto/chart';
+import { parseChart, renderChart, validateChart } from './src/chart/index.js';
 
 const { ast, diagnostics } = parseChart(sourceStr, headerStr);
 const svgString = renderChart(ast, { theme: 'dark' });
 ```
+
+---
+
+## 7. Known Limitations & Best Practices
+
+| Limitation | Details |
+| :--- | :--- |
+| **Pie/Donut — no negatives** | Negative values are clamped to `0` before pie slice computation. Use a bar or waterfall chart for signed data. |
+| **Pie/Donut — zero slices** | Zero-value slices are silently skipped (they produce degenerate paths). This is intentional. |
+| **Gauge — clamped to [0, 100]** | Gauge values above 100 are clamped to 100%; below 0 to 0%. |
+| **Empty data** | Charts with no valid numeric data points return an empty string rather than rendering a blank SVG frame. |
+| **Security** | All label text, series names, and tooltip values are XML-escaped via `escapeXml()`. Never bypass this function when extending renderers. |
+| **Label count vs data count** | When `labels` has more entries than `data`, extra label ticks are not rendered. When `data` has more entries than `labels`, extra data points are plotted without a label. |
+
+---
+
+*Version: 7.0.1 · Phase 6 — Native Charts Engine*

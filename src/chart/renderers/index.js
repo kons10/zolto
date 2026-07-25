@@ -50,27 +50,44 @@ function renderBarChart(dataset, theme, width, height, opts) {
   const labels = dataset.labels.length ? dataset.labels : ['A', 'B', 'C', 'D'];
   const series = dataset.series.length ? dataset.series : [{ name: 'Data', data: [120, 180, 145, 210] }];
 
-  const allVals = series.flatMap(s => s.data);
-  const maxVal = Math.max(1, ...allVals);
+  const allVals = series.flatMap(s => s.data.filter(v => typeof v === 'number' && !isNaN(v)));
+  if (!allVals.length) return '';
+
+  const rawMin = Math.min(...allVals);
+  const rawMax = Math.max(...allVals);
+  // Include 0 in the range so the baseline is always visible
+  const domainMin = Math.min(0, rawMin);
+  const domainMax = Math.max(0, rawMax, 1);
+  const domainRange = domainMax - domainMin;
+
+  // Pixel position of value 0 (the baseline)
+  const baseline = pad.top + h - ((0 - domainMin) / domainRange) * h;
 
   const groupWidth = w / Math.max(1, labels.length);
   const barWidth = Math.max(8, (groupWidth * 0.7) / Math.max(1, series.length));
 
   let html = '';
+
+  // Draw baseline axis rule
+  html += `<line x1="${pad.left}" y1="${baseline}" x2="${pad.left + w}" y2="${baseline}" stroke="${theme.gridColor || '#e2e8f0'}" stroke-width="1" opacity="0.6" />`;
+
   labels.forEach((label, i) => {
     const groupX = pad.left + i * groupWidth;
 
     series.forEach((s, sIdx) => {
-      const val = s.data[i] ?? 0;
-      const barH = Math.max(0, (val / maxVal) * h);
+      const val = typeof s.data[i] === 'number' && !isNaN(s.data[i]) ? s.data[i] : 0;
+      const valPx = ((val - domainMin) / domainRange) * h;
+      const baselinePx = ((0 - domainMin) / domainRange) * h;
+      const barH = Math.abs(valPx - baselinePx);
       const x = groupX + (groupWidth * 0.15) + sIdx * barWidth;
-      const y = pad.top + h - barH;
+      // Positive bars grow upward from baseline, negative bars grow downward
+      const y = val >= 0 ? baseline - barH : baseline;
       const color = s.color || theme.colors[sIdx % theme.colors.length];
 
-      html += `<rect x="${x}" y="${y}" width="${Math.max(1, barWidth - 2)}" height="${barH}" rx="4" fill="${color}"><title>${escapeXml(s.name)} - ${escapeXml(label)}: ${val}</title></rect>`;
+      html += `<rect x="${x}" y="${y}" width="${Math.max(1, barWidth - 2)}" height="${Math.max(0, barH)}" rx="4" fill="${color}"><title>${escapeXml(s.name)} - ${escapeXml(label)}: ${val}</title></rect>`;
     });
 
-    // Label under bar
+    // Label under chart
     html += `<text x="${groupX + groupWidth / 2}" y="${height - 15}" text-anchor="middle" font-size="12" fill="${theme.textSecondary}">${escapeXml(label)}</text>`;
   });
 
@@ -86,27 +103,41 @@ function renderHBarChart(dataset, theme, width, height, opts) {
   const labels = dataset.labels.length ? dataset.labels : ['A', 'B', 'C', 'D'];
   const series = dataset.series.length ? dataset.series : [{ name: 'Data', data: [120, 180, 145, 210] }];
 
-  const allVals = series.flatMap(s => s.data);
-  const maxVal = Math.max(1, ...allVals);
+  const allVals = series.flatMap(s => s.data.filter(v => typeof v === 'number' && !isNaN(v)));
+  if (!allVals.length) return '';
+
+  const domainMin = Math.min(0, ...allVals);
+  const domainMax = Math.max(0, ...allVals, 1);
+  const domainRange = domainMax - domainMin;
+
+  // Pixel position of value 0 (the baseline) measured from left edge
+  const baseline = pad.left + ((0 - domainMin) / domainRange) * w;
 
   const groupHeight = h / labels.length;
   const barHeight = Math.max(8, (groupHeight * 0.7) / series.length);
 
   let html = '';
+
+  // Draw baseline axis rule
+  html += `<line x1="${baseline}" y1="${pad.top}" x2="${baseline}" y2="${pad.top + h}" stroke="${theme.gridColor || '#e2e8f0'}" stroke-width="1" opacity="0.6" />`;
+
   labels.forEach((label, i) => {
     const groupY = pad.top + i * groupHeight;
 
     series.forEach((s, sIdx) => {
-      const val = s.data[i] ?? 0;
-      const barW = (val / maxVal) * w;
-      const x = pad.left;
+      const val = typeof s.data[i] === 'number' && !isNaN(s.data[i]) ? s.data[i] : 0;
+      const valPx = ((val - domainMin) / domainRange) * w;
+      const baselinePx = ((0 - domainMin) / domainRange) * w;
+      const barW = Math.max(0, Math.abs(valPx - baselinePx));
+      // Positive bars grow right from baseline, negative bars grow left
+      const x = val >= 0 ? baseline : baseline - barW;
       const y = groupY + (groupHeight * 0.15) + sIdx * barHeight;
       const color = s.color || theme.colors[sIdx % theme.colors.length];
 
-      html += `<rect x="${x}" y="${y}" width="${barW}" height="${barHeight - 2}" rx="4" fill="${color}"><title>${s.name} - ${label}: ${val}</title></rect>`;
+      html += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(0, barHeight - 2)}" rx="4" fill="${color}"><title>${escapeXml(s.name)} - ${escapeXml(label)}: ${val}</title></rect>`;
     });
 
-    html += `<text x="${pad.left - 10}" y="${groupY + groupHeight / 2 + 4}" text-anchor="end" font-size="12" fill="${theme.textSecondary}">${label}</text>`;
+    html += `<text x="${pad.left - 10}" y="${groupY + groupHeight / 2 + 4}" text-anchor="end" font-size="12" fill="${theme.textSecondary}">${escapeXml(label)}</text>`;
   });
 
   return html;
@@ -121,20 +152,27 @@ function renderLineChart(dataset, theme, width, height, opts, mode = 'straight')
   const labels = dataset.labels.length ? dataset.labels : ['Q1', 'Q2', 'Q3', 'Q4'];
   const series = dataset.series.length ? dataset.series : [{ name: 'Trend', data: [100, 160, 130, 220] }];
 
-  const allVals = series.flatMap(s => s.data);
-  const maxVal = Math.max(1, ...allVals);
+  const allVals = series.flatMap(s => s.data.filter(v => typeof v === 'number' && !isNaN(v)));
+  if (!allVals.length) return '';
 
-  const stepX = labels.length > 1 ? w / (labels.length - 1) : w;
+  const domainMin = Math.min(0, ...allVals);
+  const domainMax = Math.max(0, ...allVals, 1);
+  const domainRange = domainMax - domainMin;
+
+  const maxDataLen = Math.max(...series.map(s => s.data.length), labels.length);
+  const stepX = maxDataLen > 1 ? w / (maxDataLen - 1) : w;
 
   let html = '';
 
   series.forEach((s, sIdx) => {
     const color = s.color || theme.colors[sIdx % theme.colors.length];
     const points = s.data.map((val, i) => {
+      const v = (typeof val === 'number' && !isNaN(val)) ? val : null;
+      if (v === null) return null;
       const x = pad.left + i * stepX;
-      const y = pad.top + h - (val / maxVal) * h;
-      return { x, y, val };
-    });
+      const y = pad.top + h - ((v - domainMin) / domainRange) * h;
+      return { x, y, val: v };
+    }).filter(Boolean);
 
     if (!points.length) return;
 
@@ -154,7 +192,9 @@ function renderLineChart(dataset, theme, width, height, opts, mode = 'straight')
     }
 
     if (mode === 'area') {
-      const areaD = d + ` L ${points[points.length - 1].x} ${pad.top + h} L ${points[0].x} ${pad.top + h} Z`;
+      // Area closes down to the zero-baseline, not the bottom of the chart
+      const zeroY = pad.top + h - ((0 - domainMin) / domainRange) * h;
+      const areaD = d + ` L ${points[points.length - 1].x} ${zeroY} L ${points[0].x} ${zeroY} Z`;
       html += `<path d="${areaD}" fill="${color}" opacity="0.25" />`;
     }
 
@@ -165,9 +205,10 @@ function renderLineChart(dataset, theme, width, height, opts, mode = 'straight')
     });
   });
 
-  labels.forEach((label, i) => {
+  // Only render label ticks up to maxDataLen to avoid orphan ticks
+  labels.slice(0, maxDataLen).forEach((label, i) => {
     const x = pad.left + i * stepX;
-    html += `<text x="${x}" y="${height - 15}" text-anchor="middle" font-size="12" fill="${theme.textSecondary}">${label}</text>`;
+    html += `<text x="${x}" y="${height - 15}" text-anchor="middle" font-size="12" fill="${theme.textSecondary}">${escapeXml(label)}</text>`;
   });
 
   return html;
@@ -180,14 +221,17 @@ function renderPieChart(dataset, theme, width, height, opts, isDonut = false) {
   const r = Math.min(width, height) / 2 - 40;
   const innerR = isDonut ? r * 0.55 : 0;
 
-  const series = dataset.series.length ? dataset.series[0].data : [40, 35, 25];
+  const rawSeries = dataset.series.length ? dataset.series[0].data : [40, 35, 25];
   const labels = dataset.labels.length ? dataset.labels : ['A', 'B', 'C'];
+  // Filter negative values — pie slices cannot be negative
+  const series = rawSeries.map(v => Math.max(0, typeof v === 'number' && !isNaN(v) ? v : 0));
   const total = series.reduce((a, b) => a + b, 0) || 1;
 
-  let startAngle = 0;
+  let startAngle = -Math.PI / 2; // Start at top (12 o'clock)
   let html = '';
 
   series.forEach((val, i) => {
+    if (val === 0) return; // Skip zero-value slices (degenerate paths)
     const angle = (val / total) * Math.PI * 2;
     const endAngle = startAngle + angle;
 
@@ -211,7 +255,7 @@ function renderPieChart(dataset, theme, width, height, opts, isDonut = false) {
       pathD = `M ${cx} ${cy} L ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2} Z`;
     }
 
-    html += `<path d="${pathD}" fill="${color}" stroke="${theme.background}" stroke-width="2"><title>${labels[i] ?? i}: ${val}</title></path>`;
+    html += `<path d="${pathD}" fill="${color}" stroke="${theme.background}" stroke-width="2"><title>${escapeXml(labels[i] ?? i)}: ${val}</title></path>`;
     startAngle = endAngle;
   });
 
@@ -224,14 +268,21 @@ function renderScatterChart(dataset, theme, width, height, opts, isBubble = fals
   const w = width - pad.left - pad.right;
   const h = height - pad.top - pad.bottom;
 
-  const points = dataset.series.length ? dataset.series[0].data : [10, 25, 40, 60];
-  const maxVal = Math.max(1, ...points);
+  const rawPoints = dataset.series.length ? dataset.series[0].data : [10, 25, 40, 60];
+  const points = rawPoints.filter(v => typeof v === 'number' && !isNaN(v));
+  if (!points.length) return '';
+
+  const domainMin = Math.min(0, ...points);
+  const domainMax = Math.max(0, ...points, 1);
+  const domainRange = domainMax - domainMin;
+  const absMax = Math.max(Math.abs(domainMin), Math.abs(domainMax), 1);
 
   let html = '';
   points.forEach((val, i) => {
     const cx = pad.left + (i / Math.max(1, points.length - 1)) * w;
-    const cy = pad.top + h - (val / maxVal) * h;
-    const r = isBubble ? 8 + (val / maxVal) * 16 : 6;
+    const cy = pad.top + h - ((val - domainMin) / domainRange) * h;
+    // Bubble size based on absolute magnitude
+    const r = isBubble ? 8 + (Math.abs(val) / absMax) * 16 : 6;
     const color = theme.colors[i % theme.colors.length];
 
     html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" opacity="0.8" stroke="${theme.background}" stroke-width="2"><title>Point ${i + 1}: ${val}</title></circle>`;

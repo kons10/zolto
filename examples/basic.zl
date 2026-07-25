@@ -1,37 +1,38 @@
 ---
-title: Basic Zolto Example
+title: Basic Zolto Example — Phase 7
 ---
 
 # Hello, Zolto!
 
-This is a basic Zolto document — identical syntax to standard Markdown.
+This is a basic Zolto document — a strict superset of standard Markdown with zero dependencies.
 
 ## Inline Formatting
 
-**Bold**, *italic*, `inline code`, ~~strikethrough~~, [link](https://example.com).
+**Bold**, *italic*, `inline code`, ==highlighted==, ~~strikethrough~~, [link](https://example.com).
 
-## Lists
+## Native Callout & Math
 
-- Item one
-- Item two
-  - Nested
+> [!NOTE]
+> Every valid `.md` file is a valid `.zl` file.
 
-1. First
-2. Second
+Inline math: $E = mc^2$.
 
-- [x] Done
-- [ ] Todo
+## Vector & Chart Showcase
 
-## Code
+@vector width=400 height=160 theme="dark"
+rect x=20 y=20 w=360 h=120 radius=16 fill="#1a1f2b" stroke="#2d3648" strokeWidth=2
+circle cx=70 cy=80 r=30 fill="#7c5cff"
+text x=120 y=85 size=20 fill="#ffffff"
+  Zolto Vector
+@endtext
+@/vector
 
-```javascript
-const html = compile('# Hello');
-```
+## Summary Table
 
-## Table
-
-| Feature | Phase 1 | Phase 2 |
-| :------ | :-----: | :-----: |
-| Markdown | ✓ | ✓ |
-| Callouts | ✗ | ✓ |
-| Admonitions | ✗ | ✓ |
+| Feature | Phase 1 | Phase 4 | Phase 5 | Phase 6 | Phase 7 |
+| :------ | :-----: | :-----: | :-----: | :-----: | :-----: |
+| Markdown | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Mathematics | ✗ | ✓ | ✓ | ✓ | ✓ |
+| Diagrams | ✗ | ✗ | ✓ | ✓ | ✓ |
+| Charts | ✗ | ✗ | ✗ | ✓ | ✓ |
+| Vector Graphics | ✗ | ✗ | ✗ | ✗ | ✓ |

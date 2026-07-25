@@ -25,10 +25,12 @@ import { renderMathML }            from './math-mathml.js';
 import { parseDiagram }            from './diagram/parser.js';
 import { renderDiagram }          from './diagram/renderer.js';
 import { parseChart }            from './chart/parser.js';
-import { renderChart }            from './chart/renderer.js';
+import { renderChart }           from './chart/renderer.js';
+import { parseVector }           from './vector/parser.js';
+import { renderVector }          from './vector/renderer.js';
 
-export const VERSION = '6.0.0';
-export const PHASE   = 6;
+export const VERSION = '7.0.0';
+export const PHASE   = 7;
 
 // ─── parse() ──────────────────────────────────────────────────────────────────
 
@@ -118,17 +120,24 @@ export {
   renderChart,
 };
 
+export {
+  parseVector,
+  renderVector,
+};
+
 /**
  * Library metadata banner.
  * @returns {string}
  */
 export function about() {
-  return `Zolto v${VERSION} · Phase ${PHASE} · Native Charts & Data Visualization Engine\n` +
+  return `Zolto v${VERSION} · Phase ${PHASE} · Native Vector Graphics & Drawing Engine\n` +
          `  parse(src) → { ast, errors, warnings, diagnostics }\n` +
          `  render(ast, opts?) → html\n` +
          `  compile(src, opts?) → html\n` +
          `  parseDiagram(src, header) → { ast, diagnostics }\n` +
          `  renderDiagram(ast, opts?) → svg\n` +
          `  parseChart(src, header) → { ast, diagnostics }\n` +
-         `  renderChart(ast, opts?) → svg`;
+         `  renderChart(ast, opts?) → svg\n` +
+         `  parseVector(src, header) → { ast, diagnostics }\n` +
+         `  renderVector(ast, opts?) → svg`;
 }

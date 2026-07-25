@@ -44,6 +44,7 @@ export const T = Object.freeze({
   MATH_BLOCK:     'math_block',      // Phase 4
   DIAGRAM_BLOCK:  'diagram_block',   // Phase 5
   CHART_BLOCK:    'chart_block',     // Phase 6
+  VECTOR_BLOCK:   'vector_block',    // Phase 7
   BLANK:          'blank',
   PARAGRAPH:      'paragraph',
 });
@@ -234,6 +235,29 @@ export function tokenize(src) {
         if (!closed) err('Unclosed @chart block (missing @/chart)');
         tokens.push({
           type:   T.CHART_BLOCK,
+          raw:    lines.slice(startLine, i).join('\n'),
+          header: configStr,
+          content: bodyLines.join('\n'),
+        });
+        continue;
+      }
+    }
+
+    // · @vector block (Phase 7) — raw capture, body is Zolto vector syntax ──────
+    { const dm = /^@vector(?:\s+(.*))?\s*$/.exec(line);
+      if (dm) {
+        const configStr = (dm[1] ?? '').trim();
+        const startLine = i;
+        const bodyLines = [];
+        let closed = false;
+        i++;
+        while (i < lines.length) {
+          if (/^@\/vector\s*$/.test(lines[i])) { closed = true; i++; break; }
+          bodyLines.push(lines[i]); i++;
+        }
+        if (!closed) err('Unclosed @vector block (missing @/vector)');
+        tokens.push({
+          type:   T.VECTOR_BLOCK,
           raw:    lines.slice(startLine, i).join('\n'),
           header: configStr,
           content: bodyLines.join('\n'),

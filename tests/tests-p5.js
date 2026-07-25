@@ -219,6 +219,16 @@ App -> User: Success
     assertIncludes(html, 'stroke-dasharray="4 4"');
   });
 
+  test('Bug Fixes', 'Renders sequence diagram self-messages with curved self-loop path', () => {
+    const seqSelfSrc = `@diagram sequence
+actor Server
+Server -> Server: Self check
+@/diagram`;
+    const html = compile(seqSelfSrc);
+    assertIncludes(html, 'Self check');
+    assertIncludes(html, 'path d="M');
+  });
+
   // 6. Full Document Compiler Integration
   test('Integration', 'Compiles document mixing Markdown, Math, Phase 3 directives, and Phase 5 diagrams', () => {
     const docSrc = `# Project Plan

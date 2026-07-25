@@ -1,31 +1,34 @@
 ---
-name: Bug report
-about: Report an incorrect parse or render result
-labels: bug
+name: Bug Report
+about: Create a report to help us reproduce and fix an issue in Zolto
+title: '[BUG]: '
+labels: ['bug']
+assignees: ''
 ---
 
-**Version:** Zolto 2.x.x
+### Describe the Bug
+A clear and concise description of what the bug is.
 
-**Describe the bug**
-A clear, concise description of what went wrong.
-
-**Minimal reproduction**
+### Minimal Reproducible Example
 
 ```zolto
-<!-- Paste the shortest .zl source that triggers the bug -->
+<!-- Provide minimal .zl document source to reproduce -->
 ```
 
-**Expected output**
+### Steps to Reproduce
+1. Pass the snippet above into `Zolto.parse()` or `Zolto.compile()`
+2. Observe error or unexpected HTML output
 
-```html
-<!-- What HTML should be produced -->
+### Expected Behavior
+A clear description of what you expected to happen.
+
+### Actual Output / Error Stack Trace
+
+```text
+<!-- Paste stack trace or incorrect HTML output here -->
 ```
 
-**Actual output**
-
-```html
-<!-- What HTML was actually produced -->
-```
-
-**Additional context**
-Browser / Node version, theme, any relevant settings.
+### Environment
+- **Node.js Version**: [e.g. 20.10.0]
+- **Browser / OS**: [e.g. Chrome 124, Linux]
+- **Zolto Version**: [e.g. 7.0.0]

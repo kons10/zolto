@@ -53,14 +53,30 @@ export function layoutSequence(graph, opts = {}) {
     const x1 = fromNode ? fromNode.cx : padLeft;
     const x2 = toNode ? toNode.cx : padLeft + colWidth;
 
-    const path = `M ${x1} ${stepYPos} L ${x2} ${stepYPos}`;
+    let path = '';
+    let labelX = (x1 + x2) / 2;
+    let labelY = stepYPos - 8;
+
+    if (x1 === x2) {
+      // Self-loop message path
+      const loopWidth = 40;
+      const loopHeight = 25;
+      path = `M ${x1} ${stepYPos} H ${x1 + loopWidth} V ${stepYPos + loopHeight} H ${x1}`;
+      labelX = x1 + loopWidth + 10;
+      labelY = stepYPos + loopHeight / 2;
+    } else {
+      path = `M ${x1} ${stepYPos} L ${x2} ${stepYPos}`;
+    }
 
     edgePaths.push({
       edge,
       path,
+      label: edge.label,
+      labelX,
+      labelY,
       labelPos: {
-        x: (x1 + x2) / 2,
-        y: stepYPos - 8,
+        x: labelX,
+        y: labelY,
       },
       fromPos: { x: x1, y: stepYPos, width: 0, height: 0 },
       toPos: { x: x2, y: stepYPos, width: 0, height: 0 },

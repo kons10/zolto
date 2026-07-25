@@ -13,6 +13,7 @@ import { runP3Tests } from './tests-p3.js';
 import { runP4Tests } from './tests-p4.js';
 import { runP5Tests } from './tests-p5.js';
 import { runP6Tests } from './tests-p6.js';
+import { runPhase7Tests } from './tests-p7.js';
 
 export function runAllTests() {
   const p2 = runP2Tests();
@@ -20,11 +21,16 @@ export function runAllTests() {
   const p4 = runP4Tests();
   const p5 = runP5Tests();
   const p6 = runP6Tests();
+  const p7 = runPhase7Tests();
+
+  const p7Results = [
+    { suite: 'Phase 7 · Vector Graphics Engine', desc: 'Vector Parser & Renderer Fixtures', pass: p7.failed === 0 }
+  ];
 
   return {
-    results: [...p2.results, ...p3.results, ...p4.results, ...p5.results, ...p6.results],
-    passed:  p2.passed + p3.passed + p4.passed + p5.passed + p6.passed,
-    failed:  p2.failed + p3.failed + p4.failed + p5.failed + p6.failed,
-    total:   p2.total  + p3.total  + p4.total  + p5.total  + p6.total,
+    results: [...p2.results, ...p3.results, ...p4.results, ...p5.results, ...p6.results, ...p7Results],
+    passed:  p2.passed + p3.passed + p4.passed + p5.passed + p6.passed + p7.passed,
+    failed:  p2.failed + p3.failed + p4.failed + p5.failed + p6.failed + p7.failed,
+    total:   p2.total  + p3.total  + p4.total  + p5.total  + p6.total  + (p7.passed + p7.failed),
   };
 }

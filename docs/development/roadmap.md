@@ -24,9 +24,11 @@ Human-readable, deterministic native diagram engine with 23 diagram types, 8 plu
 
 Native chart engine supporting 24 chart types (`bar`, `hbar`, `line`, `area`, `spline`, `step`, `pie`, `donut`, `scatter`, `bubble`, `radar`, `polararea`, `histogram`, `boxplot`, `candlestick`, `heatmap`, `treemap`, `sunburst`, `funnel`, `waterfall`, `gauge`, `timeline`, `calendar`, `mixed`), statistical calculation engine, multi-format datasets (inline, CSV, TSV, JSON, `$var`), themes, responsive SVG rendering, and static validator.
 
-## Phase 7 — Native Vector Graphics & Drawing Engine 📋
+## Phase 7 — Native Vector Graphics & Drawing Engine ✅
 
-Declarative vector drawing language (`@vector`), scene graph, path language (Move, Line, Curve, Arc), primitives (rectangle, circle, ellipse, polygon, bezier, text, image, layer, symbol), transforms (rotate, scale, skew, matrix), gradients, shadows, and SVG renderer.
+Declarative vector drawing language (`@vector`), scene graph, path language (Move, Line, Curve, Arc), shape primitives (rectangle, circle, ellipse, polygon, bezier, text, image, layer, symbol), transforms (rotate, scale, skew, matrix), gradients (`gradient:id` fill references), shadows, clip paths, and accessible SVG renderer. **601 tests total (cumulative)**.
+
+**Patch v7.0.1** also includes deep bug fixes across the chart engine: signed-domain negative value support for bar, hbar, line, area, spline, step, scatter, and bubble charts; zero-value pie/donut slice skipping; pie chart 12-o'clock start; area chart zero-baseline close; `NaN`/`null` data point filtering; and full `escapeXml()` audit across all three SVG subsystems.
 
 ## Phase 8 — Spatial Layout & Canvas Engine 📋
 

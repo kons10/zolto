@@ -1,9 +1,25 @@
 # Zolto AST Specification
 
-**Version:** 6.0.0
+**Version:** 7.0.0
 
 The AST is produced by `src/parser.js` and consumed by `src/renderer.js`
-and `src/validator.js`. All nodes are created via `src/ast.js`, `src/diagram/ast.js`, and `src/chart/ast.js` factory functions.
+and `src/validator.js`. All nodes are created via `src/ast.js`, `src/diagram/ast.js`, `src/chart/ast.js`, and `src/vector/ast.js` factory functions.
+
+## Phase 7 Vector Nodes
+
+```js
+{
+  type: 'vector',
+  width: number,
+  height: number,
+  viewBox: string,
+  background: string|null,
+  theme: string,
+  grid: boolean,
+  units: string,
+  children: VectorNode[]
+}
+```
 
 ## Roadmap AST Node Taxonomy (Phases 1 – 16)
 

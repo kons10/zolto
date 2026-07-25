@@ -1,17 +1,50 @@
 ---
-title: Zolto Full Feature Showcase — Phase 6
+title: Zolto Full Feature Showcase — Phase 7
 ---
 
 @var engine = Zolto
-@var phase  = 6
+@var phase  = 7
 
 # {{engine}} Phase {{phase}} Full Showcase
 
+> [!NOTE]
+> Zolto is a strict superset of standard Markdown with native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, and Components — built with Zero Dependencies.
+
 ---
 
-## 1. Native Charts Engine (Phase 6)
+## 1. Native Vector Graphics Engine (Phase 7)
 
-@chart bar title="Quarterly Sales Performance" theme="custom:neo"
+@vector width=800 height=320 viewBox="0 0 800 320" background="#111318" theme="dark"
+gradient id="heroGlow" type="radial" cx=0.5 cy=0.5 r=0.8
+  stop offset=0 color="rgba(124,92,255,0.35)"
+  stop offset=1 color="rgba(124,92,255,0)"
+@endgradient
+
+artboard id="main" x=0 y=0 w=800 h=320
+  layer id="background"
+    rect x=0 y=0 w=800 h=320 fill="#111318"
+    circle cx=400 cy=160 r=140 fill="gradient:heroGlow"
+  @endlayer
+  layer id="content"
+    group id="card" transform="translate(200, 60)"
+      rect id="panel" x=0 y=0 w=400 h=200 radius=20 fill="#1a1f2b" stroke="#2d3648" strokeWidth=2
+      circle id="avatar" cx=60 cy=60 r=24 fill="#7c5cff"
+      text id="title" x=100 y=52 size=22 fill="#ffffff"
+        Native Vector Graphics
+      @endtext
+      text id="body" x=100 y=88 size=14 fill="#a8b0c2" w=260 wrap=true
+        Declarative vector language with scene graph, transforms, shapes, Bezier curves, and SVG export.
+      @endtext
+    @endgroup
+  @endlayer
+@endartboard
+@/vector
+
+---
+
+## 2. Native Charts Engine (Phase 6)
+
+@chart spline title="Quarterly API Traffic & Revenue" theme="dark"
 labels:
   Q1
   Q2
@@ -27,18 +60,22 @@ data:
 
 ---
 
-## 2. Native Diagram Engine (Phase 5)
+## 3. Native Diagram Engine (Phase 5)
 
-@diagram flowchart title="System Workflow" theme="neo"
-Start[Start Session] -> Auth{Authenticated?}
-Auth -- Yes --> Dashboard[Load Dashboard]
-Auth -- No --> Login[Prompt Login]
-Login -> Auth
+@diagram sequence title="Authentication Sequence"
+actor User
+actor App
+actor Server
+
+User -> App: Enter credentials
+App -> Server: POST /login
+Server -> App: Bearer Token
+App -> User: Authenticated
 @/diagram
 
 ---
 
-## 3. Native Math Engine (Phase 4)
+## 4. Native Math Engine (Phase 4)
 
 Inline math: $E = mc^2$ and Euler's identity $e^{i\pi} + 1 = 0$.
 
@@ -50,10 +87,25 @@ Reference to Equation @ref(eq:einstein).
 
 ---
 
-## 4. Callouts & Admonitions (Phases 2-3)
+## 5. Native Block Directives (Phase 3)
+
+@tabs
+  @tab label="Overview"
+    @card title="System Status" variant="success"
+      All services operational across global regions.
+    @/card
+  @/tab
+  @tab label="Progress"
+    @progress value=85 @/progress
+  @/tab
+@/tabs
+
+---
+
+## 6. Callouts & Admonitions (Phases 2-3)
 
 > [!TIP]
-> Zolto is a high-performance document engine supporting native math, diagrams, charts, and directives.
+> Zolto is a high-performance document engine supporting native math, diagrams, charts, vectors, and directives.
 
 [info title="Zolto Engine Info"]
 100% backward compatible with CommonMark and GitHub Flavored Markdown.
@@ -61,7 +113,7 @@ Reference to Equation @ref(eq:einstein).
 
 ---
 
-## 5. Definition List & Code Metadata
+## 7. Definition List & Code Metadata
 
 ```javascript title="app.js" {2} numbers
 import { compile } from 'zolto';
@@ -69,8 +121,8 @@ const html = compile(zoltoSourceStr);
 console.log(html);
 ```
 
-Callout
-: A styled blockquote using `> [!TYPE]` syntax.
+Vector Engine
+: Declarative `@vector` block syntax compiling into responsive, accessible SVG.
 
-Chart
-: A native `@chart <type> ... @/chart` data visualization block.
+Chart Engine
+: Native `@chart <type> ... @/chart` data visualization block.

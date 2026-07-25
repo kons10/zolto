@@ -31,6 +31,7 @@ import { renderMathHTML, mathToPlainText, hasMathNodes, MATH_CSS } from './math-
 import { renderMathML } from './math-mathml.js';
 import { renderDiagram } from './diagram/renderer.js';
 import { renderChart }   from './chart/renderer.js';
+import { renderVector }  from './vector/renderer.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
 
@@ -146,6 +147,7 @@ function renderBlock(node, ctx) {
     case 'math_block':      return renderMathBlock(node, ctx);   // Phase 4
     case 'diagram':         return renderDiagram(node, ctx.opts); // Phase 5
     case 'chart':           return renderChart(node, ctx.opts);   // Phase 6
+    case 'vector':          return renderVector(node, ctx.opts);  // Phase 7
     default:                return '';
   }
 }

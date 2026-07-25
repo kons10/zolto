@@ -31,6 +31,7 @@ import { parseAttrStr }    from './directive-lexer.js';
 import { parseMath, parseMathRows } from './math-parser.js';
 import { parseDiagram }      from './diagram/parser.js';
 import { parseChart }        from './chart/parser.js';
+import { parseVector }       from './vector/parser.js';
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
@@ -93,6 +94,7 @@ function parseBlockToken(tok, ctx = {}) {
     case T.MATH_BLOCK:      return parseMathBlock(tok, ctx);     // Phase 4
     case T.DIAGRAM_BLOCK:   return parseDiagram(tok.content, tok.header).ast; // Phase 5
     case T.CHART_BLOCK:     return parseChart(tok.content, tok.header).ast;   // Phase 6
+    case T.VECTOR_BLOCK:    return parseVector(tok.content, tok.header).ast;  // Phase 7
     case T.PARAGRAPH:       return parseParagraph(tok, ctx);
     case 'directive': {
       const repCtx = {

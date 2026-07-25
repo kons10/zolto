@@ -1,6 +1,6 @@
 # Zolto Syntax Reference
 
-**Version:** 6.0.0 · Phase 6 · Native Charts & Data Visualizations
+**Version:** 7.0.0 · Phase 7 · Native Vector Graphics & Drawing Engine
 
 ---
 
@@ -8,6 +8,18 @@
 
 Zolto is a **strict superset of Markdown**. Every standard `.md` file
 is a valid `.zl` file that compiles unchanged.
+
+## Phase 7 Native Vector Syntax
+
+```
+@vector [width=N] [height=N] [viewBox="..."] [background="..."] [theme="..."] [grid=true|false] [units="..."]
+  rect x=40 y=40 w=240 h=120 radius=16 fill="#1e2230"
+  circle cx=80 cy=100 r=24 fill="#7c5cff"
+  text x=120 y=100 size=18 fill="#ffffff"
+    Hello Zolto
+  @endtext
+@/vector
+```
 
 ### Master Language Specification Architecture (Phases 1 – 16)
 

@@ -1,0 +1,37 @@
+# Zolto Phase 7 — Native Vector Graphics & Drawing Engine
+
+> [!NOTE]
+> Native vector drawing syntax compiled directly to clean, accessible SVG.
+
+@vector width=800 height=480 viewBox="0 0 800 480" background="#111318" theme="dark"
+
+gradient id="cardGlow" type="radial" cx=0.5 cy=0.5 r=0.8
+  stop offset=0 color="rgba(124,92,255,0.35)"
+  stop offset=1 color="rgba(124,92,255,0)"
+@endgradient
+
+artboard id="main" x=0 y=0 w=800 h=480
+  layer id="background"
+    rect x=0 y=0 w=800 h=480 fill="#111318"
+    circle cx=400 cy=240 r=180 fill="gradient:cardGlow"
+
+  layer id="content"
+    group id="card" transform="translate 220 120"
+      rect id="panel" x=0 y=0 w=360 h=200 radius=24 fill="#1a1f2b" stroke="#2d3648" strokeWidth=2
+      circle id="avatar" cx=56 cy=56 r=24 fill="#7c5cff"
+      text id="title" x=100 y=48 size=22 fill="#ffffff"
+        Zolto Vector Engine
+      @endtext
+      text id="body" x=100 y=84 size=14 fill="#a8b0c2" w=220 wrap=true
+        Native vector graphics with scene graph, transforms, shapes, and export-ready SVG.
+      @endtext
+
+      path id="arrow" stroke="#7c5cff" strokeWidth=3 fill="none"
+        move 40 150
+        line 320 150
+      @endpath
+    @endgroup
+  @endlayer
+@endartboard
+
+@/vector

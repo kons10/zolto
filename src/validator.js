@@ -20,6 +20,7 @@ import { ADMONITION_TYPES }  from './ast.js';
 import { validateMath }      from './math-validator.js';
 import { validateDiagram }   from './diagram/validator.js';
 import { validateChart }     from './chart/validator.js';
+import { validateVector }    from './vector/validator.js';
 
 /**
  * @param {DocumentNode} doc
@@ -60,6 +61,11 @@ export function validate(doc) {
       const chartDiag = validateChart(node);
       for (const err of chartDiag.formatErrors()) d.error('E600', err);
       for (const warn of chartDiag.formatWarnings()) d.warn('W600', warn);
+    }
+    if (node?.type === 'vector') {
+      const vecDiag = validateVector(node);
+      for (const err of vecDiag.getErrors()) d.error('E700', err.message);
+      for (const warn of vecDiag.getWarnings()) d.warn('W700', warn.message);
     }
   }
 

@@ -4,6 +4,57 @@ All notable changes to Zolto are documented in this file.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) |
 Versioning: [Semantic Versioning](https://semver.org/)
 
+## [7.0.1] — Chart Rendering Correctness & Deep Bug Fixes
+
+Date: 2026-07-25
+
+### Fixed
+
+#### Chart Engine — Negative Value & Domain Rendering
+- **Bar chart** (`renderBarChart`): Bars with negative values previously produced invalid negative SVG `height` attributes, causing silent misrender in all browsers. Fixed by computing a signed domain `[min(0, minVal), max(0, maxVal)]` with an explicit zero-baseline axis rule. Positive bars grow upward from baseline; negative bars grow downward. A horizontal baseline guide line is rendered at y=0.
+- **Horizontal bar chart** (`renderHBarChart`): Identical signed-domain fix applied to the horizontal axis. Negative bars now grow leftward from a vertical zero-baseline guide line. `NaN`-filtered data values are skipped safely.
+- **Line / area / spline / step charts** (`renderLineChart`): Fixed `y`-coordinate computation for negative values — `y = pad.top + h - (val / maxVal) * h` produced coordinates below the chart viewport for negative `val`. Now uses `(val - domainMin) / domainRange`. Area charts close to the zero-baseline rather than the bottom of the viewport. `null`/`NaN` data points are skipped cleanly. Label ticks are clamped to `maxDataLen` to prevent orphan tick marks when labels outnumber data points.
+- **Scatter / bubble charts** (`renderScatterChart`): Fixed `cy` computation for negative values. Bubble radius uses `Math.abs(val)` for magnitude instead of `val`, preventing negative radii.
+- **Pie / donut charts** (`renderPieChart`): Zero-value slices (angle = 0) previously generated degenerate SVG paths (`M cx cy L x y A r r 0 0 1 x y Z` with coincident endpoints). Such slices are now silently skipped. Negative input values are clamped to 0 before computation. Pie rendering now starts at 12 o'clock (`−π/2`) instead of 3 o'clock (`0`) — matching chart design conventions.
+
+#### Security
+- Audited `escapeXml()` call coverage across all three SVG subsystems (diagram, chart, vector). All text content, `id` attributes, `title` text, tooltip content, label text, and series name output paths are correctly escaped.
+
+#### Vector Engine — Gradient Fill Resolution
+- `fill="gradient:id"` references in vector shapes now correctly resolve to `url(#id)` in SVG `fill` attributes via `resolveColorToken()` in `src/vector/styles.js`.
+
+#### Diagram Engine — Sequence Self-Messages
+- Sequence diagram self-messages (`Actor -> Actor: label`) previously rendered as a zero-length degenerate line. Self-messages now render as a rectangular loop path offset to the right of the lifeline, with the label positioned beside the loop.
+
+### Tests
+- Total: **601/601** tests passing across all 7 completed phases, with 0 regressions.
+
+---
+
+## [7.0.0] — Phase 7 — Native Vector Graphics & Drawing Engine
+
+### Added
+
+#### Native Vector Directive & Subsystem
+- `@vector [attrs] … @/vector` block directive for declarative vector drawing inside `.zl` documents.
+- Modular architecture under `src/vector/` with tokenization (`tokenizer.js`), parsing (`parser.js`), AST factory (`ast.js`), scene graph topology (`scene.js`), style & color engine (`styles.js`), transform matrix composer (`transforms.js`), accessible SVG DOM generator (`svg.js`), rendering facade (`renderer.js`), static validator (`validator.js`), and diagnostics collector (`diagnostics.js`).
+
+#### Scene Graph & Document Hierarchy
+- Support for structural hierarchy: `scene`, `artboard`, `layer`, `group`, `frame`, `symbol`, `use`, `marker`, `clipPath`, `mask`.
+
+#### Shape Primitives & Path Language
+- Native shapes: `rect` (rectangle & rounded rect), `circle`, `ellipse`, `line`, `polyline`, `polygon`, `path`, `arc`, `bezier` (quadratic & cubic), `text`, `image`, `icon`.
+- Path language: `M`, `L`, `H`, `V`, `C`, `Q`, `A`, `Z` commands and relative variants, plus structured path blocks (`move`, `line`, `quadratic`, `cubic`, `arc`, `close`).
+
+#### Styling & Color Engine
+- Fills, strokes, stroke width, line caps, line joins, dash patterns, opacity, filters, and blur effects.
+- Multi-format colors: HEX, RGB, RGBA, HSL, HSLA, named colors, theme tokens (`$surface`, `$border`, `$textPrimary`), linear & radial gradients, patterns.
+
+#### Accessibility & Performance
+- Responsive `<svg viewBox="..." role="img" aria-label="...">` with title and description accessibility tags.
+- High performance: 5,000 vector shapes parsed, laid out, and rendered in under 500ms.
+- 601/601 tests passed with 0 regressions across all 7 completed phases.
+
 ## [6.0.0] — Phase 6 — Native Charts & Data Visualization Engine
 
 ### Added

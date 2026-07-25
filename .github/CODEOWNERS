@@ -1,10 +1,14 @@
-# Global owner — all files
+# Global owners — all files
 * @zolto-team
 
-# Engine source
+# Core engine & subsystems
 /src/ @zolto-core
+/src/diagram/ @zolto-diagrams
+/src/chart/ @zolto-charts
+/src/vector/ @zolto-vector
 /tests/ @zolto-core
 
-# Docs
+# Documentation & Examples
 /docs/ @zolto-docs
 /examples/ @zolto-docs
+/zolto/specs/ @zolto-docs
