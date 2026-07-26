@@ -1,8 +1,42 @@
 ---
-title: Custom Macros — Phase 4 Feature
+title: Custom Macros Showcase — Phase 9
+author: Zolto Architecture Team
+version: 10.0.0
 ---
 
-# Custom Macros — Phase 4 Feature
+# Custom Macros Showcase
 
-> **Phase:** This example requires a future phase.
-> Open this file once that phase is complete.
+This document demonstrates text macros, inline macros, and parameterized macro expansions in Zolto Phase 9.
+
+---
+
+## Macro Definitions
+
+macro note(text)
+info
+{text}
+end
+
+macro warning(text)
+warning
+⚠️ **Warning:** {text}
+end
+
+macro version()
+10.0.0
+end
+
+macro author()
+Zolto Core Team
+end
+
+---
+
+## Macro Usage
+
+Current Engine Version: version()
+Document Author: author()
+
+note("Custom macros expand during AST compilation prior to HTML rendering.")
+
+warning("Never modify generated output files directly; edit source `.zl` files instead.")

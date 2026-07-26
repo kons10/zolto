@@ -32,6 +32,8 @@ import { parseMath, parseMathRows } from './math-parser.js';
 import { parseDiagram }      from './diagram/parser.js';
 import { parseChart }        from './chart/parser.js';
 import { parseVector }       from './vector/parser.js';
+import { parseLayout }       from './layout/parser.js';
+import { parseInteractiveSource } from './interactive/parser.js';
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
@@ -95,6 +97,11 @@ function parseBlockToken(tok, ctx = {}) {
     case T.DIAGRAM_BLOCK:   return parseDiagram(tok.content, tok.header).ast; // Phase 5
     case T.CHART_BLOCK:     return parseChart(tok.content, tok.header).ast;   // Phase 6
     case T.VECTOR_BLOCK:    return parseVector(tok.content, tok.header).ast;  // Phase 7
+    case T.LAYOUT_BLOCK:    return parseLayout(tok.content, tok.header).ast;  // Phase 8
+    case T.INTERACTIVE_BLOCK: {                                                  // Phase 10
+      const nodes = parseInteractiveSource(tok.content);
+      return nodes.length === 1 ? nodes[0] : { type: 'interactive', id: null, classes: [], children: nodes };
+    }
     case T.PARAGRAPH:       return parseParagraph(tok, ctx);
     case 'directive': {
       const repCtx = {

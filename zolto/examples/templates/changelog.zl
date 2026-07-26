@@ -1,29 +1,54 @@
 ---
-title: Changelog
+title: Zolto Release Changelog
+author: Zolto Architecture Team
+version: 10.0.0
 ---
 
-# Changelog
+# Zolto Release Changelog
 
-All notable changes are documented here.
-Format: [Keep a Changelog](https://keepachangelog.com/) |
-Versioning: [Semantic Versioning](https://semver.org/)
+All notable changes to the Zolto Extended Document Language are documented here.
+Format: [Keep a Changelog](https://keepachangelog.com/) | Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
-## [Unreleased]
+## [10.0.0] — 2026-07-26 (Phase 10)
 
 ### Added
--
+- **Interactive Document Engine**: Safe, declarative block directives for `@form`, `@quiz`, `@deck`, `@poll`, `@tasks`, `@tabs`, `@accordion`, `@state`, and `@shared`.
+- **Quiz Scoring Engine**: Pure functional scoring for MCQ, multi-choice, true/false, fill-in-the-blank, and matching questions.
+- **Flashcard Deck Engine**: Shuffle, progress tracking, difficulty grouping, and tag filtering.
+- **Poll Engine**: Vote tallying and percentage computation.
+- **Accessibility & Security**: Auto-generated ARIA roles, labels, keyboard navigation focus rings, and zero-eval safety guarantees.
 
-### Changed
--
+---
+
+## [9.0.0] — 2026-07-26 (Phase 9)
+
+### Added
+- **Component System**: Named PascalCase components with default, typed (`: string`, `: number`, `: bool`, `: enum`), and required (`!`) props.
+- **Slot System**: Named slots (`slot header`), default slots, slot fallbacks, and slot forwarding.
+- **Templates**: Document pattern templates (`template`) with template inheritance (`extends`).
+- **Macros**: Text, parameterized (`macro note(text)`), and inline macros with safe 20-level recursion caps.
+- **Control Flow**: Conditional rendering (`if`/`elseif`/`else`) and loop iteration (`each items as item,index key expr`).
+- **Component Registry**: Document-scoped, imported, and built-in pattern registry (`Card`, `StatCard`, `AlertBox`, etc.).
+
+---
+
+## [8.0.0] — 2026-07-26 (Phase 8)
+
+### Added
+- **Spatial Layout Engine**: Responsive `@layout`, `@grid`, `@flex`, `@stack`, `@canvas`, `@pages`, and `@presentation` deck directives.
+
+---
+
+## [7.0.1] — 2026-07-25 (Phase 7 Patch)
 
 ### Fixed
--
+- Chart Engine negative value handling, zero-baseline rules, and pie chart 12 o'clock start position.
 
 ---
 
-## [1.0.0] — YYYY-MM-DD
+## [7.0.0] — 2026-07-25 (Phase 7)
 
 ### Added
-- Initial release
+- **Vector Graphics Engine**: Declarative `@vector` block syntax compiling to SVG with scene graphs, transforms, and Bezier paths.

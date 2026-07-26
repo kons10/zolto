@@ -1,11 +1,13 @@
 ---
 title: Links and Images
+author: Zolto Team
+version: 10.0.0
 ---
 
 # Links and Images
 
 ## Inline Links
-[Zolto GitHub](https://github.com/zolto/zolto "Zolto source code")
+[Zolto GitHub](https://github.com/uxle/zolto "Zolto source code")
 
 ## Reference Links
 See the [documentation][docs] for full details.
@@ -22,4 +24,4 @@ Visit <https://zolto.dev> or email <hello@zolto.dev>
 The logo ![icon](../icons/logo/zolto-icon.svg) appears inline here.
 
 ## HTML Entities
-Copyright &copy; 2025 · Registered &reg; · Trade mark &trade;
+Copyright &copy; 2026 · Registered &reg; · Trade mark &trade;

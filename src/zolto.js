@@ -24,13 +24,21 @@ import { renderMathHTML, mathToPlainText } from './math-renderer.js';
 import { renderMathML }            from './math-mathml.js';
 import { parseDiagram }            from './diagram/parser.js';
 import { renderDiagram }          from './diagram/renderer.js';
+import { validateDiagram }        from './diagram/validator.js';
 import { parseChart }            from './chart/parser.js';
 import { renderChart }           from './chart/renderer.js';
+import { validateChart }          from './chart/validator.js';
 import { parseVector }           from './vector/parser.js';
 import { renderVector }          from './vector/renderer.js';
+import { validateVector }        from './vector/validator.js';
+import { parseLayout }           from './layout/parser.js';
+import { renderLayout }          from './layout/renderer.js';
+import { validateLayout }        from './layout/validator.js';
+import { parseComponent, renderComponent, validateComponent, ComponentRegistry } from './component/index.js';
+import { parseInteractive, renderInteractive, validateInteractive } from './interactive/index.js';
 
-export const VERSION = '7.0.0';
-export const PHASE   = 7;
+export const VERSION = '10.0.0';
+export const PHASE   = 10;
 
 // ─── parse() ──────────────────────────────────────────────────────────────────
 
@@ -113,16 +121,38 @@ export {
 export {
   parseDiagram,
   renderDiagram,
+  validateDiagram,
 };
 
 export {
   parseChart,
   renderChart,
+  validateChart,
 };
 
 export {
   parseVector,
   renderVector,
+  validateVector,
+};
+
+export {
+  parseLayout,
+  renderLayout,
+  validateLayout,
+};
+
+export {
+  parseComponent,
+  renderComponent,
+  validateComponent,
+  ComponentRegistry,
+};
+
+export {
+  parseInteractive,
+  renderInteractive,
+  validateInteractive,
 };
 
 /**
@@ -130,7 +160,7 @@ export {
  * @returns {string}
  */
 export function about() {
-  return `Zolto v${VERSION} · Phase ${PHASE} · Native Vector Graphics & Drawing Engine\n` +
+  return `Zolto v${VERSION} · Phase ${PHASE} · Interactive Documents & Educational Features\n` +
          `  parse(src) → { ast, errors, warnings, diagnostics }\n` +
          `  render(ast, opts?) → html\n` +
          `  compile(src, opts?) → html\n` +
@@ -139,5 +169,11 @@ export function about() {
          `  parseChart(src, header) → { ast, diagnostics }\n` +
          `  renderChart(ast, opts?) → svg\n` +
          `  parseVector(src, header) → { ast, diagnostics }\n` +
-         `  renderVector(ast, opts?) → svg`;
+         `  renderVector(ast, opts?) → svg\n` +
+         `  parseLayout(src, header) → { ast, diagnostics }\n` +
+         `  renderLayout(ast, opts?) → html\n` +
+         `  parseComponent(src) → { nodes, registry }\n` +
+         `  renderComponent(node) → html\n` +
+         `  parseInteractive(src) → { nodes, diagnostics }\n` +
+         `  renderInteractive(node) → html`;
 }

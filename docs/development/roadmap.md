@@ -30,17 +30,17 @@ Declarative vector drawing language (`@vector`), scene graph, path language (Mov
 
 **Patch v7.0.1** also includes deep bug fixes across the chart engine: signed-domain negative value support for bar, hbar, line, area, spline, step, scatter, and bubble charts; zero-value pie/donut slice skipping; pie chart 12-o'clock start; area chart zero-baseline close; `NaN`/`null` data point filtering; and full `escapeXml()` audit across all three SVG subsystems.
 
-## Phase 8 — Spatial Layout & Canvas Engine 📋
+## Phase 8 — Spatial Layout & Canvas Engine ✅
 
-Declarative page and spatial layout system (`@layout`, `@grid`, `@flex`, `@canvas`, `@page`), responsive grid/flex columns, multi-page print layouts, presentation slide decks, sticky positioning, and z-index ordering.
+Declarative page and spatial layout system (`@layout`, `@grid`, `@flex`, `@stack`, `@canvas`, `@pages`, `@page`, `@presentation`, `@slide`), responsive grid/flex columns, multi-page print layouts, presentation slide decks, absolute positioning canvas, sticky positioning, z-index layer ordering, and static layout validator. **642 tests total (cumulative)**.
 
-## Phase 9 — Component, Template & Macro System 📋
+## Phase 9 — Component, Template & Macro System ✅
 
-Reusable abstraction system (`@component`, `@slot`, `@template`, `@macro`), typed props, slot forwarding, fallback slots, logic directives (`{#if}`, `{#each}`), component registry, built-in patterns (StatCard, FeatureCard, HeroSection).
+Reusable abstraction system (`component`, `template`, `macro`, `slot`, `fill`, `if`, `each`), typed props, slot forwarding, fallback slots, logic conditionals (`if`/`elseif`/`else`), loops (`each`), component registry, and 12 built-in patterns (`Card`, `StatCard`, `FeatureCard`, `AlertBox`, `HeroSection`, `SectionHeader`, `EmptyState`, `InfoPanel`, `ComparePanel`, `CallToAction`, `ProfileCard`, `DashboardTile`). **673 tests total (cumulative)**.
 
-## Phase 10 — Interactive Documents & Educational Features 📋
+## Phase 10 — Interactive Documents & Educational Features ✅
 
-Safe declarative interactive block model (`@interactive`, `@form`, `@quiz`, `@flashcard`, `@poll`, task progress), input validation, auto-grading, single/multi-choice questions, flip cards, data binding, and state preservation.
+Safe declarative interactive block model (`@interactive`, `@form`, `@quiz`, `@deck`, `@poll`, `@tasks`, `@tabs`, `@accordion`, `@state`, `@shared`), forms, inputs, buttons, toggles, sliders, quizzes, flashcards, polls, pure deterministic scoring engines, state maps, and data bindings without arbitrary scripting. **732 tests total (cumulative)**.
 
 ## Phase 11 — Animation & Presentation Runtime 📋
 
@@ -58,10 +58,10 @@ Full Language Server Protocol (LSP) implementation, autocomplete, hover tooltips
 
 Real-time multi-user collaboration, presence, version history, document branching & merging, inline review comments, workspace packaging, publishing pipeline, access control, audit trail.
 
-## Phase 15 — Universal Theme & Design System 📋
+## Phase 15 — Universal Theme System 📋
 
-Universal visual design tokens, built-in **Light**, **Dark**, and **Eye Protection** (soft warm low-strain reading) themes, runtime theme switching, typography scale, theme packages, and export consistency.
+Design tokens, Light, Dark, and Eye Protection themes, runtime switching, theme packages, user overrides.
 
-## Phase 16 — v1.0 Stable Release & Production Launch 📋
+## Phase 16 — v1.0 Stable Release 📋
 
-Feature & API freeze, formal language specification, security & stability audit, official CLI (`zolto build/render/preview/doctor`), cross-platform packaging, starter templates, and production launch.
+Feature & API freeze, formal specification, official CLI, security audit, starter templates, production readiness.

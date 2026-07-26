@@ -1,10 +1,38 @@
 ---
-title: Project README
+title: Project README Template
+author: Zolto Architecture Team
+version: 10.0.0
 ---
 
 # Project Name
 
-> One-line description of what this project does.
+> High-performance zero-dependency system built with Zolto Extended Document Language.
+
+@layout width=100% padding=16 gap=12 theme="light"
+
+@grid columns=12 gap=12
+  @cell span=4
+    @card title="Fast & Lightweight" variant="success"
+      Zero runtime dependencies and sub-millisecond compilation times.
+    @/card
+  @/cell
+
+  @cell span=4
+    @card title="100% Accessible" variant="info"
+      Full keyboard navigation, focus rings, and ARIA roles built-in.
+    @/card
+  @/cell
+
+  @cell span=4
+    @card title="Fully Typed" variant="primary"
+      Structured AST, monomorphic nodes, and strict validation diagnostics.
+    @/card
+  @/cell
+@/grid
+
+@/layout
+
+---
 
 ## Installation
 
@@ -15,15 +43,19 @@ npm install project-name
 ## Quick Start
 
 ```javascript
-import { thing } from 'project-name';
-thing.doSomething();
+import { compile } from 'project-name';
+
+const html = compile(`# Hello World`);
+console.log(html);
 ```
 
-## Features
+## Key Features
 
-- Feature one
-- Feature two
-- Feature three
+- **Phase 9 Components**: Declarative `component`, `template`, `macro`, `slot`, and `fill` constructs.
+- **Phase 10 Interactive Documents**: `@form`, `@quiz`, `@deck`, `@poll`, and `@tasks` widgets.
+- **Native Spatial Layouts**: `@layout`, `@grid`, `@flex`, `@canvas`, and `@presentation`.
+- **Vector Graphics & Math**: Native `@vector` drawing engine and TeX-compatible `@math`.
 
 ## License
+
 [MIT](LICENSE)

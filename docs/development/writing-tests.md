@@ -94,9 +94,10 @@ results.filter(r => !r.pass).forEach(r => console.log(r));
 | Phases 1–4 | `tests/tests.js`, `tests/tests-p1.js` – `tests/tests-p4.js` |
 | Phase 5 (Diagrams) | `tests/tests-p5.js` |
 | Phase 6 (Charts) | `tests/tests-p6.js` |
-| Phase 7 (Vector) | `tests/tests-p7.js` |
+| Phase 9 (Components & Macros) | `tests/tests-p9.js` |
+| Phase 10 (Interactive Documents) | `tests/tests-p10.js` |
 
-Total: **601 tests** across all 7 completed phases.
+Total: **732 tests** across all 10 completed phases.
 
 ## Testing chart edge cases
 

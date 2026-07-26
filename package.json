@@ -1,7 +1,7 @@
 {
   "name": "zolto",
-  "version": "7.0.0",
-  "description": "Zolto — Extended Markdown document engine. Phase 7: Native Vector Graphics & Drawing Engine.",
+  "version": "8.0.0",
+  "description": "Zolto — Extended Markdown document engine. Phase 8: Spatial Layout & Canvas Engine.",
   "type": "module",
   "main": "src/zolto.js",
   "exports": {
@@ -16,7 +16,8 @@
     "./tokenizer":   "./src/tokenizer.js",
     "./diagram":     "./src/diagram/index.js",
     "./chart":       "./src/chart/index.js",
-    "./vector":      "./src/vector/index.js"
+    "./vector":      "./src/vector/index.js",
+    "./layout":      "./src/layout/index.js"
   },
   "scripts": {
     "dev":    "npx serve . --port 3000 --no-request-logging",

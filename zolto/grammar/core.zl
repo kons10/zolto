@@ -1,5 +1,10 @@
-# Zolto Core Grammar
+# Zolto Core Grammar (v10.0.0)
 # Entry point — imports all domain grammars.
 @import "blocks.zl"
 @import "inline.zl"
 @import "metadata.zl"
+@import "math.zl"
+@import "directives.zl"
+@import "components.zl"
+@import "macros.zl"
+@import "interactive.zl"

@@ -1,2 +1,16 @@
-# Macro grammar — Phase 4
-# @macro definitions and invocations.
+# Macro Grammar Specification — Phase 9
+#
+# Text / Parameterized Macro Definition:
+#   macro <name>(<param_1>, <param_2>, ...)
+#     <macro_body>
+#   end
+#
+# Macro Invocation:
+#   <name>(<arg_1>, <arg_2>, ...)
+#
+# Inline Macro:
+#   <name>() inside text paragraphs
+#
+# Notes:
+# - Macros expand during AST transformation prior to final HTML rendering.
+# - Max recursion depth limit: 20 levels (prevents infinite loops).

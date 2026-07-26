@@ -1,6 +1,49 @@
 # Troubleshooting
 
-**Version:** 7.0.1 · Common Issues & Solutions
+**Version:** 8.0.0 · Common Issues & Solutions
+
+---
+
+## Spatial Layout Issues
+
+### Cell content does not align to grid columns (`@cell`)
+
+**Cause:** `@cell` directive used outside of a `@grid` container.
+
+**Fix:** Ensure `@cell` directives are placed directly inside a `@grid ... @/grid` block:
+
+```zolto
+@grid columns=3 gap=16
+  @cell
+    Content here
+  @/cell
+@/grid
+```
+
+---
+
+### Slide styling not applied (`@slide`)
+
+**Cause:** `@slide` directive used outside of a `@presentation` block.
+
+**Fix:** Ensure `@slide` directives are placed directly inside a `@presentation ... @/presentation` block.
+
+---
+
+### Grid template areas not rendering properly
+
+**Cause:** Multi-line `areas="..."` attribute has unmatched quotes or formatting.
+
+**Fix:** Use standard multi-line string syntax or escaped `\n`:
+
+```zolto
+@grid columns=3 areas="header header header
+sidebar main main"
+  @cell area="header"
+    Header
+  @/cell
+@/grid
+```
 
 ---
 
@@ -163,4 +206,5 @@ const html = render(ast);
 
 ---
 
-*Version: 7.0.1 · See also: [API Reference](../api/index.md) · [Charts Guide](charts.md) · [Vector Guide](vector.md)*
+*Version: 8.0.0 · See also: [API Reference](../api/index.md) · [Layout Guide](layout.md) · [Charts Guide](charts.md) · [Vector Guide](vector.md)*
+

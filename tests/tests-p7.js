@@ -114,6 +114,21 @@ text x=40 y=60 size=18 fill="#ffffff"
   assert(duration < 500, `Parses and renders 5,000 vector shapes under 500ms (took ${duration}ms)`);
   assert(perfSvg.length > 50000, 'Renders large vector illustration DOM output');
 
+  // 8. Vector Text Multi-Line Wrapping & Group Parsing
+  console.log('\n  Vector Text Multi-Line Wrapping & Group Parsing');
+  const { ast: wrapAst } = parseVector(`@vector
+layer id="content"
+  group id="card" transform="translate 220 120"
+    text id="body" x=100 y=84 size=14 fill="#a8b0c2" w=220 wrap=true
+      Native vector graphics with scene graph, transforms, shapes, and export-ready SVG.
+    @endtext
+  @endgroup
+@endlayer
+@/vector`);
+  const wrapSvg = renderVector(wrapAst);
+  assert(wrapSvg.includes('<tspan'), 'Vector text with wrap=true renders multi-line <tspan> elements');
+  assert(wrapSvg.includes('transform="translate(220 120)"'), 'Group transform translate 220 120 normalizes to valid SVG transform="translate(220 120)"');
+
   console.log(`\nPhase 7 Test Results: ${passed} passed, ${failed} failed.`);
   return { passed, failed };
 }

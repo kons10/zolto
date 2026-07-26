@@ -1,51 +1,44 @@
 ---
-title: "On the Design of Extended Markdown Engines"
-author: A. Scholar
-date: 2025-01-15
+title: "On the Design of Extended Spatial Document Engines"
+author: A. Scholar, B. Scientist
+date: 2026-07-26
 ---
 
-# On the Design of Extended Markdown Engines
+# On the Design of Extended Spatial Document Engines
 
-*Abstract* — We present Zolto, an extended Markdown engine that maintains
-strict backward compatibility while adding production-quality block and inline
-syntax. The system introduces a six-stage parser pipeline, structured diagnostics,
-and a pure-functional HTML renderer producing 233 passing tests across 31 suites.
+@pages size="A4" margin=32
+@page number=1
+# On the Design of Extended Spatial Document Engines
+
+*Abstract* — We present Zolto Phase 8, a zero-dependency document engine that combines Markdown, Math, Diagrams, Charts, Vector Graphics, and Spatial Layouts into a declarative syntax. The system produces 642 passing tests across 8 completed phases.
 
 ---
 
 ## 1. Introduction
 
-Standard Markdown[^md] provides a minimal yet expressive plain-text format.
-However, technical documentation frequently requires constructs unavailable in
-CommonMark: callouts, admonitions, definition lists, figure captions, and
-rich code block metadata.
+Technical documents require multi-column layouts, spatial grids, mathematical equations, and embedded charts.
 
-We identify three design constraints for any Markdown extension:
+@grid columns=2 gap=16
+@cell
+### Theoretical Model
+Inline math: $E = mc^2$ and relativistic mass:
 
-1. **Backward compatibility** — every valid CommonMark document must remain valid.
-2. **Modular architecture** — each feature must be independently testable.
-3. **Strict output** — given the same AST, the renderer must always produce identical HTML.
+@math label="eq:rel"
+m = \frac{m_0}{\sqrt{1 - \frac{v^2}{c^2}}}
+@/math
+@/cell
 
-## 2. Architecture
+@cell
+### Performance Chart
+@chart bar title="Render Latency (ms)"
+labels: P1 P2 P3 P4 P5 P6 P7 P8
+data: 2 4 5 8 12 18 22 28
+@/chart
+@/cell
+@/grid
 
-The Zolto Phase 2 engine comprises eight source modules, each under 800 lines:
+## 2. Conclusion
 
-| Module | Responsibility |
-| :----- | :------------- |
-| `ast.js` | Node factory functions with stable property layouts |
-| `tokenizer.js` | Character scanner, utilities, HTML entity map |
-| `lexer.js` | Block tokenizer producing typed token stream |
-| `inline-parser.js` | Cursor-based inline parser |
-| `parser.js` | Block → AST conversion |
-| `diagnostics.js` | Structured error/warning accumulator |
-| `validator.js` | AST walker with diagnostic emission |
-| `renderer.js` | Pure-functional AST → HTML generator |
-
-## 3. Results
-
-The test suite comprises 233 tests across 31 suites spanning all Phase 2
-features plus Phase 1 regression coverage. All tests pass.
-
----
-
-[^md]: Gruber, J. (2004). *Markdown*. https://daringfireball.net/projects/markdown/
+Zolto Phase 8 achieves full spatial composition with 0 external dependencies.
+@/page
+@/pages

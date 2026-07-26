@@ -1,0 +1,67 @@
+# Interactive Documents Grammar Specification — Phase 10
+#
+# Container Block:
+#   @interactive [id="..."]
+#     <interactive_directives>
+#   @/interactive
+#
+# Form & Fields:
+#   @form <name> {
+#     @text|@email|@password|@number|@search|@date|@time <field_name> [required]
+#       label "<text>"
+#       placeholder "<text>"
+#       value "<val>"
+#       help "<help_text>"
+#       error "<error_text>"
+#       min N max N step N
+#
+#     @textarea <name> [rows N]
+#     @check <name> [label "..."]
+#     @radio <name> { @option <val> "<label>" ... }
+#     @select <name> [multi] [searchable] { @option <val> "<label>" ... }
+#     @slider <name> <min>..<max> [step N]
+#     @toggle|@switch <name> [label "..."]
+#     @segment <name> { @item <val> ... }
+#     @button primary|secondary|ghost|danger|outline|icon "<label>"
+#   }
+#
+# Quiz Block:
+#   @quiz "<title>" [timed=N] {
+#     @mcq "<question>" {
+#       @correct "<option_text>"
+#       @choice "<option_text>"
+#       [@hint ...]
+#       [@explain ...]
+#     }
+#     @multi "<question>" { @correct "..." @choice "..." }
+#     @truefalse "<question>" answer true|false
+#     @blank "<question>" answer "<answer_text>"
+#     @match { <left> -> <right> ... }
+#   }
+#
+# Flashcard Deck:
+#   @deck <Name> {
+#     @card
+#       front "<front_text>"
+#       back "<back_text>"
+#       [difficulty easy|medium|hard]
+#       [tags tag1,tag2]
+#     @end
+#   }
+#
+# Poll:
+#   @poll "<question>" [multi] [anonymous] {
+#     <option_1>
+#     <option_2>
+#   }
+#
+# Tasks Checklist:
+#   @tasks {
+#     [ ] <task_text>
+#     [x] <completed_task_text>
+#   }
+#
+# State & Bindings:
+#   @state { <var_name> = <initial_val> ... }
+#   @shared { <var_name> = <val> ... }
+#   Interpolation: {var_name} inside text strings

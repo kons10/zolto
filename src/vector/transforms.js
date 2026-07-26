@@ -9,7 +9,14 @@ export function buildTransformString(node) {
   const parts = [];
 
   if (node.transform) {
-    parts.push(node.transform);
+    let tf = String(node.transform).trim();
+    if (!tf.includes('(')) {
+      const match = /^([a-zA-Z]+)\s+(.*)$/.exec(tf);
+      if (match) {
+        tf = `${match[1]}(${match[2].trim().replace(/,/g, ' ')})`;
+      }
+    }
+    parts.push(tf);
   }
 
   if (node.translate) {

@@ -1,26 +1,35 @@
 ---
-title: Complex Zolto Fixture
-version: 6.0.0
+title: Complex Zolto Fixture — Phase 10
+version: 10.0.0
 ---
 
 @var engine = Zolto
-@var phase  = 6
+@var phase  = 10
 
 # {{engine}} Phase {{phase}} — Full Feature Fixture {#top}
 
 > [!NOTE]
-> This fixture exercises all Phase 1–6 constructs in one document.
+> This fixture exercises all Phase 1–10 constructs in one document.
 
-@chart bar title="Performance Metrics"
-labels:
-  Parse
-  Validate
-  Render
-data:
-  12
-  5
-  18
-@/chart
+@layout width=100% padding=16 gap=12 theme="dark"
+  @grid columns=12 gap=12
+    @cell span=6
+      @chart bar title="Performance Metrics"
+      labels: Parse Validate Render
+      data: 12 5 18
+      @/chart
+    @/cell
+    @cell span=6
+      @vector width=360 height=180 theme="dark"
+      rect x=10 y=10 w=340 h=160 radius=12 fill="#1e2330" stroke="#334155"
+      circle cx=60 cy=60 r=24 fill="#6366f1"
+      text x=100 y=65 size=18 fill="#ffffff"
+        Vector Graphics
+      @endtext
+      @/vector
+    @/cell
+  @/grid
+@/layout
 
 @diagram flowchart title="Engine Execution Flow"
 Input -> Lexer -> Parser -> Validator -> Renderer -> Output
@@ -29,6 +38,25 @@ Input -> Lexer -> Parser -> Validator -> Renderer -> Output
 @math label="eq:relativity"
 E = m c^2
 @/math
+
+component FeatureBadge(label!, tone="primary")
+badge tone=tone
+{label}
+end
+end
+
+FeatureBadge(label="Phase 10 Active", tone="success")
+
+@form quickCheck {
+  @text username required
+  label "Username"
+  @button primary "Submit"
+}
+
+@quiz "Quick Quiz" {
+  @truefalse "Zolto supports native math, diagrams, charts, vectors, layouts, components, and interactive widgets."
+  answer true
+}
 
 [info title="Combined Test"]
 Testing **bold**, *italic*, ==highlight==, ^sup^, ~sub~, [[Ctrl+K]] inside an admonition.
@@ -57,17 +85,21 @@ Inertia
 : Resistance to change in state of motion.
 : Depends on mass.
 
-Table: Phase 6 Test Counts
+Table: Phase 10 Test Summary
 
 | Suite | Tests | Status |
 | :---- | ----: | :----: |
 | Math Engine | 120 | ✓ |
 | Diagram Engine | 40 | ✓ |
 | Chart Engine | 20 | ✓ |
-| **Total** | **562** | **✓** |
+| Vector Engine | 36 | ✓ |
+| Layout Engine | 41 | ✓ |
+| Component System | 31 | ✓ |
+| Interactive System | 59 | ✓ |
+| **Total** | **732** | **✓** |
 
 ---
 
 Footnote here[^1].
 
-[^1]: Phase 6 ships 562 tests across all engine suites.
+[^1]: Phase 10 ships 732/732 tests passing across all completed engine suites.

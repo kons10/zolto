@@ -21,6 +21,7 @@ import { validateMath }      from './math-validator.js';
 import { validateDiagram }   from './diagram/validator.js';
 import { validateChart }     from './chart/validator.js';
 import { validateVector }    from './vector/validator.js';
+import { validateLayout }    from './layout/validator.js';
 
 /**
  * @param {DocumentNode} doc
@@ -68,6 +69,12 @@ export function validate(doc) {
       for (const warn of vecDiag.getWarnings()) d.warn('W700', warn.message);
     }
   }
+
+  // ── Phase 8: layout validation ──────────────────────────────────────────
+  const layoutDiag = validateLayout(doc);
+  for (const err of layoutDiag.errors) d.error(err.code, err.message);
+  for (const warn of layoutDiag.warnings) d.warn(warn.code, warn.message);
+
 
   // ── Validate inline + block usage ────────────────────────────────────────
   for (const node of doc.children ?? []) {

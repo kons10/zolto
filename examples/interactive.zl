@@ -1,0 +1,141 @@
+---
+title: Zolto Interactive Documents & Educational Features Showcase (Phase 10)
+author: Zolto Architecture Team
+version: 10.0.0
+---
+
+# Zolto Phase 10 — Interactive Documents Showcase
+
+This document demonstrates the declarative interaction engine introduced in Phase 10:
+
+1. Interactive Forms & Inputs (`@form`, `@text`, `@email`, `@password`, `@select`, `@button`)
+2. Quizzes & Self-Assessment (`@quiz`, `@mcq`, `@multi`, `@truefalse`, `@blank`, `@match`)
+3. Flashcard Study Decks (`@deck`, `@card`)
+4. Live Polls & Tallies (`@poll`)
+5. Interactive Checklists (`@tasks`)
+6. Interactive Tabs & Accordions (`@tabs`, `@accordion`)
+
+---
+
+## 1. Interactive Form
+
+@form contact {
+  @text username required
+  label "Username"
+  placeholder "Enter your username"
+
+  @email email required
+  label "Email Address"
+  placeholder "user@example.com"
+
+  @select role {
+    @option dev "Developer"
+    @option designer "Designer"
+    @option manager "Product Manager"
+  }
+
+  @switch subscribe
+  label "Subscribe to newsletter"
+
+  @button primary "Create Account"
+}
+
+---
+
+## 2. Interactive Quiz
+
+@quiz "Computer Science Fundamentals" {
+
+  @mcq "What does CPU stand for?" {
+    @correct "Central Processing Unit"
+    @choice "Control Processing Unit"
+    @choice "Computer Power Unit"
+
+    @hint
+    Think about the central element executing instructions.
+    @end
+
+    @explain
+    The Central Processing Unit performs calculations and executes code.
+    @end
+  }
+
+  @multi "Select compiled programming languages:" {
+    @correct "C++"
+    @correct "Rust"
+    @choice "Python"
+    @choice "JavaScript"
+  }
+
+  @truefalse "HTTP status 404 means Not Found."
+  answer true
+
+  @blank "Capital of Japan"
+  answer "Tokyo"
+
+  @match {
+    Linux -> Kernel
+    HTML -> Markup
+    CSS -> Styling
+  }
+
+}
+
+---
+
+## 3. Flashcard Study Deck
+
+@deck CSConcepts {
+
+  @card
+    front "Algorithm"
+    back "A step-by-step procedure for solving a problem or performing a computation."
+  @end
+
+  @card
+    front "Complexity"
+    back "Big-O notation describes the limiting behavior of a function when the argument tends towards a particular value or infinity."
+  @end
+
+  @card
+    front "Recursion"
+    back "A technique where a function calls itself directly or indirectly."
+  @end
+
+}
+
+---
+
+## 4. Interactive Poll
+
+@poll "What is your primary use case for Zolto?" {
+  Documentation & Manuals
+  Interactive Quizzes & Courses
+  Data Dashboards & Analytics
+  Vector Graphics & Presentations
+}
+
+---
+
+## 5. Interactive Task List
+
+@tasks {
+  [x] Read Phase 10 Overview
+  [x] Review Interactive Syntax
+  [ ] Create First Interactive Document
+  [ ] Deploy Production Site
+}
+
+---
+
+## 6. Accordion & Tabs
+
+@accordion {
+  @section "Is scripting allowed inside Zolto documents?"
+  No. Zolto documents are purely declarative, safe, and deterministic. No arbitrary eval or JavaScript is allowed in source content.
+  @/section
+
+  @section "Are Phase 10 interactive elements accessible?"
+  Yes! All generated elements include appropriate ARIA roles, labels, keyboard navigation bindings, and focus ring styling.
+  @/section
+}

@@ -346,12 +346,64 @@ export function parseVector(sourceText, options = {}) {
 
       if (tok.type === VectorTokenType.IDENTIFIER) {
         const kw = String(tok.value).toLowerCase();
-        if (kw === 'rect') { advance(); children.push(createShapeNode('rect', parseAttributesInline())); }
-        else if (kw === 'circle') { advance(); children.push(createShapeNode('circle', parseAttributesInline())); }
-        else if (kw === 'ellipse') { advance(); children.push(createShapeNode('ellipse', parseAttributesInline())); }
-        else if (kw === 'line') { advance(); children.push(createShapeNode('line', parseAttributesInline())); }
-        else if (kw === 'path') { advance(); children.push(createShapeNode('path', parseAttributesInline())); }
-        else if (kw === 'text') {
+        if (kw === 'group') {
+          advance();
+          const attrs = parseAttributesInline();
+          const gChild = parseBlockChildren(['@endgroup', '@/group']);
+          children.push(createGroupNode(attrs, gChild));
+        } else if (kw === 'layer') {
+          advance();
+          const attrs = parseAttributesInline();
+          const lChild = parseBlockChildren(['@endlayer', '@/layer']);
+          children.push(createLayerNode(attrs.id || 'layer', lChild));
+        } else if (kw === 'frame') {
+          advance();
+          const attrs = parseAttributesInline();
+          const fChild = parseBlockChildren(['@endframe', '@/frame']);
+          children.push(createFrameNode(attrs, fChild));
+        } else if (kw === 'symbol') {
+          advance();
+          const attrs = parseAttributesInline();
+          const sChild = parseBlockChildren(['@endsymbol', '@/symbol']);
+          children.push(createSymbolNode(attrs.id || 'symbol', sChild));
+        } else if (kw === 'use') {
+          advance();
+          children.push(createUseNode(parseAttributesInline()));
+        } else if (kw === 'rect') {
+          advance();
+          children.push(createShapeNode('rect', parseAttributesInline()));
+        } else if (kw === 'circle') {
+          advance();
+          children.push(createShapeNode('circle', parseAttributesInline()));
+        } else if (kw === 'ellipse') {
+          advance();
+          children.push(createShapeNode('ellipse', parseAttributesInline()));
+        } else if (kw === 'line') {
+          advance();
+          children.push(createShapeNode('line', parseAttributesInline()));
+        } else if (kw === 'polyline') {
+          advance();
+          children.push(createShapeNode('polyline', parseAttributesInline()));
+        } else if (kw === 'polygon') {
+          advance();
+          children.push(createShapeNode('polygon', parseAttributesInline()));
+        } else if (kw === 'path') {
+          advance();
+          const attrs = parseAttributesInline();
+          if (attrs.d) {
+            children.push(createShapeNode('path', attrs));
+          } else {
+            const cmds = parsePathBlock();
+            attrs.d = cmds;
+            children.push(createShapeNode('path', attrs));
+          }
+        } else if (kw === 'image') {
+          advance();
+          children.push(createImageNode(parseAttributesInline()));
+        } else if (kw === 'icon') {
+          advance();
+          children.push(createIconNode(parseAttributesInline()));
+        } else if (kw === 'text') {
           advance();
           const attrs = parseAttributesInline();
           let txt = '';
@@ -362,8 +414,9 @@ export function parseVector(sourceText, options = {}) {
           }
           if (peek().value === '@endtext' || peek().value === '@/text') advance();
           children.push(createTextNode(attrs, txt.trim()));
+        } else {
+          advance();
         }
-        else advance();
       } else {
         advance();
       }

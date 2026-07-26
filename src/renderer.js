@@ -25,13 +25,18 @@
 
 import { escapeHtml, escapeAttr, slugify, uniqueSlug } from './tokenizer.js';
 import { renderDirective, PHASE3_CSS, hasP3Directives } from './directive-renderer.js';
-import { PHASE3_NODE_TYPES } from './ast.js';
+import { PHASE3_NODE_TYPES, PHASE8_NODE_TYPES, PHASE9_NODE_TYPES } from './ast.js';
 import { parseInline } from './inline-parser.js';
 import { renderMathHTML, mathToPlainText, hasMathNodes, MATH_CSS } from './math-renderer.js';
 import { renderMathML } from './math-mathml.js';
 import { renderDiagram } from './diagram/renderer.js';
 import { renderChart }   from './chart/renderer.js';
 import { renderVector }  from './vector/renderer.js';
+import { renderLayout, isLayoutNode, LAYOUT_BASE_CSS } from './layout/index.js';
+import { renderComponent, isComponentNode } from './component/index.js';
+import { renderInteractiveNode, hasInteractiveNodes } from './interactive/index.js';
+import { INTERACTIVE_CSS } from './interactive/styles.js';
+import { PHASE10_NODE_TYPES } from './ast.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
 
@@ -65,6 +70,8 @@ export function render(doc, opts = {}) {
   const parts = [];
   if (hasP3Directives(doc.children)) parts.push('<style id="zl-p3-styles">' + PHASE3_CSS + '</style>');
   if (hasMathNodes(doc.children))    parts.push('<style id="zl-math-styles">' + MATH_CSS + '</style>');
+  if (hasLayoutNodes(doc.children))  parts.push('<style id="zl-layout-styles">' + LAYOUT_BASE_CSS + '</style>');
+  if (hasInteractiveNodes(doc.children)) parts.push('<style id="zl-interactive-styles">' + INTERACTIVE_CSS + '</style>');
   parts.push(...doc.children.map(n => renderBlock(n, ctx)).filter(Boolean));
   if (opts.footnoteSection !== false) {
     const fn = renderFootnotes(ctx);
@@ -72,6 +79,12 @@ export function render(doc, opts = {}) {
   }
   return parts.join('\n');
 }
+
+function hasLayoutNodes(nodes) {
+  if (!Array.isArray(nodes)) return false;
+  return nodes.some(n => n && (PHASE8_NODE_TYPES.has(n.type) || isLayoutNode(n) || hasLayoutNodes(n.children)));
+}
+
 
 // ─── Render context ───────────────────────────────────────────────────────────
 
@@ -148,7 +161,19 @@ function renderBlock(node, ctx) {
     case 'diagram':         return renderDiagram(node, ctx.opts); // Phase 5
     case 'chart':           return renderChart(node, ctx.opts);   // Phase 6
     case 'vector':          return renderVector(node, ctx.opts);  // Phase 7
-    default:                return '';
+    default:
+      if (PHASE10_NODE_TYPES.has(node.type)) {                             // Phase 10
+        return renderInteractiveNode(node, ctx.opts);
+      }
+      if (PHASE9_NODE_TYPES.has(node.type) || isComponentNode(node)) {
+        return renderComponent(node, ctx.variables || {}, ctx.registry, n => renderBlock(n, ctx));
+      }
+      if (PHASE8_NODE_TYPES.has(node.type) || isLayoutNode(node)) {
+        const isDark = ctx.inDarkTheme || node.theme === 'dark' || node.theme === 'pitch-dark' || node.type === 'presentation' || node.type === 'slide';
+        const layoutCtx = isDark ? { ...ctx, inDarkTheme: true } : ctx;
+        return renderLayout(node, n => renderBlock(n, layoutCtx));
+      }
+      return '';
   }
 }
 
@@ -159,13 +184,15 @@ function renderHeading(node, ctx) {
   const rawId = node.id ?? slugify(inlineToText(node.children));
   const id    = uniqueSlug(rawId, ctx.usedIds);
   const cls   = node.classes?.length ? ` class="${node.classes.map(escapeAttr).join(' ')}"` : '';
-  return `<${tag} id="${escapeAttr(id)}"${cls}>${renderInline(node.children, ctx)}</${tag}>`;
+  const style = ctx?.inDarkTheme ? ' style="color: #ffffff !important;"' : '';
+  return `<${tag} id="${escapeAttr(id)}"${cls}${style}>${renderInline(node.children, ctx)}</${tag}>`;
 }
 
 // ─── Paragraph ────────────────────────────────────────────────────────────────
 
 function renderParagraph(node, ctx) {
-  return `<p>${renderInline(node.children, ctx)}</p>`;
+  const style = ctx?.inDarkTheme ? ' style="color: #e2e8f0 !important;"' : '';
+  return `<p${style}>${renderInline(node.children, ctx)}</p>`;
 }
 
 // ─── Blockquote ───────────────────────────────────────────────────────────────

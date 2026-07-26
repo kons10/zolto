@@ -1,26 +1,52 @@
 ---
-title: API Reference
+title: API Reference Template
+author: Zolto Architecture Team
+version: 10.0.0
 ---
 
-# API Reference
+# Zolto API Reference
 
-## functionName(param)
+component ApiMethod(name!, params="", returnType="void", desc="")
+card variant="info"
+### `function {name}({params}): {returnType}`
+{desc}
+slot
+end
+end
+end
 
-One-sentence description.
+ApiMethod(name="compile", params="source: string, options?: CompileOptions", returnType="string", desc="Compiles a Zolto source document into clean, accessible HTML output.")
 
-**Parameters:**
+@tabs {
+  @tab JavaScript / TypeScript
+```typescript
+import { compile } from 'zolto';
 
-`param` (string)
-: What this parameter controls.
-
-**Returns:** `ReturnType` — what it returns and why.
-
-**Example:**
-
-```javascript
-const result = functionName('value');
+const html = compile('@form login { @text username }');
 ```
+  @tab Node.js CLI
+```bash
+npx zolto compile document.zl -o output.html
+```
+@/tabs
 
-**Throws:**
+ApiMethod(name="parseInteractive", params="source: string", returnType="ParseResult", desc="Parses raw interactive block content into structured Phase 10 AST nodes with diagnostics.")
 
-- `TypeError` — if `param` is not a string.
+fill
+**Parameters:**
+- `source` (string) — Raw Zolto interactive content string.
+
+**Returns:** `{ nodes: ASTNode[], diagnostics: InteractiveDiagnostics }`
+end
+
+---
+
+## Interactive Playground
+
+@form apiTest {
+  @text sampleSource
+    label "Zolto Input"
+    value "@quiz \"Demo\" { @truefalse \"Is Zolto fast?\" answer true }"
+
+  @button primary "Run Compiler"
+}

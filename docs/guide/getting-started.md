@@ -1,8 +1,8 @@
 # Getting Started with Zolto
 
-**Version:** 7.0.1 · Phases 1–7 Complete
+**Version:** 10.0.0 · Phases 1–10 Complete
 
-Zolto is a **next-generation document & visualization language** — a strict superset of CommonMark that adds native Mathematics, Diagrams, Charts, Vector Graphics, and interactive components, all with zero external dependencies.
+Zolto is a **next-generation document & visualization language** — a strict superset of CommonMark that adds native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, Components, and Interactive Documents, all with **zero external dependencies**.
 
 Every valid `.md` file is a valid `.zl` file. You can adopt Zolto incrementally, feature by feature.
 
@@ -41,7 +41,7 @@ No build step. No bundler. Import and use.
 
 ---
 
-## Your First Document
+## Your First Interactive Document
 
 Create a file called `hello.zl`:
 
@@ -49,7 +49,7 @@ Create a file called `hello.zl`:
 ---
 title: My First Zolto Document
 author: Your Name
-date: 2026-07-25
+date: 2026-07-26
 ---
 
 # Hello, Zolto!
@@ -58,76 +58,40 @@ date: 2026-07-25
 > You already know Zolto if you know Markdown.
 > Every `.md` file is a valid `.zl` file.
 
-This document mixes **Phases 1–7** features:
+component Card(title="")
+card variant="primary"
+### {title}
+slot
+end
+end
 
-- GitHub-style callout above using `> [!TIP]`
-- ==Highlighted text== with `==text==`
-- Inline math: $E = mc^2$
+Card(title="Phase 10 Active")
+Zolto includes components, vector graphics, spatial layouts, and interactive widgets.
+end
 
-## A Native Chart
+@form contact {
+  @text username required
+  label "Username"
+  @email email required
+  label "Email"
+  @button primary "Submit"
+}
 
-@chart bar title="Weekly Visitors"
-labels: Mon Tue Wed Thu Fri Sat Sun
-data: 420 580 310 760 890 1200 980
-@/chart
-
-## A Native Diagram
-
-@diagram flowchart
-node A [label="Start"]
-node B [label="Process"]
-node C [label="End"]
-A -> B -> C
-@/diagram
-
-## A Native Vector Graphic
-
-@vector width=400 height=120 theme="dark"
-rect x=0 y=0 w=400 h=120 radius=10 fill="#1e2230"
-circle cx=60 cy=60 r=36 fill="#7c5cff"
-text x=112 y=52 size=18 weight=700 fill="#ffffff"
-  Hello, Vector!
-@endtext
-text x=112 y=78 size=13 fill="#a0aec0"
-  Declarative · Zero-dependency
-@endtext
-@/vector
+@quiz "Knowledge Check" {
+  @truefalse "Zolto requires zero external runtime dependencies."
+  answer true
+}
 ```
-
-Compile it programmatically:
-
-```javascript
-import { compile } from './src/zolto.js';
-import { readFileSync } from 'fs';
-
-const html = compile(readFileSync('hello.zl', 'utf8'));
-// html is a complete HTML fragment with embedded SVG
-```
-
-Or paste it into [Zolto Studio](http://localhost:3000) and see it render live.
-
----
-
-## Running the Test Suite
-
-```bash
-npm run check          # Syntax check all source and test files
-npm run test:node      # Run the full test suite (601 tests)
-```
-
-All 601 tests across phases 1–7 should pass with ✓ green output.
 
 ---
 
 ## Next Steps
 
-| Guide | What it covers |
-| :--- | :--- |
-| [Basic Syntax](basic-syntax.md) | CommonMark Markdown reference |
-| [Advanced Syntax](advanced-syntax.md) | Phase 2 extended Markdown features |
-| [Math Equations](math-equations.md) | LaTeX-style math with `$...$` and `@math` |
-| [Diagrams](diagrams.md) | 23 diagram types with `@diagram` |
-| [Charts](charts.md) | 24 chart types with `@chart`, including negative values |
-| [Vector Graphics](vector.md) | Declarative drawing with `@vector` |
-| [Configuration](configuration.md) | Themes, options, and render settings |
-| [API Reference](../api/index.md) | Full public API documentation |
+- **[Basic Syntax](basic-syntax.md)** — Learn about extended inline elements, callouts, and admonitions.
+- **[Math Equations](math-equations.md)** — Write LaTeX-style formulas with dual MathML output.
+- **[Diagrams](diagrams.md)** — Create sequence, flowchart, ER, and mindmap diagrams.
+- **[Charts](charts.md)** — Render 24 types of charts directly in your documents.
+- **[Vector Graphics](vector.md)** — Draw scalable vector illustrations and artboards.
+- **[Spatial Layout](layout.md)** — Use responsive CSS grids, flexbox flows, and slide presentation decks.
+- **[Components & Templates](components.md)** — Build reusable content abstractions with props and slots.
+- **[Interactive Documents](interactive.md)** — Create forms, quizzes, flashcard decks, and polls.

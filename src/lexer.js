@@ -45,6 +45,9 @@ export const T = Object.freeze({
   DIAGRAM_BLOCK:  'diagram_block',   // Phase 5
   CHART_BLOCK:    'chart_block',     // Phase 6
   VECTOR_BLOCK:   'vector_block',    // Phase 7
+  LAYOUT_BLOCK:   'layout_block',    // Phase 8
+  COMPONENT_BLOCK:'component_block', // Phase 9
+  INTERACTIVE_BLOCK:'interactive_block', // Phase 10
   BLANK:          'blank',
   PARAGRAPH:      'paragraph',
 });
@@ -60,7 +63,7 @@ const ADMON_TYPES = new Set([
 // ─── Block regex patterns ─────────────────────────────────────────────────────
 const RE = {
   BLANK:        /^\s*$/,
-  HEADING:      /^(#{1,6})(?:[ \t]+|$)(.*)/,
+  HEADING:      /^[ \t]*(#{1,6})(?:[ \t]+|$)(.*)/,
   HR:           /^(?:[-*_=~][ \t]*){3,}[ \t]*$/,
   FENCE_OPEN:   /^(`{3,}|~{3,})([ \t]*\S.*)?$/,
   BLOCKQUOTE:   /^(>+)[ \t]?(.*)/,
@@ -175,7 +178,7 @@ export function tokenize(src) {
 
     // · @math block  (Phase 4) — raw capture, body is LaTeX-like math,     ───
     // · never Markdown, so this runs BEFORE the generic directive check ──────
-    { const mm = /^@math(?:\s+(.*))?\s*$/.exec(line);
+    { const mm = /^[ \t]*@math(?:\s+(.*))?\s*$/.exec(line);
       if (mm) {
         const configStr  = (mm[1] ?? '').trim();
         const startLine  = i;
@@ -183,7 +186,7 @@ export function tokenize(src) {
         let closed = false;
         i++;
         while (i < lines.length) {
-          if (/^@\/math\s*$/.test(lines[i])) { closed = true; i++; break; }
+          if (/^[ \t]*@\/math\s*$/.test(lines[i])) { closed = true; i++; break; }
           bodyLines.push(lines[i]); i++;
         }
         if (!closed) err('Unclosed @math block (missing @/math)');
@@ -198,7 +201,7 @@ export function tokenize(src) {
     }
 
     // · @diagram block (Phase 5) — raw capture, body is Zolto graph syntax ───
-    { const dm = /^@diagram(?:\s+(.*))?\s*$/.exec(line);
+    { const dm = /^[ \t]*@diagram(?:\s+(.*))?\s*$/.exec(line);
       if (dm) {
         const configStr = (dm[1] ?? '').trim();
         const startLine = i;
@@ -206,7 +209,7 @@ export function tokenize(src) {
         let closed = false;
         i++;
         while (i < lines.length) {
-          if (/^@\/diagram\s*$/.test(lines[i])) { closed = true; i++; break; }
+          if (/^[ \t]*@\/diagram\s*$/.test(lines[i])) { closed = true; i++; break; }
           bodyLines.push(lines[i]); i++;
         }
         if (!closed) err('Unclosed @diagram block (missing @/diagram)');
@@ -221,7 +224,7 @@ export function tokenize(src) {
     }
 
     // · @chart block (Phase 6) — raw capture, body is Zolto chart syntax ──────
-    { const dm = /^@chart(?:\s+(.*))?\s*$/.exec(line);
+    { const dm = /^[ \t]*@chart(?:\s+(.*))?\s*$/.exec(line);
       if (dm) {
         const configStr = (dm[1] ?? '').trim();
         const startLine = i;
@@ -229,7 +232,7 @@ export function tokenize(src) {
         let closed = false;
         i++;
         while (i < lines.length) {
-          if (/^@\/chart\s*$/.test(lines[i])) { closed = true; i++; break; }
+          if (/^[ \t]*@\/chart\s*$/.test(lines[i])) { closed = true; i++; break; }
           bodyLines.push(lines[i]); i++;
         }
         if (!closed) err('Unclosed @chart block (missing @/chart)');
@@ -244,7 +247,7 @@ export function tokenize(src) {
     }
 
     // · @vector block (Phase 7) — raw capture, body is Zolto vector syntax ──────
-    { const dm = /^@vector(?:\s+(.*))?\s*$/.exec(line);
+    { const dm = /^[ \t]*@vector(?:\s+(.*))?\s*$/.exec(line);
       if (dm) {
         const configStr = (dm[1] ?? '').trim();
         const startLine = i;
@@ -252,7 +255,7 @@ export function tokenize(src) {
         let closed = false;
         i++;
         while (i < lines.length) {
-          if (/^@\/vector\s*$/.test(lines[i])) { closed = true; i++; break; }
+          if (/^[ \t]*@\/vector\s*$/.test(lines[i])) { closed = true; i++; break; }
           bodyLines.push(lines[i]); i++;
         }
         if (!closed) err('Unclosed @vector block (missing @/vector)');
@@ -266,8 +269,83 @@ export function tokenize(src) {
       }
     }
 
-    // · @directive blocks  (Phase 3) ------------------------------------------
-    { const dm = /^@([a-z][a-z0-9-]*)(.*)$/.exec(line);
+    // · @layout / @grid / @flex / @stack / @canvas / @pages / @presentation blocks (Phase 8) ──────
+    { const dm = /^[ \t]*@(layout|grid|flex|stack|canvas|pages|presentation)(?:\s+(.*))?\s*$/.exec(line);
+      if (dm) {
+        const tag = dm[1].toLowerCase();
+        let configStr = (dm[2] ?? '').trim();
+        const startLine = i;
+        let qCount = (configStr.match(/"/g) || []).length + (configStr.match(/'/g) || []).length;
+        while (qCount % 2 !== 0 && i + 1 < lines.length) {
+          i++;
+          configStr += '\n' + lines[i].trim();
+          qCount = (configStr.match(/"/g) || []).length + (configStr.match(/'/g) || []).length;
+        }
+        const headerLine = `@${tag} ${configStr}`;
+        const bodyLines = [];
+        let closed = false;
+        let depth = 1;
+        const openTag = `@${tag}`;
+        const closeTag = `@/${tag}`;
+        i++;
+        while (i < lines.length) {
+          const stripped = lines[i].trimStart();
+          if (stripped.startsWith(openTag) && (stripped[openTag.length] === undefined || /[\s/]/.test(stripped[openTag.length]))) {
+            depth++;
+          }
+          if (stripped === closeTag || stripped.startsWith(closeTag + ' ')) {
+            depth--;
+            if (depth === 0) { closed = true; i++; break; }
+          }
+          bodyLines.push(lines[i]); i++;
+        }
+        if (!closed) err(`Unclosed @${tag} block (missing @/${tag})`);
+        tokens.push({
+          type:    T.LAYOUT_BLOCK,
+          tag,
+          raw:     lines.slice(startLine, i).join('\n'),
+          header:  headerLine,
+          content: bodyLines.join('\n'),
+        });
+        continue;
+      }
+    }
+    // · @interactive / @form / @quiz / @deck / @poll / @tasks blocks (Phase 10) ──────
+    { const dm = /^[ \t]*@(interactive|form|quiz|deck|poll|tasks|state|shared)(?:[\s{].*)?\s*$/.exec(line);
+      if (dm) {
+        const tag = dm[1].toLowerCase();
+        const startLine = i;
+        const bodyLines = [];
+        let closed = false;
+        let depth = 1;
+        const openTag = `@${tag}`;
+        const closeTagSlash = `@/${tag}`;
+        i++;
+        while (i < lines.length) {
+          const stripped = lines[i].trimStart();
+          // Track nested open-braces and matching @/tag
+          if (stripped === closeTagSlash || stripped.startsWith(closeTagSlash + ' ') || stripped.startsWith(closeTagSlash + '\t')) {
+            depth--;
+            if (depth === 0) { closed = true; i++; break; }
+          } else if (stripped.startsWith(openTag) && (stripped[openTag.length] === undefined || /[\s{/]/.test(stripped[openTag.length]))) {
+            depth++;
+          }
+          bodyLines.push(lines[i]); i++;
+        }
+        if (!closed) err(`Unclosed @${tag} block (missing @/${tag})`);
+        tokens.push({
+          type:    T.INTERACTIVE_BLOCK,
+          tag,
+          raw:     lines.slice(startLine, i).join('\n'),
+          header:  `@${tag}`,
+          content: bodyLines.join('\n'),
+        });
+        continue;
+      }
+    }
+
+
+    { const dm = /^[ \t]*@([a-z][a-z0-9-]*)(.*)$/.exec(line);
       if (dm && KNOWN_DIRECTIVES.has(dm[1])) {
         const { tok, nextI } = lexDirective(lines, i, dm[1], dm[2].trim());
         tokens.push(tok);

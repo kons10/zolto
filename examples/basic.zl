@@ -1,5 +1,7 @@
 ---
-title: Basic Zolto Example — Phase 7
+title: Basic Zolto Example — Phase 10
+author: Zolto Team
+version: 10.0.0
 ---
 
 # Hello, Zolto!
@@ -17,22 +19,41 @@ This is a basic Zolto document — a strict superset of standard Markdown with z
 
 Inline math: $E = mc^2$.
 
-## Vector & Chart Showcase
+## Vector & Component Showcase
 
-@vector width=400 height=160 theme="dark"
-rect x=20 y=20 w=360 h=120 radius=16 fill="#1a1f2b" stroke="#2d3648" strokeWidth=2
-circle cx=70 cy=80 r=30 fill="#7c5cff"
-text x=120 y=85 size=20 fill="#ffffff"
-  Zolto Vector
-@endtext
-@/vector
+component Card(title, subtitle="", variant="default")
+card variant=variant
+### {title}
+{subtitle}
+slot
+end
+end
+
+Card(title="Welcome to Zolto", subtitle="Phase 10 Interactive Document Engine", variant="primary")
+Zolto combines Markdown, Math, Diagrams, Charts, Vectors, Spatial Layouts, Components, and Interactive Features into a single zero-dependency language.
+end
+
+## Interactive Form Showcase
+
+@form contact {
+  @text username required
+  label "Username"
+
+  @email email required
+  label "Email"
+
+  @button primary "Submit"
+}
 
 ## Summary Table
 
-| Feature | Phase 1 | Phase 4 | Phase 5 | Phase 6 | Phase 7 |
-| :------ | :-----: | :-----: | :-----: | :-----: | :-----: |
-| Markdown | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Mathematics | ✗ | ✓ | ✓ | ✓ | ✓ |
-| Diagrams | ✗ | ✗ | ✓ | ✓ | ✓ |
-| Charts | ✗ | ✗ | ✗ | ✓ | ✓ |
-| Vector Graphics | ✗ | ✗ | ✗ | ✗ | ✓ |
+| Feature | P1 | P4 | P5 | P6 | P7 | P8 | P9 | P10 |
+| :------ | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| Markdown | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Mathematics | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Diagrams | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Charts | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Vector Graphics | ✗ | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ |
+| Spatial Layout | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ |
+| Components & Macros | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✓ |
+| Interactive Documents | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ |

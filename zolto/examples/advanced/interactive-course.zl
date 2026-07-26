@@ -1,0 +1,77 @@
+---
+title: Interactive Course Module — Phase 10
+author: Education Team
+version: 10.0.0
+---
+
+# Interactive Course Module: Introduction to Zolto
+
+Welcome to the interactive learning module for Zolto. Work through the lesson, practice with flashcards, and test your knowledge!
+
+---
+
+## 1. Lesson Overview
+
+> [!NOTE]
+> Zolto combines Markdown, Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, Components, and Interactive Widgets into a unified zero-dependency language.
+
+---
+
+## 2. Interactive Study Flashcards
+
+@deck ZoltoBasics {
+
+  @card
+    front "What is Zolto?"
+    back "A zero-dependency document engine and Markdown superset."
+  @end
+
+  @card
+    front "Which phase introduced Vector Graphics?"
+    back "Phase 7 introduced the native @vector drawing engine."
+  @end
+
+  @card
+    front "What syntax creates a reusable component?"
+    back "component Name(props) ... end"
+  @end
+
+}
+
+---
+
+## 3. Self-Assessment Quiz
+
+@quiz "Module 1 Assessment" {
+
+  @mcq "How many external dependencies does Zolto require?" {
+    @correct "Zero dependencies"
+    @choice "5 npm packages"
+    @choice "12 WebAssembly modules"
+  }
+
+  @truefalse "Zolto components can be nested and support slot injection."
+  answer true
+
+  @blank "What keyword defines a template in Phase 9?"
+  answer "template"
+
+  @match {
+    Phase 7 -> Vector Engine
+    Phase 8 -> Spatial Layout
+    Phase 9 -> Component System
+    Phase 10 -> Interactive Documents
+  }
+
+}
+
+---
+
+## 4. Course Feedback Poll
+
+@poll "How would you rate this course module?" {
+  ⭐⭐⭐⭐⭐ Excellent
+  ⭐⭐⭐⭐ Good
+  ⭐⭐⭐ Average
+  ⭐⭐ Needs Improvement
+}

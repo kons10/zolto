@@ -26,7 +26,7 @@ export function renderVectorSvgNode(node, themeName = 'dark', vectorId = 'v1') {
   const tfStr = transformAttr ? `transform="${transformAttr}"` : '';
   const fill = resolveColorToken(node.fill, theme);
   const stroke = resolveColorToken(node.stroke, theme);
-  const opacityAttr = node.opacity !== 1 ? `opacity="${node.opacity}"` : '';
+  const opacityAttr = (node.opacity !== undefined && node.opacity !== null && node.opacity !== 1) ? `opacity="${escapeXml(node.opacity)}"` : '';
 
   switch (node.type) {
     case 'vector_artboard':
@@ -45,22 +45,39 @@ export function renderVectorSvgNode(node, themeName = 'dark', vectorId = 'v1') {
 
     case 'vector_text': {
       const textFill = fill || resolveColorToken('$textPrimary', theme) || '#ffffff';
-      const content = escapeXml(node.content);
-      return `<text x="${node.x}" y="${node.y}" fill="${textFill}" font-family="${escapeXml(node.fontFamily)}" font-size="${node.fontSize}" font-weight="${node.fontWeight}" text-anchor="${node.textAlign}" ${tfStr} ${opacityAttr}>${content}</text>`;
+      const fontSize = node.fontSize || 14;
+      const maxW = node.w || node.maxWidth;
+      const shouldWrap = node.wrap || (maxW > 0);
+
+      if (!shouldWrap || !maxW) {
+        return `<text x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" fill="${textFill}" font-family="${escapeXml(node.fontFamily)}" font-size="${escapeXml(fontSize)}" font-weight="${escapeXml(node.fontWeight)}" text-anchor="${escapeXml(node.textAlign)}" ${tfStr} ${opacityAttr}>${escapeXml(node.content)}</text>`;
+      }
+
+      const lines = wrapVectorText(node.content, maxW, fontSize);
+      if (lines.length <= 1) {
+        return `<text x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" fill="${textFill}" font-family="${escapeXml(node.fontFamily)}" font-size="${escapeXml(fontSize)}" font-weight="${escapeXml(node.fontWeight)}" text-anchor="${escapeXml(node.textAlign)}" ${tfStr} ${opacityAttr}>${escapeXml(node.content)}</text>`;
+      }
+
+      const lineHeight = fontSize * (node.lineHeight || 1.3);
+      const tspans = lines.map((l, i) =>
+        `<tspan x="${escapeXml(node.x)}" dy="${i === 0 ? 0 : lineHeight}">${escapeXml(l)}</tspan>`
+      ).join('');
+
+      return `<text x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" fill="${textFill}" font-family="${escapeXml(node.fontFamily)}" font-size="${escapeXml(fontSize)}" font-weight="${escapeXml(node.fontWeight)}" text-anchor="${escapeXml(node.textAlign)}" ${tfStr} ${opacityAttr}>${tspans}</text>`;
     }
 
     case 'vector_image': {
-      return `<image href="${escapeXml(node.src)}" x="${node.x}" y="${node.y}" width="${node.w}" height="${node.h}" ${tfStr} ${opacityAttr} />`;
+      return `<image href="${escapeXml(node.src)}" x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" width="${escapeXml(node.w)}" height="${escapeXml(node.h)}" ${tfStr} ${opacityAttr} />`;
     }
 
     case 'vector_icon': {
       const iconColor = fill || resolveColorToken(node.color, theme) || '#7c5cff';
       const r = node.size / 2;
-      return `<g ${tfStr} ${opacityAttr}><circle cx="${node.x + r}" cy="${node.y + r}" r="${r}" fill="${iconColor}" /><text x="${node.x + r}" y="${node.y + r + 5}" fill="#ffffff" font-size="${r * 1.2}" text-anchor="middle">★</text></g>`;
+      return `<g ${tfStr} ${opacityAttr}><circle cx="${node.x + r}" cy="${node.y + r}" r="${escapeXml(r)}" fill="${iconColor}" /><text x="${node.x + r}" y="${node.y + r + 5}" fill="#ffffff" font-size="${r * 1.2}" text-anchor="middle">★</text></g>`;
     }
 
     case 'vector_use': {
-      return `<use href="${escapeXml(node.href)}" x="${node.x}" y="${node.y}" ${tfStr} />`;
+      return `<use href="${escapeXml(node.href)}" x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" ${tfStr} />`;
     }
 
     case 'vector_gradient': {
@@ -69,9 +86,9 @@ export function renderVectorSvgNode(node, themeName = 'dark', vectorId = 'v1') {
       ).join('\n');
 
       if (node.gradientType === 'radial') {
-        return `<radialGradient id="${escapeXml(node.id)}" cx="${node.cx}" cy="${node.cy}" r="${node.r}">${stopsHtml}</radialGradient>`;
+        return `<radialGradient id="${escapeXml(node.id)}" cx="${escapeXml(node.cx)}" cy="${escapeXml(node.cy)}" r="${escapeXml(node.r)}">${stopsHtml}</radialGradient>`;
       }
-      return `<linearGradient id="${escapeXml(node.id)}" x1="${node.x1}" y1="${node.y1}" x2="${node.x2}" y2="${node.y2}">${stopsHtml}</linearGradient>`;
+      return `<linearGradient id="${escapeXml(node.id)}" x1="${escapeXml(node.x1)}" y1="${escapeXml(node.y1)}" x2="${escapeXml(node.x2)}" y2="${escapeXml(node.y2)}">${stopsHtml}</linearGradient>`;
     }
 
     default:
@@ -85,31 +102,31 @@ function renderShapePrimitive(node, fill, stroke, tfStr, opacityAttr) {
   const ariaAttr = node.ariaLabel ? `role="img" aria-label="${escapeXml(node.ariaLabel)}"` : (node.ariaHidden ? 'aria-hidden="true"' : '');
   const titleChild = node.title ? `<title>${escapeXml(node.title)}</title>` : '';
   const fillAttr = fill ? `fill="${escapeXml(fill)}"` : (node.fill === 'none' ? 'fill="none"' : 'fill="#7c5cff"');
-  const strokeAttr = stroke ? `stroke="${escapeXml(stroke)}" stroke-width="${node.strokeWidth || 1}"` : '';
+  const strokeAttr = stroke ? `stroke="${escapeXml(stroke)}" stroke-width="${escapeXml(node.strokeWidth || 1)}"` : '';
 
   if (shape === 'circle') {
     const r = node.r || node.radius || 20;
     return titleChild
-      ? `<g ${idAttr} ${tfStr}><circle cx="${node.cx || node.x}" cy="${node.cy || node.y}" r="${r}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-      : `<circle ${idAttr} cx="${node.cx || node.x}" cy="${node.cy || node.y}" r="${r}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+      ? `<g ${idAttr} ${tfStr}><circle cx="${node.cx || node.x}" cy="${node.cy || node.y}" r="${escapeXml(r)}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+      : `<circle ${idAttr} cx="${node.cx || node.x}" cy="${node.cy || node.y}" r="${escapeXml(r)}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
   }
 
   if (shape === 'ellipse') {
     return titleChild
-      ? `<g ${idAttr} ${tfStr}><ellipse cx="${node.cx || node.x}" cy="${node.cy || node.y}" rx="${node.rx || 30}" ry="${node.ry || 15}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-      : `<ellipse ${idAttr} cx="${node.cx || node.x}" cy="${node.cy || node.y}" rx="${node.rx || 30}" ry="${node.ry || 15}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+      ? `<g ${idAttr} ${tfStr}><ellipse cx="${escapeXml(node.cx || node.x)}" cy="${escapeXml(node.cy || node.y)}" rx="${escapeXml(node.rx || 30)}" ry="${escapeXml(node.ry || 15)}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+      : `<ellipse ${idAttr} cx="${escapeXml(node.cx || node.x)}" cy="${escapeXml(node.cy || node.y)}" rx="${escapeXml(node.rx || 30)}" ry="${escapeXml(node.ry || 15)}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
   }
 
   if (shape === 'line') {
     return titleChild
-      ? `<g ${idAttr} ${tfStr}><line x1="${node.x1}" y1="${node.y1}" x2="${node.x2}" y2="${node.y2}" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-      : `<line ${idAttr} x1="${node.x1}" y1="${node.y1}" x2="${node.x2}" y2="${node.y2}" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+      ? `<g ${idAttr} ${tfStr}><line x1="${escapeXml(node.x1)}" y1="${escapeXml(node.y1)}" x2="${escapeXml(node.x2)}" y2="${escapeXml(node.y2)}" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+      : `<line ${idAttr} x1="${escapeXml(node.x1)}" y1="${escapeXml(node.y1)}" x2="${escapeXml(node.x2)}" y2="${escapeXml(node.y2)}" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
   }
 
   if (shape === 'polyline') {
     return titleChild
-      ? `<g ${idAttr} ${tfStr}><polyline points="${escapeXml(node.points || '')}" fill="none" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-      : `<polyline ${idAttr} points="${escapeXml(node.points || '')}" fill="none" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+      ? `<g ${idAttr} ${tfStr}><polyline points="${escapeXml(node.points || '')}" fill="none" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+      : `<polyline ${idAttr} points="${escapeXml(node.points || '')}" fill="none" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
   }
 
   if (shape === 'polygon') {
@@ -126,16 +143,37 @@ function renderShapePrimitive(node, fill, stroke, tfStr, opacityAttr) {
 
   if (shape === 'bezier-quadratic' || shape === 'bezier-cubic') {
     const pathD = shape === 'bezier-cubic'
-      ? `M ${node.x1} ${node.y1} C ${node.c1x} ${node.c1y}, ${node.c2x} ${node.c2y}, ${node.x2} ${node.y2}`
-      : `M ${node.x1} ${node.y1} Q ${node.c1x} ${node.c1y}, ${node.x2} ${node.y2}`;
+      ? `M ${escapeXml(node.x1)} ${escapeXml(node.y1)} C ${escapeXml(node.c1x)} ${escapeXml(node.c1y)}, ${escapeXml(node.c2x)} ${escapeXml(node.c2y)}, ${escapeXml(node.x2)} ${escapeXml(node.y2)}`
+      : `M ${escapeXml(node.x1)} ${escapeXml(node.y1)} Q ${escapeXml(node.c1x)} ${escapeXml(node.c1y)}, ${escapeXml(node.x2)} ${escapeXml(node.y2)}`;
     return titleChild
-      ? `<g ${idAttr} ${tfStr}><path d="${pathD}" fill="none" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-      : `<path ${idAttr} d="${pathD}" fill="none" stroke="${stroke || fill || '#7c5cff'}" stroke-width="${node.strokeWidth || 2}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+      ? `<g ${idAttr} ${tfStr}><path d="${pathD}" fill="none" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+      : `<path ${idAttr} d="${pathD}" fill="none" stroke="${escapeXml(stroke || fill || '#7c5cff')}" stroke-width="${escapeXml(node.strokeWidth || 2)}" ${ariaAttr} ${tfStr} ${opacityAttr} />`;
   }
 
   // Default: rect
   const rVal = node.radius || node.r || 0;
   return titleChild
-    ? `<g ${idAttr} ${tfStr}><rect x="${node.x}" y="${node.y}" width="${node.w}" height="${node.h}" rx="${rVal}" ry="${rVal}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
-    : `<rect ${idAttr} x="${node.x}" y="${node.y}" width="${node.w}" height="${node.h}" rx="${rVal}" ry="${rVal}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+    ? `<g ${idAttr} ${tfStr}><rect x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" width="${escapeXml(node.w)}" height="${escapeXml(node.h)}" rx="${rVal}" ry="${rVal}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${opacityAttr} />${titleChild}</g>`
+    : `<rect ${idAttr} x="${escapeXml(node.x)}" y="${escapeXml(node.y)}" width="${escapeXml(node.w)}" height="${escapeXml(node.h)}" rx="${rVal}" ry="${rVal}" ${fillAttr} ${strokeAttr} ${ariaAttr} ${tfStr} ${opacityAttr} />`;
+}
+
+function wrapVectorText(content, maxW, fontSize) {
+  if (!maxW || !content) return [content];
+  const charWidth = fontSize * 0.58;
+  const maxChars = Math.max(10, Math.floor(maxW / charWidth));
+
+  const words = String(content).split(/\s+/);
+  const lines = [];
+  let currentLine = '';
+
+  for (const word of words) {
+    if ((currentLine + (currentLine ? ' ' : '') + word).length <= maxChars) {
+      currentLine += (currentLine ? ' ' : '') + word;
+    } else {
+      if (currentLine) lines.push(currentLine);
+      currentLine = word;
+    }
+  }
+  if (currentLine) lines.push(currentLine);
+  return lines;
 }

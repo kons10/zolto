@@ -1,18 +1,52 @@
 ---
-title: Zolto Full Feature Showcase — Phase 7
+title: Zolto Full Feature Showcase — Phase 10
+author: Zolto Architecture Team
+version: 10.0.0
 ---
 
 @var engine = Zolto
-@var phase  = 7
+@var phase  = 10
 
 # {{engine}} Phase {{phase}} Full Showcase
 
 > [!NOTE]
-> Zolto is a strict superset of standard Markdown with native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, and Components — built with Zero Dependencies.
+> Zolto is a strict superset of standard Markdown with native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, Reusable Components, and Interactive Documents — built with Zero External Dependencies.
 
 ---
 
-## 1. Native Vector Graphics Engine (Phase 7)
+## 1. Native Spatial Layout Engine (Phase 8)
+
+@layout width=100% padding=24 gap=20 theme="dark"
+  @header
+    ### Responsive Dashboard Layout
+  @/header
+
+  @grid columns=12 gap=16
+    @cell span=8
+      @flex direction="column" gap=12
+        @item
+          @card title="Main Overview" variant="info"
+            Welcome to the Zolto Spatial Layout Engine showcase.
+          @/card
+        @/item
+      @/flex
+    @/cell
+
+    @cell span=4
+      @stack mode="overlay"
+        @item z=1
+          @card title="System Metric"
+            CPUs: 99.8% Nominal
+          @/card
+        @/item
+      @/stack
+    @/cell
+  @/grid
+@/layout
+
+---
+
+## 2. Native Vector Graphics Engine (Phase 7)
 
 @vector width=800 height=320 viewBox="0 0 800 320" background="#111318" theme="dark"
 gradient id="heroGlow" type="radial" cx=0.5 cy=0.5 r=0.8
@@ -42,7 +76,69 @@ artboard id="main" x=0 y=0 w=800 h=320
 
 ---
 
-## 2. Native Charts Engine (Phase 6)
+## 3. Native Component, Template & Macro System (Phase 9)
+
+component Alert(tone="info", title="")
+card variant=tone
+### {title}
+slot
+end
+end
+
+macro note(text)
+info
+{text}
+end
+
+Alert(tone="warning", title="Component System")
+Components, templates, and macros allow authors to define content abstractions once and reuse them across documents.
+end
+
+note("This note was expanded via a Zolto Phase 9 macro.")
+
+---
+
+## 4. Interactive Documents & Educational Features (Phase 10)
+
+@quiz "Zolto Knowledge Check" {
+  @mcq "What is Zolto's primary design goal?" {
+    @correct "Zero-dependency Markdown superset with native rich media"
+    @choice "Heavy framework with npm dependencies"
+    @choice "CSS-only preprocessor"
+  }
+
+  @truefalse "Zolto supports native math equations without KaTeX."
+  answer true
+
+  @blank "Capital of France"
+  answer "Paris"
+}
+
+@deck ZoltoCore {
+  @card
+    front "Phase 7"
+    back "Native Vector Graphics Engine"
+  @end
+  @card
+    front "Phase 9"
+    back "Component, Template & Macro System"
+  @end
+  @card
+    front "Phase 10"
+    back "Interactive Documents & Educational Features"
+  @end
+}
+
+@poll "Which Zolto phase is your favorite?" {
+  Phase 7 — Vector Engine
+  Phase 8 — Spatial Layout
+  Phase 9 — Components & Macros
+  Phase 10 — Interactive Documents
+}
+
+---
+
+## 5. Native Charts Engine (Phase 6)
 
 @chart spline title="Quarterly API Traffic & Revenue" theme="dark"
 labels:
@@ -60,7 +156,7 @@ data:
 
 ---
 
-## 3. Native Diagram Engine (Phase 5)
+## 6. Native Diagram Engine (Phase 5)
 
 @diagram sequence title="Authentication Sequence"
 actor User
@@ -75,7 +171,7 @@ App -> User: Authenticated
 
 ---
 
-## 4. Native Math Engine (Phase 4)
+## 7. Native Math Engine (Phase 4)
 
 Inline math: $E = mc^2$ and Euler's identity $e^{i\pi} + 1 = 0$.
 
@@ -87,7 +183,7 @@ Reference to Equation @ref(eq:einstein).
 
 ---
 
-## 5. Native Block Directives (Phase 3)
+## 8. Native Block Directives (Phase 3)
 
 @tabs
   @tab label="Overview"
@@ -102,10 +198,10 @@ Reference to Equation @ref(eq:einstein).
 
 ---
 
-## 6. Callouts & Admonitions (Phases 2-3)
+## 9. Callouts & Admonitions (Phases 2-3)
 
 > [!TIP]
-> Zolto is a high-performance document engine supporting native math, diagrams, charts, vectors, and directives.
+> Zolto is a high-performance document engine supporting native math, diagrams, charts, vectors, spatial layouts, components, and interactive widgets.
 
 [info title="Zolto Engine Info"]
 100% backward compatible with CommonMark and GitHub Flavored Markdown.
@@ -113,7 +209,7 @@ Reference to Equation @ref(eq:einstein).
 
 ---
 
-## 7. Definition List & Code Metadata
+## 10. Definition List & Code Metadata
 
 ```javascript title="app.js" {2} numbers
 import { compile } from 'zolto';
@@ -121,8 +217,8 @@ const html = compile(zoltoSourceStr);
 console.log(html);
 ```
 
-Vector Engine
-: Declarative `@vector` block syntax compiling into responsive, accessible SVG.
+Component System
+: Declarative `component`, `template`, `macro`, `slot`, `fill` constructs with typed props and scoped evaluation.
 
-Chart Engine
-: Native `@chart <type> ... @/chart` data visualization block.
+Interactive Documents
+: Declarative `@form`, `@quiz`, `@deck`, `@poll`, `@tasks`, `@state`, `@shared` blocks compiling to accessible HTML.

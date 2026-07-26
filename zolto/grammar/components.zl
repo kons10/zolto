@@ -1,2 +1,40 @@
-# Component grammar — Phase 4
-# @component, @slot, JSX-style tags.
+# Component Grammar Specification — Phase 9
+#
+# Component Definition:
+#   component <Name>(<prop_1>[!][: <type>[=<default>]], ...)
+#     <body_content>
+#     slot [<slot_name>]
+#       [<fallback_content>]
+#     end
+#   end
+#
+# Component Invocation:
+#   <Name>(<prop_1>=<val_1>, ...)
+#     [fill <slot_name>]
+#       <slot_content>
+#     [end]
+#     <default_slot_content>
+#   end
+#
+# Props Types:
+#   string, number, bool/boolean, enum(val1, val2, ...), array, object, any
+#   ! suffix denotes a required prop (e.g., title!)
+#
+# Slots & Fills:
+#   slot          → default slot definition
+#   slot header   → named slot definition
+#   fill header   → fill named slot at invocation site
+#
+# Conditionals:
+#   if <condition>
+#     <body_if>
+#   [elseif <condition2>]
+#     <body_elseif>
+#   [else]
+#     <body_else>
+#   end
+#
+# Loops:
+#   each <iterable> as <item_var>[, <index_var>] [key <key_expr>]
+#     <loop_body>
+#   end

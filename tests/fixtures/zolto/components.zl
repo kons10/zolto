@@ -1,22 +1,25 @@
 ---
-title: Component Fixture (Phase 4 placeholder)
+title: Component Fixture — Phase 9
+author: Zolto Test Suite
 ---
 
-# Component Syntax — Phase 4
+# Component Syntax — Phase 9
 
-> [!IMPORTANT]
-> Components are implemented in Phase 4.
-> This fixture is a placeholder for future tests.
+component Card(title="", subtitle="", variant="default")
+card variant=variant
+### {title}
+{subtitle}
+slot
+end
+end
 
-The planned syntax:
+Card(title="Welcome to Zolto Components", subtitle="Phase 9 Architecture", variant="primary")
+This is the body content injected into the default slot.
+end
 
-```zolto
-@component Card title="" variant="default"
-  ### {title}
-  [slot default][/slot]
-@/component
+macro note(text)
+info
+{text}
+end
 
-<Card title="Hello">
-  Content inside the card.
-</Card>
-```
+note("Phase 9 component and macro system active.")

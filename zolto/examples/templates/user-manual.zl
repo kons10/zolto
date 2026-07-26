@@ -1,48 +1,56 @@
 ---
-title: User Manual
+title: User Manual Template
+author: Zolto Technical Writing Team
+version: 10.0.0
 ---
 
-# User Manual
+# Zolto User Manual
 
-## Getting Started
+> Welcome to the User Manual. Use this guide to set up, configure, and master Zolto 10.0.0.
 
-[tip]
-Read this section first — it covers everything you need to get up and running.
-[/tip]
+---
 
-### Installation
+## 1. Quick Setup Checklist
 
-1. Download the application.
-2. Follow the setup wizard.
-3. Launch the application.
+@tasks {
+  [ ] Install Zolto CLI (`npm i -g zolto`)
+  [ ] Initialize workspace (`zolto init`)
+  [ ] Create first `.zl` document
+  [ ] Compile document (`zolto build`)
+}
 
-### First Steps
+---
 
-1. Open the application.
-2. Create a new document.
-3. Start writing!
+## 2. Keyboard Shortcuts
 
-## Reference
+| Action | Windows / Linux | macOS |
+| :----- | :-------------- | :---- |
+| Save Document | [[Ctrl+S]] | [[Cmd+S]] |
+| Toggle Preview | [[Ctrl+P]] | [[Cmd+P]] |
+| Insert Vector Block | [[Ctrl+Shift+V]] | [[Cmd+Shift+V]] |
+| Insert Interactive Form | [[Ctrl+Shift+I]] | [[Cmd+Shift+I]] |
 
-### Keyboard Shortcuts
+---
 
-| Action | Windows/Linux | macOS |
-| :----- | :------------ | :---- |
-| Save | [[Ctrl+S]] | [[Cmd+S]] |
-| Undo | [[Ctrl+Z]] | [[Cmd+Z]] |
-| Find | [[Ctrl+F]] | [[Cmd+F]] |
+## 3. Frequently Asked Questions & Troubleshooting
 
-## Troubleshooting
+@accordion {
+  @section "How do I define reusable components?"
+  Use the Phase 9 keyword syntax:
+  ```zolto
+  component Card(title="")
+    ### {title}
+    slot
+    end
+  end
+  ```
+  @/section
 
-[warning]
-Before contacting support, check the [FAQ](faq.zl) — most common issues
-are answered there.
-[/warning]
+  @section "Is client-side JavaScript required for interactive elements?"
+  No! All Phase 10 interactive widgets compile to native, semantic, accessible HTML with `data-zl-*` attributes for optional progressive enhancement.
+  @/section
 
-### Common Issues
-
-Problem
-: The application won't start.
-
-Solution
-: Ensure you have the minimum system requirements. See [requirements](requirements.zl).
+  @section "How do I report bugs or request features?"
+  Visit our official repository issue tracker at `github.com/uxle/zolto`.
+  @/section
+}
