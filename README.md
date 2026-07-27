@@ -8,7 +8,7 @@
 
 A strict superset of standard Markdown with native Mathematics, Diagrams, Charts, Vector Graphics, Spatial Layouts, Components, and Interactive Runtime — built with **Zero Dependencies**.
 
-[![CI](https://github.com/uxle/zolto/actions/workflows/ci.yml/badge.svg)](https://github.com/uxle/zolto/actions/workflows/ci.yml)
+[![static](https://github.com/uxle/zolto/actions/workflows/static.yml/badge.svg)](https://github.com/uxle/zolto/actions/workflows/static.yml)
 [![Version](https://img.shields.io/badge/version-10.0.0-blue.svg)](package.json)
 [![Phase](https://img.shields.io/badge/phase-10_Complete-purple)](docs/development/roadmap.md)
 [![Tests](https://img.shields.io/badge/tests-732%2F732_passing-brightgreen.svg)](tests/)
