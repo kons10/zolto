@@ -143,7 +143,7 @@ function _tabs(n, ctx, h) {
   const btnHtml = tabs.map((tab, i) => {
     const sel     = i === active ? '"true"' : '"false"';
     const panelId = `${id}-p${i}`;
-    const icon    = tab.icon ? `<span class="material-symbols-rounded zl-icon" style="font-size:1em">${escapeHtml(tab.icon)}</span> ` : '';
+    const icon    = tab.icon ? `<i class="fa-solid ${escapeHtml(tab.icon)} zl-icon" style="font-size:1em"></i> ` : '';
     return `<button class="zl-tab-btn" role="tab" aria-selected=${sel} aria-controls="${escapeAttr(panelId)}" data-panel="${escapeAttr(panelId)}" onclick="${escapeAttr(TAB_FN)}">${icon}${escapeHtml(tab.label)}</button>`;
   }).join('\n');
 
@@ -164,7 +164,7 @@ function _card(n, ctx, h) {
   const inner  = [];
   if (n.img) inner.push(`<img class="zl-card-img" src="${escapeAttr(n.img)}" alt="${escapeAttr(n.title ?? '')}" loading="lazy">`);
   const hdr = [];
-  if (n.icon) hdr.push(`<span class="material-symbols-rounded zl-card-icon">${escapeHtml(n.icon)}</span>`);
+  if (n.icon) hdr.push(`<i class="fa-solid ${escapeHtml(n.icon)} zl-card-icon"></i>`);
   if (n.title) hdr.push(`<span class="zl-card-title">${escapeHtml(n.title)}</span>`);
   if (hdr.length) inner.push(`<div class="zl-card-hdr">${hdr.join('')}</div>`);
   if (n.description) inner.push(`<p class="zl-card-desc">${escapeHtml(n.description)}</p>`);
@@ -186,7 +186,7 @@ function _cardGroup(n, ctx, h) {
 function _steps(n, ctx, h) {
   const items = n.children.map((step, i) => {
     const icon = step.icon
-      ? `<span class="material-symbols-rounded" style="font-size:1em">${escapeHtml(step.icon)}</span>`
+      ? `<i class="fa-solid ${escapeHtml(step.icon)}" style="font-size:1em"></i>`
       : String(i + 1);
     const body = step.children.map(c => h.renderBlock(c, ctx)).filter(Boolean).join('\n');
     return `<li class="zl-step"><div class="zl-step-marker">${icon}</div><div class="zl-step-content"><div class="zl-step-title">${escapeHtml(step.title)}</div>${body ? `<div class="zl-step-body">${body}</div>` : ''}</div></li>`;
@@ -211,7 +211,7 @@ function _columns(n, ctx, h) {
 function _badge(n, ctx, h) {
   const v   = escapeAttr(n.variant);
   const cls = ['zl-badge', `zl-badge-${v}`, ...(n.pill ? ['zl-badge-pill'] : []), ...(n.outline ? ['zl-badge-outline'] : [])].join(' ');
-  const icon = n.icon ? `<span class="material-symbols-rounded" style="font-size:1em;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 20">${escapeHtml(n.icon)}</span>` : '';
+  const icon = n.icon ? `<i class="fa-solid ${escapeHtml(n.icon)}" style="font-size:1em"></i>` : '';
   return `<span class="${cls}">${icon}${escapeHtml(n.value)}</span>`;
 }
 
@@ -219,7 +219,7 @@ function _badge(n, ctx, h) {
 
 function _tag(n, ctx, h) {
   const col  = n.color ? ` style="color:${escapeAttr(n.color)};border-color:${escapeAttr(n.color)}"` : '';
-  const icon = n.icon  ? `<span class="material-symbols-rounded" style="font-size:.9em">${escapeHtml(n.icon)}</span>` : '';
+  const icon = n.icon  ? `<i class="fa-solid ${escapeHtml(n.icon)}" style="font-size:.9em"></i>` : '';
   const inner = `${icon}${escapeHtml(n.value)}`;
   if (n.href) return `<a class="zl-tag" href="${escapeAttr(n.href)}"${col}>${inner}</a>`;
   return `<span class="zl-tag"${col}>${inner}</span>`;
@@ -227,12 +227,12 @@ function _tag(n, ctx, h) {
 
 // ─── Alert ────────────────────────────────────────────────────────────────────
 
-const ALERT_ICONS = { info:'info', success:'check_circle', warning:'warning', danger:'error', note:'sticky_note_2', primary:'info' };
+const ALERT_ICONS = { info:'fa-info-circle', success:'fa-check-circle', warning:'fa-exclamation-triangle', danger:'fa-times-circle', note:'fa-sticky-note', primary:'fa-info-circle' };
 
 function _alert(n, ctx, h) {
   const t      = escapeAttr(n.alertType);
-  const iName  = n.icon || ALERT_ICONS[n.alertType] || 'info';
-  const icon   = `<span class="material-symbols-rounded zl-alert-icon">${escapeHtml(iName)}</span>`;
+  const iName  = n.icon || ALERT_ICONS[n.alertType] || 'fa-info-circle';
+  const icon   = `<i class="fa-solid ${escapeHtml(iName)} zl-alert-icon"></i>`;
   const dismiss = n.dismissible ? `<button class="zl-alert-close" onclick="this.closest('.zl-alert').remove()" aria-label="Dismiss">✕</button>` : '';
   const title  = n.title ? `<div class="zl-alert-title">${escapeHtml(n.title)}</div>` : '';
   const body   = n.children.map(c => h.renderBlock(c, ctx)).filter(Boolean).join('\n');
@@ -271,8 +271,8 @@ function _avatar(n, ctx, h) {
   } else if (n.initials) {
     inner = `<span class="zl-avatar-initials">${escapeHtml(n.initials.slice(0, 2).toUpperCase())}</span>`;
   } else {
-    const iconName = n.icon || 'person';
-    inner = `<span class="material-symbols-rounded" style="font-size:60%;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 20">${escapeHtml(iconName)}</span>`;
+    const iconName = n.icon || 'fa-user';
+    inner = `<i class="fa-solid ${escapeHtml(iconName)}" style="font-size:60%"></i>`;
   }
   return `<div class="zl-avatar zl-av-${size}">${inner}${status}</div>`;
 }
@@ -283,7 +283,7 @@ function _icon(n, ctx, h) {
   const sz    = n.size  ? ` style="font-size:${Number(n.size)}px"` : '';
   const col   = n.color ? ` zl-icon-${escapeAttr(n.color)}` : '';
   const aria  = n.label ? ` aria-label="${escapeAttr(n.label)}"` : ` aria-hidden="true"`;
-  const span  = `<span class="material-symbols-rounded zl-icon${col}"${sz}${aria}>${escapeHtml(n.name)}</span>`;
+  const span  = `<i class="fa-solid ${escapeHtml(n.name)} zl-icon${col}"${sz}${aria}></i>`;
   if (n.label) return `<span class="zl-icon-wrap">${span}<span class="zl-icon-label">${escapeHtml(n.label)}</span></span>`;
   return span;
 }

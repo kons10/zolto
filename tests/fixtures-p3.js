@@ -206,7 +206,7 @@ export const avatarFixtures = [
 
 export const iconFixtures = [
   { description: 'Basic icon from body', input: '@icon\ncheck_circle\n@/icon',
-    contains: ['material-symbols-rounded', 'check_circle'] },
+    contains: ['fa-solid', 'fa-check'] },
   { description: 'Icon with positional name', input: '@icon star\n@/icon',
     contains: ['star'] },
   { description: 'Icon with custom size', input: '@icon home size=32\n@/icon',
